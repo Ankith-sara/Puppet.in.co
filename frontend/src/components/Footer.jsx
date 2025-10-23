@@ -78,11 +78,6 @@ const Footer = () => {
                     </NavLink>
                   </li>
                   <li>
-                    <NavLink to='/sell' className="text-gray-400 hover:text-white transition-colors font-light flex items-center group text-sm">
-                      Sell With Us
-                    </NavLink>
-                  </li>
-                  <li>
                     <NavLink to='/blog' className="text-gray-400 hover:text-white transition-colors font-light flex items-center group text-sm">
                       Blog
                     </NavLink>

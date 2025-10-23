@@ -1,6 +1,6 @@
 import React from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
-import Home from './pages/Home';
+import Index from './pages/Index';
 import Collection from './pages/Collection';
 import About from './pages/About';
 import Contact from './pages/Contact';
@@ -14,12 +14,9 @@ import Footer from './components/Footer';
 import SearchBar from './components/SearchBar';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Sell from './pages/Sell';
 import ProductPage from './pages/ProductPage';
-import ChatBot from './pages/ChatBot';
 import MyProfile from './pages/MyProfile';
 import Verify from './pages/Verify';
-import VirtualTryOn from './pages/VirtualTryOn';
 import BlogPage from './pages/BlogPage';
 import ScrollToTop from './components/ScrollToTop';
 import TrackOrder from './pages/TrackOrder';
@@ -45,7 +42,7 @@ const App = () => {
       <SearchBar />
       <ScrollToTop />
       <Routes>
-        <Route path='/' element={<Home />} />
+        <Route path='/' element={<Index />} />
         <Route path='/shop/collection' element={<Collection />} />
         <Route path='/about' element={<About />} />
         <Route path='/contact' element={<Contact />} />
@@ -60,7 +57,6 @@ const App = () => {
         <Route path='/trackorder/:orderId' element={<TrackOrder />} />
         <Route path='/verify' element={<Verify />} />
         <Route path='/profile/:id' element={<MyProfile />} />
-        <Route path='/sell' element={<Sell />} />
         <Route path='/blog' element={<BlogPage />} />
         <Route path='/refundpolicy' element={<CancellationRefundPolicy />} />
         <Route path='/shippingpolicy' element={<ShippingDeliveryPolicy />} />
@@ -69,8 +65,6 @@ const App = () => {
         <Route path='/faqs' element={<FAQs />} />
         <Route path='/support' element={<Support />} />
         <Route path='/sitemap' element={<Sitemap />} />
-        <Route path='/aa-chatbot' element={<ChatBot />} />
-        <Route path='/try-on' element={<VirtualTryOn />} />
       </Routes>
       {!hideChatIcon && <ChatIcon />}
       {!hideNavAndFooter && <Footer />}

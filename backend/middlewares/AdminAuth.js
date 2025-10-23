@@ -16,7 +16,6 @@ const adminAuth = async (req, res, next) => {
     // Verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    // Check user in DB
     const user = await userModel.findById(decoded.id);
     if (!user || user.role !== 'admin') {
       return res.status(403).json({ success: false, message: "Forbidden. Admin access only." });

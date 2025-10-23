@@ -3,250 +3,297 @@ import { assets } from '../assets/frontend_assets/assets';
 import NewsletterBox from '../components/NewsletterBox';
 import OurPolicy from '../components/OurPolicy';
 import Title from '../components/Title';
-import { ChevronDown, ChevronUp } from "lucide-react";
-import IndianMap from '../components/IndianMap';
+import { ChevronDown, ChevronUp, Sparkles, Palette, Heart, Award, Users, Star } from "lucide-react";
 
 const About = () => {
   const [showFullStory, setShowFullStory] = useState(false);
 
   useEffect(() => {
-    document.title = 'About Aharyas | Conscious Luxury, Indian Heritage';
+    document.title = 'About Puppet.co.in | Bold Art for Bold Spaces';
   }, []);
 
+  const values = [
+    {
+      icon: Heart,
+      title: "Authenticity",
+      description: "Every piece tells a unique story and celebrates bold self-expression"
+    },
+    {
+      icon: Award,
+      title: "Quality",
+      description: "Curated selection of premium materials and craftsmanship"
+    },
+    {
+      icon: Users,
+      title: "Community",
+      description: "Building a tribe of fearless individuals who embrace their unique style"
+    }
+  ];
+
+  const milestones = [
+    { year: "2020", event: "Puppet.co.in founded with a vision for bold living" },
+    { year: "2021", event: "Opened first curated showroom" },
+    { year: "2022", event: "Expanded to 50+ artist collaborations" },
+    { year: "2023", event: "Launched nationwide shipping across India" },
+    { year: "2024", event: "10,000+ bold spaces transformed" }
+  ];
+
+  const team = [
+    {
+      name: "Sofia Rodriguez",
+      title: "Founder & Creative Director",
+      bio: "Former gallery owner with a passion for provocative art and Miami's vibrant culture",
+      image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop"
+    },
+    {
+      name: "Marcus Chen",
+      title: "Head of Curation",
+      bio: "Art historian specializing in contemporary and boundary-pushing artists",
+      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop"
+    },
+    {
+      name: "Isabella Martinez",
+      title: "Customer Experience Lead",
+      bio: "Dedicated to making every interaction as memorable as our pieces",
+      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop"
+    }
+  ];
+
+  const testimonials = [
+    {
+      text: "Puppet.co.in transformed my living room into a conversation starter. Every guest asks about my new art piece!",
+      author: "Priya M.",
+      location: "Mumbai, India",
+      rating: 5
+    },
+    {
+      text: "Finally, a store that gets it. Bold, beautiful, and unapologetically different. Exactly what I was looking for.",
+      author: "Rahul K.",
+      location: "Bangalore, India",
+      rating: 5
+    },
+    {
+      text: "The quality is exceptional and the customer service is top-notch. I've already made three purchases!",
+      author: "Anjali S.",
+      location: "Delhi, India",
+      rating: 5
+    }
+  ];
+
   return (
-    <div className="min-h-screen text-black mt-20">
-      {/* Brand Story */}
-      <section className="py-24 px-4 sm:px-8 md:px-10 lg:px-20">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-            <div className="relative order-2 lg:order-1">
-              <div className="relative overflow-hidden rounded-none shadow-2xl">
-                <img
-                  className="w-full h-[600px] object-cover filter transition-all duration-700"
-                  src={assets.about_img}
-                  alt="Aharyas Heritage"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
-              </div>
-              <div className="absolute -top-8 -left-8 w-16 h-16 border border-black/20"></div>
-              <div className="absolute -bottom-8 -right-8 w-16 h-16 border border-black/20"></div>
+    <div className="min-h-screen pt-20">
+      {/* Hero Section */}
+      <section className="relative h-[60vh] flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-[#FF6F61]/20 via-[#B4E7FF]/20 to-[#FFD4B2]/20" />
+        <img
+          src={assets.about_img}
+          alt="Puppet.co.in showroom"
+          className="absolute inset-0 w-full h-full object-cover opacity-30"
+        />
+        <div className="relative z-10 text-center px-4 animate-fade-in">
+          <h1 className="text-5xl md:text-7xl font-bold tracking-wider text-[#FF6F61] mb-4" style={{
+            textShadow: '0 0 20px rgba(255, 111, 97, 0.5)',
+            animation: 'glow 2s ease-in-out infinite alternate'
+          }}>
+            Our Story
+          </h1>
+          <p className="text-xl md:text-2xl text-gray-800 max-w-2xl mx-auto">
+            Curating boldness for fearless spaces since 2020
+          </p>
+        </div>
+      </section>
+
+      {/* Story Section */}
+      <section className="py-20 bg-[#FFF8F0]">
+        <div className="container mx-auto px-4">
+          <div className="grid md:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
+            <div className="relative animate-fade-in">
+              <div className="absolute -inset-4 bg-[#FFD700]/10 rounded-full blur-2xl" />
+              <img
+                src={assets.mallesh_img}
+                alt="Founder"
+                className="relative rounded-full w-80 h-80 object-cover mx-auto border-4 border-[#FFD700] shadow-2xl hover:shadow-[0_20px_40px_rgba(255,111,97,0.3)] transition-all duration-500"
+              />
             </div>
+            <div className="space-y-6">
+              <h2 className="text-4xl font-bold tracking-wide text-[#FF6F61]">
+                Born from Bold Spirit
+              </h2>
+              <p className="text-gray-700 leading-relaxed text-lg">
+                Puppet.co.in started in a small studio where art met audacity. 
+                Our founder noticed a gap in the market: beautiful homes 
+                filled with safe, boring art. She set out to change that.
+              </p>
+              <p className="text-gray-700 leading-relaxed text-lg">
+                We believe your space should be as fearless as you are. Every piece we curate 
+                is selected to spark conversation, challenge norms, and celebrate the beauty 
+                of being unapologetically yourself.
+              </p>
+              <p className="text-gray-700 leading-relaxed text-lg">
+                Today, we work with over 50 boundary-pushing artists from around the world, 
+                bringing provocative, premium pieces to bold individuals who refuse to blend in.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
 
-            <div className="order-1 lg:order-2">
-              <div className="text-3xl text-center mb-6">
-                <Title text1="ABOUT" text2="AHARYAS" />
-              </div>
+      {/* Mission Quote */}
+      <section className="py-20 bg-gradient-to-r from-[#FF6F61]/10 via-[#B4E7FF]/10 to-[#FFD4B2]/10">
+        <div className="container mx-auto px-4">
+          <blockquote className="max-w-4xl mx-auto text-center">
+            <p className="text-3xl md:text-4xl font-bold tracking-wide text-[#FF6F61] mb-6 leading-relaxed">
+              "Art should make you feel something. Your home should tell your story. 
+              We're here to help you live boldly."
+            </p>
+            <footer className="text-lg text-gray-600">— Sofia Rodriguez, Founder</footer>
+          </blockquote>
+        </div>
+      </section>
 
-              <div className="space-y-4 text-gray-700 text-lg leading-loose font-light">
-                <p className="first-letter:text-5xl first-letter:font-light first-letter:text-black first-letter:mr-1 first-letter:float-left first-letter:leading-none">
-                  We, at Aharyas, are driven by the potential of handcrafted narratives. We're not creating a brand — we're creating a bridge between India's storied craft heritage and the world of mindful fashion.
+      {/* Values Section */}
+      <section className="py-20 bg-[#FFF8F0]">
+        <div className="container mx-auto px-4">
+          <h2 className="text-4xl font-bold tracking-wide text-center text-[#FF6F61] mb-12">
+            Our Values
+          </h2>
+          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            {values.map((value, index) => (
+              <div
+                key={value.title}
+                className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 text-center hover:scale-105 transition-all duration-300 shadow-md hover:shadow-2xl"
+                style={{ animationDelay: `${index * 0.1}s` }}
+              >
+                <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-gradient-to-br from-[#FF6F61] to-[#FFD4B2] flex items-center justify-center shadow-lg">
+                  <value.icon className="w-8 h-8 text-white" />
+                </div>
+                <h3 className="text-2xl font-bold tracking-wide text-[#FF6F61] mb-3">
+                  {value.title}
+                </h3>
+                <p className="text-gray-600 leading-relaxed">
+                  {value.description}
                 </p>
-
-                <p>Aharyas was born from our profound respect for artisans and our ambitious vision to bring their work the visibility and audience it rightly deserves.</p>
-
-                <p>Through our online platform, Aharyas unites craftsmanship, technology, and meaning. We employ AI and AR to design an immersive shopping experience that enables customers to engage with each product — to view, touch, and learn the story behind it.</p>
-
-                <p>Aharyas operates under three essential categories — authentic handmade craft from artisans, sustainable and affordable fashion for daily wear, and a luxury segment specific to high-end fashion with Indian sensibilities.</p>
-
-                <p>Until now, Aharyas has on-boarded more than 300 artisans, many belonging to self-help groups, providing them a platform to feature their work, earn equitable income, and revive their creative identity.</p>
-
-                <blockquote className="border-l-2 border-black pl-6 py-4 italic text-xl text-black font-light">
-                  "At Aharyas, we're driven by purpose, powered by innovation, and grounded in tradition."
-                </blockquote>
               </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Vision & Mission */}
-      <section className="relative py-24">
-        <div className="absolute inset-0 bg-gradient-to-r from-gray-100 to-gray-50"></div>
-        <div className="relative px-4 sm:px-8 md:px-10 lg:px-20">
-          <div className="max-w-7xl mx-auto">
-
-            <div className="grid md:grid-cols-2 gap-16">
-              <div className="group">
-                <div className="bg-white/90 backdrop-blur-sm p-12 shadow-xl hover:shadow-2xl transition-all duration-500 border-l-4 border-black">
-                  <div className="mb-6">
-                    <h3 className="text-2xl font-light mb-2 tracking-wider text-black">OUR VISION</h3>
-                    <div className="w-12 h-0.5 bg-black"></div>
+      {/* Team Section */}
+      <section className="py-20 bg-[#FFF8F0]">
+        <div className="container mx-auto px-4">
+          <h2 className="text-4xl font-bold tracking-wide text-center text-[#FF6F61] mb-4">
+            Meet the Team
+          </h2>
+          <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
+            The passionate individuals behind Puppet.co.in's bold curation
+          </p>
+          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            {team.map((member, index) => (
+              <div
+                key={member.name}
+                className="group"
+                style={{ animationDelay: `${index * 0.1}s` }}
+              >
+                <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 text-center hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 shadow-md">
+                  <div className="relative w-32 h-32 mx-auto mb-4">
+                    <div className="absolute -inset-2 bg-gradient-to-br from-[#FF6F61] via-[#B4E7FF] to-[#FFD4B2] rounded-full blur-lg opacity-50 group-hover:opacity-100 transition-opacity" />
+                    <img
+                      src={member.image}
+                      alt={member.name}
+                      className="relative w-full h-full rounded-full object-cover border-4 border-white"
+                    />
                   </div>
-                  <p className="text-gray-700 text-lg font-light leading-relaxed">
-                    To craft India's first luxury clothing brand where heritage meets high design, rooted deeply in culture, craft, and community.
-                  </p>
-                </div>
-              </div>
-
-              <div className="group">
-                <div className="bg-white/90 backdrop-blur-sm p-12 shadow-xl hover:shadow-2xl transition-all duration-500 border-l-4 border-black">
-                  <div className="mb-6">
-                    <h3 className="text-2xl font-light mb-2 tracking-wider text-black">OUR MISSION</h3>
-                    <div className="w-12 h-0.5 bg-black"></div>
-                  </div>
-                  <p className="text-gray-700 text-lg font-light leading-relaxed">
-                    To preserve dying crafts, uplift artisan voices, and create fashion that feels timeless, ethical, and soulfully elegant.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* What Drives Us */}
-      <section className="py-20 px-4 sm:px-8 md:px-10 lg:px-20">
-        <div className="max-w-5xl mx-auto text-center">
-          <div className="mb-6">
-            <div className="text-3xl text-center mb-6">
-              <Title text1="WHAT" text2="DRIVES US" />
-            </div>
-          </div>
-
-          <div className="relative">
-            <div className="absolute -top-8 -left-8 text-8xl text-black/10 font-serif">"</div>
-            <div className="bg-gradient-to-r from-gray-50 to-transparent p-10 border-l-4 border-black">
-              <blockquote className="text-xl md:text-2xl font-light text-black leading-relaxed">
-                A simple belief:
-                <br /><br />
-                <em className="font-light">That fashion should not just look good — it should mean something, honour hands, and carry stories forward.</em>
-              </blockquote>
-            </div>
-            <div className="absolute -bottom-8 -right-8 text-8xl text-black/10 font-serif rotate-180">"</div>
-          </div>
-        </div>
-      </section>
-
-      {/* Artisan Stories */}
-      <section className="py-20 px-4 sm:px-8 md:px-10 lg:px-20 bg-gradient-to-b from-white to-stone-50">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-10">
-            <div className="text-3xl text-center mb-6">
-              <Title text1="ARTISAN" text2="STORIES" />
-            </div>
-            <p className="max-w-2xl mx-auto text-xl text-gray-600 font-light leading-relaxed">
-              Every Aharyas piece is a living memory — crafted by hands that keep tradition alive.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-16 items-start">
-            <div className="lg:col-span-2">
-              <div className="relative">
-                <img
-                  src={assets.mallesh_img}
-                  alt="Master Weaver Mallesh Anna"
-                  className="w-full h-[500px] object-cover filter transition-all duration-700 shadow-2xl"
-                />
-                <div className="absolute -top-6 -left-6 w-12 h-12 border border-black/20"></div>
-                <div className="absolute -bottom-6 -right-6 w-12 h-12 border border-black/20"></div>
-              </div>
-            </div>
-
-            <div className="lg:col-span-3">
-              <div className="bg-white shadow-lg p-12 border-l-4 border-black hover:shadow-xl transition-all duration-500">
-                <div className="mb-8">
-                  <h3 className="text-2xl font-light mb-2 tracking-wider text-black">
-                    Meet Mallesh Anna
+                  <h3 className="text-xl font-bold tracking-wide text-[#FF6F61] mb-1">
+                    {member.name}
                   </h3>
-                  <div className="w-16 h-0.5 bg-black mb-4"></div>
-                  <p className="text-lg text-gray-600 font-light italic">The Heart Behind the Loom</p>
+                  <div className="text-sm text-[#FF6F61] mb-3 font-medium">{member.title}</div>
+                  <p className="text-sm text-gray-600 leading-relaxed">
+                    {member.bio}
+                  </p>
                 </div>
-
-                {!showFullStory ? (
-                  <>
-                    <div className="text-gray-700 font-light leading-relaxed space-y-6">
-                      <p className="first-letter:text-4xl first-letter:font-light first-letter:text-black first-letter:mr-1 first-letter:float-left first-letter:leading-none">
-                        From the weaving town of Pochampally, Mallesh Anna has spent over 40 years breathing life into threads. He began as a young boy, watching his parents tie and dye yarn late into the night, slowly learning that every motif held a meaning and every weave, a memory.
-                      </p>
-                      <p>Today, at 56, he still rises before dawn, preparing yarns with care and weaving with quiet pride. The journey hasn't been easy—rising costs, fewer buyers—but he never let go of the loom that shaped his life.</p>
-                      <p><em>Now a treasured part of the Aharyas family, Mallesh Anna's work is more than craftsmanship… it's legacy. When you wear his weave, you carry a story. His story.</em></p>
-                    </div>
-                    <button
-                      className="mt-8 group flex items-center text-black font-light hover:font-normal transition-all duration-300 border-b border-transparent hover:border-black pb-1"
-                      onClick={() => setShowFullStory(true)}
-                      aria-expanded={showFullStory}
-                    >
-                      <span className="tracking-wide">READ FULL STORY</span>
-                      <ChevronDown className="ml-3 h-4 w-4 group-hover:translate-y-1 transition-transform duration-300" />
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <div className="text-gray-700 font-light leading-relaxed space-y-6 whitespace-pre-line">
-                      <p className="first-letter:text-4xl first-letter:font-light first-letter:text-black first-letter:mr-2 first-letter:float-left first-letter:leading-none">
-                        In the quiet village lanes of Pochampally, as the world still sleeps, a soft rhythm begins. It's not a song, but a sound, a tap, pull, beat—the sacred hum of a loom guided by hands that have known its music for over 40 years... Those hands belong to Mallesh Anna, a master Ikkat weaver, now 56, whose story is woven deep into the fabric of India's heritage.
-                      </p>
-                      <p>He learned by watching, small feet by the loom, wide eyes on his parents' weathered fingers as they tied, dyed, and wove stories under lantern light. "Back then, I thought it was magic," he says. "Now I know... it's devotion."</p>
-                      <p>Each day, before the sun graces the fields, Mallesh rises. He prepares the yarns with near-meditative precision—from boiling, dyeing, to aligning them into harmony. His eyes have seen thousands of patterns form and fade, yet he remembers each one. "Every motif means something. Some are for love, others for rain, or joy, or sorrow. It's like a language," he says, with a smile that carries both pride and pain.</p>
-                      <p>But tradition has not come without its trials... There were years when buyers vanished. When cloth went unsold. When his heart broke seeing fellow weavers give up, sell their looms, and walk away from legacies centuries old. "We kept going… because the loom is not just work. It's who we are."</p>
-                      <p>Today, Mallesh Anna weaves not in the shadows, but with new light, as a beloved part of the Aharyas family. His art is no longer a whisper from the past, it is a voice heard by the world. We stand by him, not just as partners, but as custodians of a culture he's spent a lifetime preserving.</p>
-                      <p><em>When you wear his work, you wear his childhood, his resilience, his heartbeat. And when you feel the softness of the cloth, know this: It was once just yarn. Now, it's a living memory.</em></p>
-                    </div>
-                    <button
-                      className="mt-8 group flex items-center text-black font-light hover:font-normal transition-all duration-300 border-b border-transparent hover:border-black pb-1"
-                      onClick={() => setShowFullStory(false)}
-                      aria-expanded={showFullStory}
-                    >
-                      <span className="tracking-wide">SHOW LESS</span>
-                      <ChevronUp className="ml-3 h-4 w-4 group-hover:-translate-y-1 transition-transform duration-300" />
-                    </button>
-                  </>
-                )}
               </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* The Crafts We Celebrate */}
-      <section className="py-20 px-4 sm:px-8 md:px-10 lg:px-20">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-10">
-            <div className="text-3xl text-center mb-6">
-              <Title text1="THE CRAFTS" text2="WE CELEBRATE" />
-            </div>
-            <p className="max-w-2xl mx-auto text-xl text-gray-600 font-light leading-relaxed">
-              Ancient techniques with contemporary expressions.
-            </p>
+      {/* Testimonials */}
+      <section className="py-20 bg-gradient-to-br from-[#FF6F61]/5 via-[#B4E7FF]/5 to-[#FFD4B2]/5">
+        <div className="container mx-auto px-4">
+          <h2 className="text-4xl font-bold tracking-wide text-center text-[#FF6F61] mb-12">
+            What Our Customers Say
+          </h2>
+          <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            {testimonials.map((testimonial, index) => (
+              <div
+                key={index}
+                className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md hover:shadow-2xl transition-all duration-300"
+              >
+                <div className="flex gap-1 mb-4">
+                  {[...Array(testimonial.rating)].map((_, i) => (
+                    <Star key={i} className="w-5 h-5 fill-[#FFD700] text-[#FFD700]" />
+                  ))}
+                </div>
+                <p className="text-gray-600 mb-4 leading-relaxed italic">
+                  "{testimonial.text}"
+                </p>
+                <div>
+                  <div className="font-semibold text-[#FF6F61]">{testimonial.author}</div>
+                  <div className="text-sm text-gray-500">{testimonial.location}</div>
+                </div>
+              </div>
+            ))}
           </div>
+        </div>
+      </section>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+      {/* The Styles We Curate */}
+      <section className="py-20 bg-[#FFF8F0]">
+        <div className="container mx-auto px-4">
+          <h2 className="text-4xl font-bold tracking-wide text-center text-[#FF6F61] mb-4">
+            The Styles We Curate
+          </h2>
+          <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
+            Provocative pieces with unapologetic presence
+          </p>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
             {[
               {
-                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTlTzt84KtIPmCvbws6ZqxkME343VJwuealkg&s",
-                title: "Ikkat from Pochampally",
-                description: "Where threads are dyed before they're woven, creating a beautifully blurred, rhythmic art."
+                image: "https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?w=500",
+                title: "Vintage Wall Art",
+                description: "Bold collages and retro advertisements that transform walls into storytelling canvases."
               },
               {
-                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWwrcUvr9rX9VwZFYDGm-78n_LUjOcDLOwxg&s",
-                title: "Kalamkari from Pedana",
-                description: "Hand-painted and block-printed stories, each fabric a canvas of myth, memory, and meaning."
+                image: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=500",
+                title: "Sculptural Lighting",
+                description: "Provocative lamps that blur the line between functional lighting and gallery-worthy art."
               },
               {
-                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRb7Jr4lAecluSZlmlVml77XKR2bst9LesyeA&s",
-                title: "Hand Block Printing",
-                description: "Carved wooden blocks dipped in earthy dyes, echoing the warmth and detail of desert craftsmanship."
+                image: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=500",
+                title: "Statement Furniture",
+                description: "Upcycled cabinets and unique pieces that demand attention and spark conversation."
               },
               {
-                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRH87LSPNVl8KL6ockU6-Z7y6Gn36CuW2CsMw&s",
-                title: "Traditional Embroideries",
-                description: "From mirror-studded stitches of Gujarat to the flowing Kantha of Bengal and the vibrant Phulkari of Punjab."
+                image: "https://images.unsplash.com/photo-1618220179428-22790b461013?w=500",
+                title: "Mosaic & Mirror Art",
+                description: "Reflective displays that play with light, creating mesmerizing visual experiences."
               }
-            ].map((craft, index) => (
+            ].map((style, index) => (
               <div key={index} className="group">
-                <div className="overflow-hidden hover:shadow-lg transition-all duration-500">
-                  <div className="relative h-80 overflow-hidden">
+                <div className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
+                  <div className="relative h-64 overflow-hidden">
                     <img
-                      src={craft.image}
-                      alt={craft.title}
-                      className="w-full h-full object-cover filter grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105"
+                      src={style.image}
+                      alt={style.title}
+                      className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#FF6F61]/60 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500" />
                   </div>
-                  <div className="p-8 bg-white">
-                    <h4 className="text-xl font-light mb-4 text-black tracking-wide">{craft.title}</h4>
-                    <div className="w-12 h-0.5 bg-black mb-4"></div>
-                    <p className="text-gray-600 font-light leading-relaxed">{craft.description}</p>
+                  <div className="p-6">
+                    <h4 className="text-xl font-bold mb-3 text-[#FF6F61]">{style.title}</h4>
+                    <div className="w-12 h-1 bg-gradient-to-r from-[#FF6F61] to-[#FFD4B2] mb-4 rounded-full" />
+                    <p className="text-gray-600 leading-relaxed text-sm">{style.description}</p>
                   </div>
                 </div>
               </div>
@@ -255,48 +302,81 @@ const About = () => {
         </div>
       </section>
 
-      {/* Our Journey */}
+      {/* Philosophy Section */}
       <section className="relative py-32 overflow-hidden">
         <div className="absolute inset-0">
           <img
             src={assets.about_img}
-            alt="Our Journey Across India"
-            className="w-full h-full object-cover filter grayscale"
+            alt="Puppet Philosophy"
+            className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/40"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-[#FF6F61]/70 via-[#FFD4B2]/60 to-[#B4E7FF]/70" style={{ mixBlendMode: 'multiply' }} />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/40" />
         </div>
+
         <div className="relative px-4 sm:px-8 md:px-10 lg:px-20 text-center">
           <div className="max-w-5xl mx-auto">
-            <div className="mb-16">
-              <h2 className="text-4xl md:text-5xl font-light tracking-[0.15em] text-white mb-8">
-                OUR <span className="font-medium">JOURNEY</span>
-              </h2>
-              <p className="text-xl text-white/90 font-light tracking-wide">INTO HANDLOOMS</p>
+            <div className="inline-block mb-8" style={{
+              animation: 'float 6s ease-in-out infinite'
+            }}>
+              <div className="w-24 h-24 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-2xl">
+                <Heart size={48} className="text-[#FF6F61]" fill="#FF6F61" />
+              </div>
             </div>
 
-            <div className="bg-white/95 backdrop-blur-md p-16 shadow-2xl max-w-4xl mx-auto">
-              <p> Our journey led us across India—from the looms of Pochampally to the painted fabrics of Pedana, the earthy blocks of Rajasthan, and the delicate embroidery houses of Delhi. We met artisans who welcomed us in, shared their craft, and showed us that every thread carries patience, pride, and generations of history. What we witnessed wasn't just technique—it was tradition kept alive by hand and heart. That journey shaped not just our purpose but the soul of Aharyas. </p>
+            <h2 className="text-5xl md:text-7xl font-bold text-white mb-8 leading-tight" style={{
+              textShadow: '0 4px 20px rgba(0,0,0,0.3)'
+            }}>
+              Our Philosophy:<br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-[#FFB5E8] to-white">
+                Bold Art for Bold Spaces
+              </span>
+            </h2>
+
+            <div className="bg-white/95 backdrop-blur-lg p-12 md:p-16 rounded-3xl shadow-2xl max-w-4xl mx-auto border-4 border-white">
+              <p className="text-gray-800 text-xl md:text-2xl leading-relaxed font-light mb-6">
+                We believe your home should be as unique as you are. Every piece we curate challenges the ordinary, celebrates individuality, and transforms spaces into personal galleries.
+              </p>
+              <div className="w-24 h-1 bg-gradient-to-r from-[#FF6F61] via-[#FFD4B2] to-[#FFD700] mx-auto rounded-full my-8" />
+              <p className="text-gray-700 text-lg leading-relaxed">
+                From Miami-inspired aesthetics to provocative artistry, we're here to help you create environments that don't just look good — they make people stop, stare, and remember.
+              </p>
+              <div className="mt-8 inline-block bg-gradient-to-r from-[#FF6F61] to-[#FFD700] text-white px-8 py-3 rounded-full font-bold text-lg shadow-lg">
+                Life's Too Short for Boring Decor
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Indian Map Section */}
-      <section className="py-32 bg-gradient-to-b from-stone-50 to-white">
-        <div className="px-4 sm:px-8 md:px-10 lg:px-20">
-          <IndianMap />
-        </div>
-      </section>
-
-      {/* Our Policies */}
-      <section className="">
+      {/* Policies Section */}
+      <section className="bg-white/70 backdrop-blur-sm">
         <OurPolicy />
       </section>
 
-      {/* Newsletter */}
-      <section className="py-24 px-4 sm:px-8 md:px-16 bg-gradient-to-b from-white to-stone-50">
+      {/* Newsletter Section */}
+      <section className="py-24 px-4 sm:px-8 md:px-16 bg-gradient-to-br from-[#FFD4B2]/30 via-[#FFB5E8]/20 to-[#B4E7FF]/30">
         <NewsletterBox />
       </section>
+
+      {/* Animation Styles */}
+      <style>{`
+        @keyframes glow {
+          from { text-shadow: 0 0 10px rgba(255, 111, 97, 0.3); }
+          to { text-shadow: 0 0 20px rgba(255, 111, 97, 0.8); }
+        }
+        @keyframes fade-in {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes float {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-20px); }
+        }
+        .animate-fade-in {
+          animation: fade-in 0.8s ease-out;
+        }
+      `}</style>
     </div>
   );
 };
