@@ -20,7 +20,6 @@ import Verify from './pages/Verify';
 import BlogPage from './pages/BlogPage';
 import ScrollToTop from './components/ScrollToTop';
 import TrackOrder from './pages/TrackOrder';
-import ChatIcon from './components/ChatIcon';
 import CancellationRefundPolicy from './pages/RefundPolicy';
 import ShippingDeliveryPolicy from './pages/DeliveryPolicy';
 import TermsConditions from './pages/TermsConditions';
@@ -66,7 +65,6 @@ const App = () => {
         <Route path='/support' element={<Support />} />
         <Route path='/sitemap' element={<Sitemap />} />
       </Routes>
-      {!hideChatIcon && <ChatIcon />}
       {!hideNavAndFooter && <Footer />}
     </div>
   );

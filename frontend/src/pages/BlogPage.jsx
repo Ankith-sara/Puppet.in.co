@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import Title from '../components/Title';
+import { ArrowRight, AlertCircle } from 'lucide-react';
+import NewsletterBox from '../components/NewsletterBox';
 
 const BlogPage = () => {
   const posts = [
@@ -20,48 +21,162 @@ const BlogPage = () => {
   ];
 
   useEffect(() => {
-    document.title = 'Aharyas Blogs | Aharyas'
+    document.title = 'Puppet Blog | Puppet'
   })
 
   return (
-    <div className="min-h-screen text-black mt-20 px-4 sm:px-6 md:px-10 lg:px-20 py-10">
-      <div className="text-3xl text-center mb-6">
-        <Title text1="OUR" text2="BLOG" />
-      </div>
+    <div className="min-h-screen text-white mt-10" style={{ 
+      background: 'linear-gradient(180deg, #0a0015 0%, #1a0a2e 50%, #0f051d 100%)'
+    }}>
+      {/* Retro grid background - subtle */}
+      <div className="fixed inset-0 opacity-5 pointer-events-none" style={{
+        backgroundImage: `
+          linear-gradient(#FF1493 1px, transparent 1px),
+          linear-gradient(90deg, #FF1493 1px, transparent 1px)
+        `,
+        backgroundSize: '50px 50px',
+        transform: 'perspective(500px) rotateX(60deg)',
+        transformOrigin: 'center bottom'
+      }}></div>
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {posts.map((post) => (
-          <div key={post.id} className="border border-gray-200 rounded-md overflow-hidden">
-            <div className="w-full h-48 overflow-hidden">
-              <img
-                src={post.imageUrl}
-                alt={post.title}
-                className="w-full h-full object-cover object-center"
-              />
-            </div>
+      {/* Reduced neon glow effects */}
+      <div className="fixed top-20 left-1/4 w-96 h-96 rounded-full opacity-10 blur-3xl pointer-events-none" style={{
+        background: 'radial-gradient(circle, #FF1493 0%, transparent 70%)'
+      }}></div>
+      <div className="fixed bottom-0 right-1/4 w-96 h-96 rounded-full opacity-10 blur-3xl pointer-events-none" style={{
+        background: 'radial-gradient(circle, #00FFFF 0%, transparent 70%)'
+      }}></div>
 
-            <div className="p-6">
-              <h3 className="font-medium text-lg mb-3">{post.title}</h3>
-              <p className="text-gray-600 text-sm mb-6">{post.excerpt}</p>
-              <a href={post.link} target="_blank" rel="noopener noreferrer" className="inline-block px-6 py-3 bg-black text-white font-medium hover:bg-gray-800 transition-colors">
-                READ MORE
-              </a>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {posts.length === 0 && (
-        <div className="flex flex-col items-center justify-center py-16 gap-6">
-          <div className="w-16 h-16 border-2 border-black rounded-full flex items-center justify-center">
-            <span className="text-2xl font-bold">!</span>
-          </div>
-          <div className="text-center">
-            <h3 className="text-xl font-medium mb-2">No Blog Posts Found</h3>
-            <p className="text-gray-600 max-w-md">Check back later for new content</p>
-          </div>
+      <div className="relative px-4 sm:px-6 md:px-10 lg:px-20 py-10">
+        {/* Hero Section */}
+        <div className="text-center mb-16">
+          <h1 className="text-5xl md:text-6xl font-black mb-4" style={{
+            fontFamily: 'Impact, "Arial Black", sans-serif',
+            color: '#00FFFF',
+            textShadow: '3px 3px 0px #FF1493, 6px 6px 0px rgba(0,0,0,0.4)',
+            transform: 'skewY(-2deg)',
+            letterSpacing: '0.05em'
+          }}>
+            OUR BLOG
+          </h1>
+          <div className="h-1 w-32 mx-auto mb-6" style={{
+            background: 'linear-gradient(90deg, #FF1493, #00FFFF)',
+            boxShadow: '0 0 10px rgba(255, 20, 147, 0.5)'
+          }}></div>
+          <p className="text-xl font-light max-w-2xl mx-auto" style={{ color: '#E0BBE4' }}>
+            Stories, insights, and inspiration from the world of bold design
+          </p>
         </div>
-      )}
+
+        {/* Blog Posts Grid */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+          {posts.map((post, index) => {
+            const colors = ['#FF1493', '#00FFFF', '#FF6B9D'];
+            const color = colors[index % colors.length];
+            
+            return (
+              <div 
+                key={post.id} 
+                className="overflow-hidden transition-all duration-300 hover:scale-105 group"
+                style={{
+                  background: 'rgba(26, 10, 46, 0.7)',
+                  backdropFilter: 'blur(10px)',
+                  border: `2px solid ${color}`,
+                  boxShadow: `0 0 15px ${color}40`
+                }}
+              >
+                <div className="w-full h-48 overflow-hidden relative">
+                  <img
+                    src={post.imageUrl}
+                    alt={post.title}
+                    className="w-full h-full object-cover object-center transition-transform duration-300 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{
+                    background: `linear-gradient(180deg, transparent 0%, ${color}40 100%)`
+                  }}></div>
+                </div>
+
+                <div className="p-6">
+                  <h3 className="font-black text-lg mb-3 uppercase" style={{ 
+                    color: color,
+                    fontFamily: 'Impact, sans-serif'
+                  }}>
+                    {post.title}
+                  </h3>
+                  <p className="text-sm mb-6 leading-relaxed" style={{ color: '#E0BBE4' }}>
+                    {post.excerpt}
+                  </p>
+                  <a 
+                    href={post.link} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="inline-flex items-center gap-2 px-6 py-3 font-black uppercase transition-all duration-300 group/btn"
+                    style={{
+                      background: `${color}20`,
+                      border: `2px solid ${color}`,
+                      color: color,
+                      fontFamily: 'Impact, sans-serif',
+                      fontSize: '0.875rem'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = color;
+                      e.currentTarget.style.color = '#000000';
+                      e.currentTarget.style.boxShadow = `0 0 20px ${color}80`;
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = `${color}20`;
+                      e.currentTarget.style.color = color;
+                      e.currentTarget.style.boxShadow = 'none';
+                    }}
+                  >
+                    READ MORE
+                    <ArrowRight size={16} className="transition-transform duration-300 group-hover/btn:translate-x-1" />
+                  </a>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Empty State */}
+        {posts.length === 0 && (
+          <div className="flex flex-col items-center justify-center py-16 gap-6">
+            <div className="w-16 h-16 flex items-center justify-center" style={{
+              border: '2px solid #FF1493',
+              borderRadius: '50%',
+              boxShadow: '0 0 20px rgba(255, 20, 147, 0.5)'
+            }}>
+              <AlertCircle size={32} style={{ color: '#FF1493' }} />
+            </div>
+            <div className="text-center">
+              <h3 className="text-xl font-black mb-2 uppercase" style={{ 
+                color: '#00FFFF',
+                fontFamily: 'Impact, sans-serif'
+              }}>
+                No Blog Posts Found
+              </h3>
+              <p className="max-w-md" style={{ color: '#E0BBE4' }}>
+                Check back later for new content
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* Newsletter CTA Section */}
+        <div className="mt-16 max-w-4xl mx-auto">
+          <NewsletterBox />
+        </div>
+      </div>
+
+      {/* Scanlines effect at bottom */}
+      <div className="h-2 relative mt-16" style={{
+        borderTop: '2px solid #FF1493',
+        boxShadow: '0 -2px 15px rgba(255, 20, 147, 0.5)'
+      }}>
+        <div className="absolute inset-0 opacity-20" style={{
+          backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, #FF1493 2px, #FF1493 4px)'
+        }}></div>
+      </div>
     </div>
   );
 };
