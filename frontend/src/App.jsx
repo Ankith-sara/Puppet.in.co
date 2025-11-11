@@ -17,7 +17,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import ProductPage from './pages/ProductPage';
 import MyProfile from './pages/MyProfile';
 import Verify from './pages/Verify';
-import BlogPage from './pages/BlogPage';
 import ScrollToTop from './components/ScrollToTop';
 import TrackOrder from './pages/TrackOrder';
 import CancellationRefundPolicy from './pages/RefundPolicy';
@@ -32,7 +31,6 @@ import Wishlist from './pages/Wishlist';
 const App = () => {
   const location = useLocation();
   const hideNavAndFooter = location.pathname === '/login';
-  const hideChatIcon = location.pathname === '/aa-chatbot';
  
   return (
     <div>
@@ -56,7 +54,6 @@ const App = () => {
         <Route path='/trackorder/:orderId' element={<TrackOrder />} />
         <Route path='/verify' element={<Verify />} />
         <Route path='/profile/:id' element={<MyProfile />} />
-        <Route path='/blog' element={<BlogPage />} />
         <Route path='/refundpolicy' element={<CancellationRefundPolicy />} />
         <Route path='/shippingpolicy' element={<ShippingDeliveryPolicy />} />
         <Route path='/termsconditions' element={<TermsConditions />} />

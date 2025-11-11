@@ -5,7 +5,6 @@ import { Instagram, Linkedin, Twitter, Mail, Phone, Shield, Truck, Heart } from 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
-  // GTA Vice City inspired logo
   const PuppetLogo = () => (
     <div className="relative">
       <div className="text-5xl font-black tracking-tight" style={{
@@ -23,7 +22,6 @@ const Footer = () => {
     <footer className="relative overflow-hidden" style={{
       background: 'linear-gradient(180deg, #1a0a2e 0%, #0f051d 50%, #000000 100%)'
     }}>
-      {/* Retro grid background */}
       <div className="absolute inset-0 opacity-20" style={{
         backgroundImage: `
           linear-gradient(#FF1493 2px, transparent 2px),
@@ -34,7 +32,6 @@ const Footer = () => {
         transformOrigin: 'center bottom'
       }}></div>
 
-      {/* Neon glow effects */}
       <div className="absolute top-0 left-1/4 w-96 h-96 rounded-full opacity-20 blur-3xl" style={{
         background: 'radial-gradient(circle, #FF1493 0%, transparent 70%)'
       }}></div>
@@ -57,7 +54,7 @@ const Footer = () => {
               </p>
             </div>
 
-            {/* Social Links - Neon Style */}
+            {/* Social Links */}
             <div className="flex space-x-4">
               <a
                 href="https://www.instagram.com/"
@@ -127,7 +124,6 @@ const Footer = () => {
                     { name: 'About Us', path: '/about' },
                     { name: 'Contact Us', path: '/contact' },
                     { name: 'Shop Collection', path: '/shop/collection' },
-                    { name: 'Blog', path: '/blog' }
                   ].map((item, idx) => (
                     <li key={idx}>
                       <NavLink to={item.path} className="font-light flex items-center group text-sm transition-all duration-300"
@@ -216,7 +212,7 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* Bottom Footer with scanlines effect */}
+      {/* Bottom Footer */}
       <div className="relative" style={{
         borderTop: '2px solid #FF1493',
         boxShadow: '0 -2px 10px rgba(255, 20, 147, 0.5)'
@@ -247,14 +243,18 @@ const Footer = () => {
 
             {/* Quick Links */}
             <div className="flex flex-wrap items-center justify-center gap-6 text-xs order-3 lg:order-2">
-              {['FAQs', 'Support', 'Sitemap'].map((item, idx, arr) => (
+              {[
+                { name: 'FAQs', path: '/faqs' },
+                { name: 'Support', path: '/support' },
+                { name: 'Sitemap', path: '/sitemap' }
+              ].map((item, idx, arr) => (
                 <React.Fragment key={idx}>
-                  <a href="#" className="font-light transition-all duration-300 uppercase tracking-wider"
+                  <NavLink to={item.path} className="font-light transition-all duration-300 uppercase tracking-wider"
                     style={{ color: '#FFB6C1', textShadow: '0 0 0px #FF1493' }}
                     onMouseEnter={(e) => e.target.style.textShadow = '0 0 10px #FF1493'}
                     onMouseLeave={(e) => e.target.style.textShadow = '0 0 0px #FF1493'}>
-                    {item}
-                  </a>
+                    {item.name}
+                  </NavLink>
                   {idx < arr.length - 1 && (
                     <span style={{ color: '#FF1493' }}>●</span>
                   )}
@@ -262,7 +262,7 @@ const Footer = () => {
               ))}
             </div>
 
-            {/* Trust Indicators - Neon badges */}
+            {/* Trust Indicators */}
             <div className="flex items-center gap-3 order-1 lg:order-3">
               <div className="flex items-center text-xs px-3 py-2 transition-all duration-300 hover:scale-105"
                 style={{
