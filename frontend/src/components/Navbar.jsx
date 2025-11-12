@@ -118,7 +118,7 @@ const categories = [
       <nav className={`fixed top-0 left-0 right-0 px-4 sm:px-6 md:px-10 lg:px-20 z-50 transition-all duration-300 ${
         isScrolled 
           ? 'bg-black/95 backdrop-blur-md' 
-          : 'bg-black'
+          : 'bg-gradient-to-b from-black/30 to-transparent backdrop-blur-sm'
       }`} style={{
         borderBottom: isScrolled ? '2px solid #FF1493' : 'none',
         boxShadow: isScrolled ? '0 2px 20px rgba(255, 20, 147, 0.3)' : 'none'

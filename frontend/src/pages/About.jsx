@@ -89,7 +89,7 @@ const About = () => {
   ];
 
   return (
-    <div className="min-h-screen text-white mt-16" style={{ 
+    <div className="min-h-screen text-white pt-24 pb-12" style={{ 
       background: 'linear-gradient(180deg, #0a0015 0%, #1a0a2e 50%, #0f051d 100%)'
     }}>
       <div className="fixed inset-0 opacity-5 pointer-events-none" style={{

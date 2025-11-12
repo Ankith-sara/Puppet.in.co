@@ -287,7 +287,7 @@ const ProductPage = () => {
   );
 
   return (
-    <div className="min-h-screen mt-16" style={{
+    <div className="min-h-screen pt-24 pb-12" style={{
       background: 'linear-gradient(180deg, #0a0015 0%, #1a0a2e 50%, #0f051d 100%)'
     }}>
       {/* Background Grid Effect */}
