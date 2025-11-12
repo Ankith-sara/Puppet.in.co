@@ -127,7 +127,7 @@ const About = () => {
           }}></div>
 
           <p className="text-2xl md:text-3xl font-light max-w-3xl mx-auto" style={{ color: '#E0BBE4' }}>
-            Curating boldness for fearless spaces since 2020
+            Curating boldness for fearless spaces since 2025
           </p>
         </div>
       </section>
