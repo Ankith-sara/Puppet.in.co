@@ -60,7 +60,7 @@ const Cart = () => {
   };
 
   useEffect(() => {
-    document.title = 'Cart | Aharyas';
+    document.title = 'Cart | Puppet';
   }, []);
 
   return (

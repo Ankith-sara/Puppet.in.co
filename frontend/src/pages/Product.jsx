@@ -173,7 +173,7 @@ const Product = () => {
 
   useEffect(() => {
     if (productData?.name) {
-      document.title = `${productData.name} | Aharyas`;
+      document.title = `${productData.name} | Puppet`;
     }
   }, [productData?.name]);
 

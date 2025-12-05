@@ -45,7 +45,6 @@ const Support = () => {
 
   return (
     <div className="min-h-screen bg-black text-white pt-24 pb-12">
-      {/* Grid overlay */}
       <div className="fixed inset-0 opacity-10 pointer-events-none" style={{
         backgroundImage: `
           linear-gradient(rgb(219 39 119) 1px, transparent 1px),

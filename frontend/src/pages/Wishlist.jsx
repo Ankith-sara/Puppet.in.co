@@ -37,7 +37,7 @@ const Wishlist = () => {
   }, [token, navigate]);
 
   useEffect(() => {
-    document.title = 'Wishlist | Aharyas';
+    document.title = 'Wishlist | Puppet';
   }, []);
 
   const handleDeleteClick = (productId) => {

@@ -254,7 +254,7 @@ const Collection = () => {
       <div className="fixed inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: `linear-gradient(rgb(219 39 119) 1px, transparent 1px), linear-gradient(90deg, rgb(219 39 119) 1px, transparent 1px)`, backgroundSize: '40px 40px', transform: 'perspective(800px) rotateX(75deg) scale(2)', transformOrigin: 'center bottom' }}></div>
       <section className="relative py-20 px-4 sm:px-8 md:px-10 lg:px-20">
         <div className="max-w-7xl mx-auto text-center">
-          <h1 className="text-6xl md:text-8xl font-black mb-8 uppercase text-cyan-400" style={{ fontFamily: 'Impact, "Arial Black", sans-serif', textShadow: '2px 2px 0px rgb(219 39 119)', transform: 'skewY(-2deg)' }}>AHARYAS COLLECTION</h1>
+          <h1 className="text-6xl md:text-8xl font-black mb-8 uppercase text-cyan-400" style={{ fontFamily: 'Impact, "Arial Black", sans-serif', textShadow: '2px 2px 0px rgb(219 39 119)', transform: 'skewY(-2deg)' }}>PUPPET COLLECTION</h1>
           <div className="w-48 h-1 mx-auto mb-8 bg-gradient-to-r from-pink-600 via-cyan-600 to-purple-600"></div>
           {filterProducts.length > 0 && (<p className="text-2xl md:text-3xl text-gray-400 font-black uppercase" style={{ fontFamily: 'Impact, sans-serif' }}>{filterProducts.length} BOLD PIECE{filterProducts.length !== 1 ? 'S' : ''}{showSearch && search && ` MATCHING "${search}"`}</p>)}
         </div>

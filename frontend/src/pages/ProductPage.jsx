@@ -170,7 +170,7 @@ const ProductPage = () => {
     if (subcategory) return subcategory.toUpperCase();
     if (selectedSubCategory) return selectedSubCategory.toUpperCase();
     if (category) return category.toUpperCase();
-    return "AHARYAS";
+    return "PUPPET";
   };
 
   const getCollectionSubtitle = () => {

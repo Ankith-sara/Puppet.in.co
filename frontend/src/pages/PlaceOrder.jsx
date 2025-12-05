@@ -85,7 +85,7 @@ const PlaceOrder = () => {
       key: import.meta.env.VITE_RAZORPAY_KEY_ID,
       amount: order.amount,
       currency: order.currency,
-      name: 'Aharyas',
+      name: 'Puppet',
       description: 'Payment for order',
       order_id: order.id,
       handler: async (response) => {
@@ -386,7 +386,7 @@ const PlaceOrder = () => {
                           <a href="/termsconditions" target="_blank" className="text-black font-medium underline hover:text-gray-700 transition-colors"> Terms & Conditions</a>,{' '}
                           <a href="/privacypolicy" target="_blank" className="text-black font-medium underline hover:text-gray-700 transition-colors"> Privacy Policy</a>, and{' '}
                           <a href="/shippingpolicy" target="_blank" className="text-black font-medium underline hover:text-gray-700 transition-colors"> Shipping Policy</a>
-                          . I understand that orders are processed within 0-7 days and Aharya is not liable for courier delays. *
+                          . I understand that orders are processed within 0-7 days and Puppet is not liable for courier delays. *
                         </label>
 
                         {!agreeToTerms && (
@@ -403,8 +403,8 @@ const PlaceOrder = () => {
                       <ul className="text-xs text-gray-600 space-y-1 font-light">
                         <li>• Processing time: 0-7 days from order confirmation</li>
                         <li>• Shipping via registered courier services (domestic & international)</li>
-                        <li>• Aharya ensures timely handover to courier companies</li>
-                        <li>• Support available at +91 9063284008 or aharyasofficial@gmail.com</li>
+                        <li>• Puppet ensures timely handover to courier companies</li>
+                        <li>• Support available at +91 9063284008 or dotkpuppet@gmail.com</li>
                       </ul>
                     </div>
                   </div>
