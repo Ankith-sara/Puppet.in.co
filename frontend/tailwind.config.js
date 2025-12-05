@@ -17,10 +17,18 @@ export default {
         dm: ['DM Sans', 'sans-serif'],
       },
       colors: {
-        primary: "#fcf8f0",
-        secondary: "#6b5b4d",
-        text: "#131010",
-        background: "#b6a593",
+        // Dark Vice City Theme Colors
+        primary: "#000000",   
+        secondary: "#1a0a2e", 
+        text: "#e5e5e5",
+        background: "#0a0015", 
+        
+        // Accent colors
+        neon: {
+          pink: "#db2777",         
+          cyan: "#0891b2",        
+          purple: "#9333ea"
+        }
       },
     },
   },

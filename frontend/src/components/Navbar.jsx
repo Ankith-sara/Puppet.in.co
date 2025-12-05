@@ -1,39 +1,51 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
-import { ChevronDown, ChevronRight, X, Search, User, ShoppingBag, Menu, LogOut, Heart } from 'lucide-react';
+import { ShopContext } from '../context/ShopContext';
+import { ChevronDown, ChevronRight, X, Search, User, Menu, LogOut, ShoppingBag, ShoppingCart, Heart } from 'lucide-react';
+import { jwtDecode } from "jwt-decode";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const { setShowSearch, getWishlistCount, getCartCount, navigate, token, setToken, setCartItems, setSelectedSubCategory } = useContext(ShopContext);
   const [menuVisible, setMenuVisible] = useState(false);
   const [expandedCategory, setExpandedCategory] = useState(null);
   const location = useLocation();
   const menuRef = useRef(null);
 
-  // Mock context values - replace with your actual context
-  const token = null; // Replace with actual token from context
-  const userId = "user123"; // Replace with actual userId
-  const getWishlistCount = () => 3; // Replace with actual function
-  const getCartCount = () => 5; // Replace with actual function
+  let userId = "";
 
+  if (token) {
+    const decoded = jwtDecode(token);
+    userId = decoded.id;
+  }
+
+  // Check if we're on the home page
   const isHomePage = location.pathname === '/';
 
+  // Toggle category expansion
   const toggleCategoryExpansion = (category) => {
     setExpandedCategory(expandedCategory === category ? null : category);
   };
 
   const logout = () => {
-    // Add logout logic
-    console.log('Logging out...');
+    navigate('/login');
+    localStorage.removeItem('token');
+    setToken('');
+    setCartItems({});
   };
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
     };
+
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
+  // Handle click outside menu
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (menuVisible && menuRef.current && !menuRef.current.contains(event.target)) {
@@ -43,39 +55,63 @@ const Navbar = () => {
         }
       }
     };
+
     document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
   }, [menuVisible]);
 
+  // Control body scroll when menu is open
   useEffect(() => {
-    document.body.style.overflow = menuVisible ? 'hidden' : '';
-    return () => { document.body.style.overflow = ''; };
+    if (menuVisible) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
   }, [menuVisible]);
 
-const categories = [
+  const handleCategoryClick = (subCategory) => {
+    setSelectedSubCategory(subCategory);
+    setMenuVisible(false);
+  };
+
+  // Determine navbar background based on home page and scroll position
+  const getNavbarBackground = () => {
+    if (isHomePage && !isScrolled) {
+      return 'bg-transparent backdrop-blur-none';
+    } else {
+      return 'bg-black/95 backdrop-blur-md border-b-2 border-pink-600';
+    }
+  };
+
+  const categories = [
     {
       name: 'Vintage Wall Art',
       id: 'vintage-wall-art',
+      color: 'pink',
       subcategories: [
-        { name: 'Bold Collages', path: '/shop/bold-collages' },
-        { name: 'Retro Advertisements', path: '/shop/retro-advertisements' },
-        { name: 'Pop Art Prints', path: '/shop/pop-art-prints' },
-        { name: 'Abstract Art', path: '/shop/abstract-art' }
+        { name: 'Wall Art', path: '/shop/wall-art' },
+        { name: 'Retro Posters', path: '/shop/retro-posters' },
+        { name: 'Bold Collages', path: '/shop/bold-collages' }
       ]
     },
     {
       name: 'Sculptural Lighting',
       id: 'sculptural-lighting',
+      color: 'cyan',
       subcategories: [
         { name: 'Provocative Lamps', path: '/shop/provocative-lamps' },
-        { name: 'Gallery Art Lights', path: '/shop/gallery-art-lights' },
-        { name: 'Statement Fixtures', path: '/shop/statement-fixtures' },
-        { name: 'Ambient Sculptures', path: '/shop/ambient-sculptures' }
+        { name: 'Gallery Art Lights', path: '/shop/gallery-art-lights' }
       ]
     },
     {
       name: 'Statement Furniture',
       id: 'statement-furniture',
+      color: 'purple',
       subcategories: [
         { name: 'Upcycled Cabinets', path: '/shop/upcycled-cabinets' },
         { name: 'Unique Chairs', path: '/shop/unique-chairs' },
@@ -86,151 +122,106 @@ const categories = [
     {
       name: 'Mosaic & Mirror Art',
       id: 'mosaic-mirror-art',
+      color: 'yellow',
       subcategories: [
         { name: 'Reflective Displays', path: '/shop/reflective-displays' },
         { name: 'Light Art', path: '/shop/light-art' },
-        { name: 'Mosaic Pieces', path: '/shop/mosaic-pieces' },
-        { name: 'Mirror Installations', path: '/shop/mirror-installations' }
+        { name: 'Mosaic Pieces', path: '/shop/mosaic-pieces' }
       ]
     }
   ];
 
-  const PuppetLogo = () => (
-    <div className="text-3xl md:text-4xl font-black tracking-tight" style={{
-      fontFamily: 'Impact, "Arial Black", sans-serif',
-      textShadow: '3px 3px 0px #FF1493, 6px 6px 0px rgba(0,0,0,0.3)',
-      color: '#00FFFF',
-      transform: 'skewY(-2deg)'
-    }}>
-      PUPPET
-    </div>
-  );
+  const colorClasses = {
+    pink: {
+      border: "border-pink-600",
+      text: "text-pink-600",
+      bg: "bg-pink-600",
+      hover: "hover:bg-pink-600/10"
+    },
+    cyan: {
+      border: "border-cyan-600",
+      text: "text-cyan-600",
+      bg: "bg-cyan-600",
+      hover: "hover:bg-cyan-600/10"
+    },
+    purple: {
+      border: "border-purple-600",
+      text: "text-purple-600",
+      bg: "bg-purple-600",
+      hover: "hover:bg-purple-600/10"
+    },
+    yellow: {
+      border: "border-yellow-600",
+      text: "text-yellow-600",
+      bg: "bg-yellow-600",
+      hover: "hover:bg-yellow-600/10"
+    }
+  };
 
   return (
     <>
-      {/* Backdrop */}
-      <div 
-        className={`fixed inset-0 bg-black transition-all duration-300 z-40 ${menuVisible ? 'bg-opacity-70 backdrop-blur-sm' : 'opacity-0 pointer-events-none'}`} 
-        onClick={() => setMenuVisible(false)} 
-      />
+      <div className={`fixed inset-0 bg-black bg-opacity-80 backdrop-blur-sm transition-all duration-300 z-40 ${menuVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'}`} onClick={() => setMenuVisible(false)} />
 
       {/* Navbar */}
-      <nav className={`fixed top-0 left-0 right-0 px-4 sm:px-6 md:px-10 lg:px-20 z-50 transition-all duration-300 ${
-        isScrolled 
-          ? 'bg-black/95 backdrop-blur-md' 
-          : 'bg-gradient-to-b from-black/30 to-transparent backdrop-blur-sm'
-      }`} style={{
-        borderBottom: isScrolled ? '2px solid #FF1493' : 'none',
-        boxShadow: isScrolled ? '0 2px 20px rgba(255, 20, 147, 0.3)' : 'none'
-      }}>
+      <nav className={`fixed top-0 left-0 right-0 px-4 sm:px-6 md:px-10 lg:px-20 z-50 transition-all duration-300 ${getNavbarBackground()}`}>
         <div className="flex items-center justify-between text-white py-4">
-          <Link to='/' className="flex-shrink-0 group">
-            <PuppetLogo />
+          <Link to='/' onClick={() => window.location.href = '/'} className="flex-shrink-0 group">
+            <div className="text-3xl font-black uppercase tracking-tight" style={{
+              fontFamily: 'Impact, "Arial Black", sans-serif',
+              textShadow: '2px 2px 0px rgb(219 39 119)',
+            }}>
+              <span className="text-cyan-400">PUPPET.In.co</span>
+            </div>
           </Link>
 
           {/* Action Icons */}
           <div className="flex items-center gap-1">
             <button
-              className="relative p-2.5 transition-all duration-300 group"
+              onClick={() => { setShowSearch(true); navigate('/shop/collection') }}
+              className="p-2.5 transition-all duration-200 hover:bg-cyan-600/20 rounded border-2 border-transparent hover:border-cyan-600"
               aria-label="Search"
-              style={{
-                border: '2px solid transparent'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.border = '2px solid #00FFFF';
-                e.currentTarget.style.boxShadow = '0 0 15px rgba(0, 255, 255, 0.5)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.border = '2px solid transparent';
-                e.currentTarget.style.boxShadow = 'none';
-              }}
             >
-              <Search size={20} style={{ color: '#00FFFF' }} className="group-hover:scale-110 transition-transform" />
+              <Search size={20} className="text-cyan-400 transition-transform duration-200" />
             </button>
 
             <div className="relative group hidden md:block">
               <button
-                className="relative p-2.5 transition-all duration-300 group/profile"
+                onClick={() => token ? null : navigate('/login')}
+                className="p-2.5 transition-all duration-200 hover:bg-pink-600/20 rounded border-2 border-transparent hover:border-pink-600"
                 aria-label="Profile"
-                style={{
-                  border: '2px solid transparent'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.border = '2px solid #FF1493';
-                  e.currentTarget.style.boxShadow = '0 0 15px rgba(255, 20, 147, 0.5)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.border = '2px solid transparent';
-                  e.currentTarget.style.boxShadow = 'none';
-                }}
               >
-                <User size={20} style={{ color: '#FF1493' }} className="group-hover/profile:scale-110 transition-transform" />
+                <User size={20} className="text-pink-600 transition-transform duration-200" />
               </button>
 
               {token && (
                 <div className="hidden group-hover:block absolute right-0 pt-2 z-10">
-                  <div className="w-52 overflow-hidden" style={{
-                    background: 'rgba(26, 10, 46, 0.95)',
-                    backdropFilter: 'blur(10px)',
-                    border: '2px solid #FF1493',
-                    boxShadow: '0 0 20px rgba(255, 20, 147, 0.5)'
-                  }}>
-                    <div className="p-4" style={{ borderBottom: '1px solid #FF1493' }}>
-                      <p className="text-sm font-black uppercase" style={{ 
-                        color: '#00FFFF',
-                        fontFamily: 'Impact, sans-serif'
-                      }}>
+                  <div className="w-52 bg-black border-2 border-pink-600 shadow-2xl overflow-hidden">
+                    <div className="p-4 bg-purple-950 border-b-2 border-pink-600">
+                      <p className="text-sm font-black uppercase tracking-wider text-cyan-400" style={{fontFamily: 'Impact, sans-serif'}}>
                         MY ACCOUNT
                       </p>
                     </div>
                     <div className="py-2">
                       <NavLink
                         to={`/profile/${userId}`}
-                        className="flex items-center px-4 py-3 font-medium transition-all duration-200"
-                        style={{ color: '#E0BBE4' }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.background = 'rgba(255, 20, 147, 0.2)';
-                          e.currentTarget.style.color = '#FF1493';
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.background = 'transparent';
-                          e.currentTarget.style.color = '#E0BBE4';
-                        }}
+                        className="flex items-center px-4 py-3 text-gray-300 hover:bg-pink-600/20 hover:text-pink-400 font-bold transition-all duration-200 border-l-2 border-transparent hover:border-l-pink-600"
                       >
                         <User size={16} className="mr-3" />
-                        My Profile
+                        MY PROFILE
                       </NavLink>
                       <NavLink
                         to="/orders"
-                        className="flex items-center px-4 py-3 font-medium transition-all duration-200"
-                        style={{ color: '#E0BBE4' }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.background = 'rgba(0, 255, 255, 0.2)';
-                          e.currentTarget.style.color = '#00FFFF';
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.background = 'transparent';
-                          e.currentTarget.style.color = '#E0BBE4';
-                        }}
+                        className="flex items-center px-4 py-3 text-gray-300 hover:bg-cyan-600/20 hover:text-cyan-400 font-bold transition-all duration-200 border-l-2 border-transparent hover:border-l-cyan-600"
                       >
                         <ShoppingBag size={16} className="mr-3" />
-                        My Orders
+                        MY ORDERS
                       </NavLink>
                       <button
                         onClick={() => { if (window.confirm("Are you sure you want to log out?")) logout(); }}
-                        className="w-full flex items-center px-4 py-3 text-left font-medium transition-all duration-200"
-                        style={{ color: '#E0BBE4' }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.background = 'rgba(255, 107, 157, 0.2)';
-                          e.currentTarget.style.color = '#FF6B9D';
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.background = 'transparent';
-                          e.currentTarget.style.color = '#E0BBE4';
-                        }}
+                        className="w-full flex items-center px-4 py-3 text-left text-gray-300 hover:bg-purple-600/20 hover:text-purple-400 font-bold transition-all duration-200 border-l-2 border-transparent hover:border-l-purple-600"
                       >
                         <LogOut size={16} className="mr-3" />
-                        Logout
+                        LOGOUT
                       </button>
                     </div>
                   </div>
@@ -238,32 +229,14 @@ const categories = [
               )}
             </div>
 
-            <Link to='/wishlist' className='relative group'>
+            <Link to='/wishlist' className='relative group '>
               <button
-                className="relative p-2.5 transition-all duration-300"
+                className="p-2.5 transition-all duration-200 hover:bg-purple-600/20 rounded border-2 border-transparent hover:border-purple-600"
                 aria-label="Wishlist"
-                style={{
-                  border: '2px solid transparent'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.border = '2px solid #FF6B9D';
-                  e.currentTarget.style.boxShadow = '0 0 15px rgba(255, 107, 157, 0.5)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.border = '2px solid transparent';
-                  e.currentTarget.style.boxShadow = 'none';
-                }}
               >
-                <Heart size={20} style={{ color: '#FF6B9D' }} className="group-hover:scale-110 transition-transform" />
+                <Heart size={20} className="text-purple-600 transition-transform duration-200" />
                 {getWishlistCount() > 0 && (
-                  <span className="absolute -top-1 -right-1 min-w-[20px] h-5 flex items-center justify-center text-xs font-black" style={{
-                    background: 'linear-gradient(135deg, #FF1493, #FF6B9D)',
-                    color: '#000000',
-                    border: '2px solid #FF1493',
-                    boxShadow: '0 0 10px rgba(255, 20, 147, 0.6)',
-                    fontFamily: 'Impact, sans-serif',
-                    borderRadius: '9999px'
-                  }}>
+                  <span className="absolute -top-1 -right-1 min-w-[20px] h-5 flex items-center justify-center rounded-full text-xs font-black bg-purple-600 text-white border-2 border-black shadow-lg transition-all duration-200">
                     {getWishlistCount()}
                   </span>
                 )}
@@ -271,238 +244,116 @@ const categories = [
             </Link>
 
             <Link to='/cart' className='relative group'>
-              <button 
-                className="relative p-2.5 transition-all duration-300" 
-                aria-label="Cart"
-                style={{
-                  border: '2px solid transparent'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.border = '2px solid #FFD700';
-                  e.currentTarget.style.boxShadow = '0 0 15px rgba(255, 215, 0, 0.5)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.border = '2px solid transparent';
-                  e.currentTarget.style.boxShadow = 'none';
-                }}
-              >
-                <ShoppingBag size={20} style={{ color: '#FFD700' }} className="group-hover:scale-110 transition-transform" />
+              <button className="p-2.5 transition-all duration-200 hover:bg-pink-600/20 rounded border-2 border-transparent hover:border-pink-600" aria-label="Cart">
+                <ShoppingCart size={20} className="text-pink-600 transition-transform duration-200" />
                 {getCartCount() > 0 && (
-                  <div className="absolute -top-1 -right-1 min-w-[20px] h-5 flex items-center justify-center text-xs font-black" style={{
-                    background: 'linear-gradient(135deg, #00FFFF, #B4E7FF)',
-                    color: '#000000',
-                    border: '2px solid #00FFFF',
-                    boxShadow: '0 0 10px rgba(0, 255, 255, 0.6)',
-                    fontFamily: 'Impact, sans-serif',
-                    borderRadius: '9999px'
-                  }}>
+                  <div className="absolute -top-1 -right-1 min-w-[20px] h-5 flex items-center justify-center rounded-full text-xs font-black bg-pink-600 text-white border-2 border-black shadow-lg transition-all duration-200">
                     {getCartCount()}
                   </div>
                 )}
               </button>
             </Link>
 
+            {/* Menu Button */}
             <button
               id="menu-toggle-button"
               onClick={() => setMenuVisible(true)}
-              className="relative p-2.5 transition-all duration-300 group"
+              className="p-2.5 transition-all duration-200 hover:bg-cyan-600/20 rounded border-2 border-transparent hover:border-cyan-600"
               aria-label="Menu"
-              style={{
-                border: '2px solid transparent'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.border = '2px solid #FF1493';
-                e.currentTarget.style.boxShadow = '0 0 15px rgba(255, 20, 147, 0.5)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.border = '2px solid transparent';
-                e.currentTarget.style.boxShadow = 'none';
-              }}
             >
-              <Menu size={20} style={{ color: '#FF1493' }} className="group-hover:scale-110 transition-transform" />
+              <Menu size={20} className="text-cyan-400 transition-transform duration-200" />
             </button>
           </div>
         </div>
       </nav>
 
       {/* Sidebar Menu */}
-      <div 
-        ref={menuRef} 
-        className={`fixed top-0 right-0 bottom-0 h-full w-full sm:w-96 md:w-96 lg:w-96 overflow-y-auto transition-transform duration-300 z-50 ${menuVisible ? 'translate-x-0' : 'translate-x-full'}`}
-        style={{
-          background: 'linear-gradient(180deg, #1a0a2e 0%, #0f051d 100%)',
-          boxShadow: '-5px 0 30px rgba(255, 20, 147, 0.5)'
-        }}
-      >
-        {/* Menu Header */}
-        <div className="p-6" style={{
-          borderBottom: '2px solid #FF1493',
-          boxShadow: '0 2px 20px rgba(255, 20, 147, 0.3)'
-        }}>
+      <div ref={menuRef} className={`fixed top-0 right-0 bottom-0 h-full w-full sm:w-96 md:w-96 lg:w-96 bg-black border-l-2 border-pink-600 shadow-2xl overflow-y-auto transition-transform duration-300 z-50 ${menuVisible ? 'translate-x-0' : 'translate-x-full'}`}>
+        <div className="bg-purple-950 text-white p-6 border-b-2 border-pink-600">
           <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-black uppercase" style={{
+            <h2 className="text-2xl font-black uppercase tracking-wider text-cyan-400" style={{
               fontFamily: 'Impact, sans-serif',
-              color: '#00FFFF',
-              textShadow: '2px 2px 0px rgba(0, 255, 255, 0.3)'
-            }}>
-              MENU
-            </h2>
+              textShadow: '1px 1px 0px rgb(219 39 119)'
+            }}>MENU</h2>
             <button
               onClick={() => setMenuVisible(false)}
-              className="p-2 transition-all duration-300"
+              className="p-2 text-white hover:bg-pink-600 rounded border-2 border-pink-600 transition-all duration-200"
               aria-label="Close menu"
-              style={{
-                border: '2px solid #FF1493',
-                boxShadow: '0 0 10px rgba(255, 20, 147, 0.5)'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'rgba(255, 20, 147, 0.2)';
-                e.currentTarget.style.boxShadow = '0 0 20px rgba(255, 20, 147, 0.8)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'transparent';
-                e.currentTarget.style.boxShadow = '0 0 10px rgba(255, 20, 147, 0.5)';
-              }}
             >
-              <X size={24} style={{ color: '#FF1493' }} />
+              <X size={24} />
             </button>
           </div>
         </div>
 
-        <div>
+        <div className="divide-y-2 divide-pink-900">
           <NavLink
             to="/"
             onClick={() => setMenuVisible(false)}
-            className="block px-6 py-4 transition-all duration-300 font-medium"
-            style={{
-              color: '#E0BBE4',
-              borderBottom: '1px solid rgba(255, 20, 147, 0.2)'
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = 'rgba(255, 20, 147, 0.2)';
-              e.currentTarget.style.color = '#FF1493';
-              e.currentTarget.style.borderLeft = '4px solid #FF1493';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = 'transparent';
-              e.currentTarget.style.color = '#E0BBE4';
-              e.currentTarget.style.borderLeft = 'none';
-            }}
+            className={({ isActive }) => `block px-6 py-4 hover:bg-pink-600/10 transition-all duration-200 font-black uppercase tracking-wider border-l-4 ${isActive ? 'text-pink-600 bg-pink-600/10 border-l-pink-600' : 'text-gray-300 border-l-transparent'}`}
+            style={{fontFamily: 'Impact, sans-serif'}}
           >
             HOME
           </NavLink>
 
           <div className="py-2">
-            <div className="px-6 py-4" style={{
-              background: 'rgba(255, 20, 147, 0.1)',
-              borderTop: '1px solid rgba(255, 20, 147, 0.3)',
-              borderBottom: '1px solid rgba(255, 20, 147, 0.3)'
-            }}>
-              <h3 className="uppercase text-sm font-black tracking-widest" style={{
-                color: '#00FFFF',
-                fontFamily: 'Impact, sans-serif'
-              }}>
+            <div className="px-6 py-4 bg-purple-950 border-y-2 border-pink-900">
+              <h3 className="text-cyan-400 uppercase text-sm font-black tracking-widest" style={{fontFamily: 'Impact, sans-serif'}}>
                 SHOP CATEGORIES
               </h3>
             </div>
 
-            {categories.map((category) => (
-              <div key={category.id} style={{
-                borderBottom: '1px solid rgba(255, 20, 147, 0.2)'
-              }}>
-                <button
-                  className="w-full flex items-center justify-between px-6 py-4 transition-all duration-300 font-medium"
-                  onClick={() => toggleCategoryExpansion(category.id)}
-                  style={{ color: '#FFB6C1' }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.background = 'rgba(0, 255, 255, 0.1)';
-                    e.currentTarget.style.color = '#00FFFF';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.background = 'transparent';
-                    e.currentTarget.style.color = '#FFB6C1';
-                  }}
-                >
-                  <span>{category.name}</span>
-                  <div className={`p-1 transition-transform duration-300 ${expandedCategory === category.id ? 'rotate-180' : ''}`}
-                    style={{
-                      border: '2px solid currentColor',
-                      borderRadius: '4px'
-                    }}
+            {categories.map((category) => {
+              const colors = colorClasses[category.color];
+              return (
+                <div key={category.id} className="border-b-2 border-pink-900 last:border-b-0">
+                  <button
+                    className={`w-full flex items-center justify-between px-6 py-4 text-gray-300 ${colors.hover} transition-all duration-200 font-black uppercase tracking-wide border-l-4 border-transparent`}
+                    onClick={() => toggleCategoryExpansion(category.id)}
+                    style={{fontFamily: 'Impact, sans-serif'}}
                   >
-                    {expandedCategory === category.id ? 
-                      <ChevronDown size={18} /> : 
-                      <ChevronRight size={18} />
-                    }
-                  </div>
-                </button>
+                    <span className={colors.text}>{category.name}</span>
+                    <div className={`p-1 rounded border-2 ${colors.border} transition-transform duration-200 ${expandedCategory === category.id ? 'rotate-0' : 'rotate-0'}`}>
+                      {expandedCategory === category.id ?
+                        <ChevronDown size={18} className={colors.text} /> :
+                        <ChevronRight size={18} className={colors.text} />
+                      }
+                    </div>
+                  </button>
 
-                {expandedCategory === category.id && (
-                  <div style={{
-                    background: 'rgba(0, 255, 255, 0.05)',
-                    borderTop: '1px solid rgba(0, 255, 255, 0.2)'
-                  }}>
-                    {category.subcategories.map((subcategory) => (
-                      <NavLink
-                        key={subcategory.path}
-                        to={subcategory.path}
-                        onClick={() => setMenuVisible(false)}
-                        className="block px-8 py-3 text-sm transition-all duration-300"
-                        style={{ 
-                          color: '#E0BBE4',
-                          borderLeft: '2px solid transparent'
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.background = 'rgba(255, 107, 157, 0.2)';
-                          e.currentTarget.style.color = '#FF6B9D';
-                          e.currentTarget.style.borderLeft = '2px solid #FF6B9D';
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.background = 'transparent';
-                          e.currentTarget.style.color = '#E0BBE4';
-                          e.currentTarget.style.borderLeft = '2px solid transparent';
-                        }}
-                      >
-                        ▶ {subcategory.name}
-                      </NavLink>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ))}
+                  {expandedCategory === category.id && (
+                    <div className="bg-purple-950/50 border-t-2 border-pink-900">
+                      {category.subcategories.map((subcategory) => (
+                        <NavLink
+                          key={subcategory.path}
+                          to={subcategory.path}
+                          onClick={() => handleCategoryClick(subcategory.name)}
+                          className={({ isActive }) => `block px-8 py-3 ${colors.hover} text-sm transition-all duration-200 border-l-4 font-bold uppercase tracking-wide ${isActive ? `${colors.text} bg-${category.color}-600/20 ${colors.border}` : `text-gray-400 border-l-transparent hover:${colors.text}`}`}
+                          style={{fontFamily: 'Impact, sans-serif'}}
+                        >
+                          {subcategory.name}
+                        </NavLink>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
 
           <div className="py-2">
-            <div className="px-6 py-4" style={{
-              background: 'rgba(255, 20, 147, 0.1)',
-              borderTop: '1px solid rgba(255, 20, 147, 0.3)',
-              borderBottom: '1px solid rgba(255, 20, 147, 0.3)'
-            }}>
-              <h3 className="uppercase text-sm font-black tracking-widest" style={{
-                color: '#00FFFF',
-                fontFamily: 'Impact, sans-serif'
-              }}>
+            <div className="px-6 py-4 bg-purple-950 border-y-2 border-pink-900">
+              <h3 className="text-cyan-400 uppercase text-sm font-black tracking-widest" style={{fontFamily: 'Impact, sans-serif'}}>
                 MY ACCOUNT
               </h3>
             </div>
 
             {token ? (
-              <div>
+              <div className="space-y-1">
                 <NavLink
                   to={`/profile/${userId}`}
                   onClick={() => setMenuVisible(false)}
-                  className="flex items-center px-6 py-4 transition-all duration-300 font-medium"
-                  style={{ color: '#E0BBE4' }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.background = 'rgba(255, 20, 147, 0.2)';
-                    e.currentTarget.style.color = '#FF1493';
-                    e.currentTarget.style.borderLeft = '4px solid #FF1493';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.background = 'transparent';
-                    e.currentTarget.style.color = '#E0BBE4';
-                    e.currentTarget.style.borderLeft = 'none';
-                  }}
+                  className={({ isActive }) => `flex items-center px-6 py-4 hover:bg-pink-600/10 transition-all duration-200 font-black uppercase tracking-wide border-l-4 ${isActive ? 'text-pink-600 bg-pink-600/10 border-l-pink-600' : 'text-gray-300 border-l-transparent'}`}
+                  style={{fontFamily: 'Impact, sans-serif'}}
                 >
                   <User size={18} className="mr-3" />
                   MY PROFILE
@@ -510,18 +361,8 @@ const categories = [
                 <NavLink
                   to="/orders"
                   onClick={() => setMenuVisible(false)}
-                  className="flex items-center px-6 py-4 transition-all duration-300 font-medium"
-                  style={{ color: '#E0BBE4' }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.background = 'rgba(0, 255, 255, 0.2)';
-                    e.currentTarget.style.color = '#00FFFF';
-                    e.currentTarget.style.borderLeft = '4px solid #00FFFF';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.background = 'transparent';
-                    e.currentTarget.style.color = '#E0BBE4';
-                    e.currentTarget.style.borderLeft = 'none';
-                  }}
+                  className={({ isActive }) => `flex items-center px-6 py-4 hover:bg-cyan-600/10 transition-all duration-200 font-black uppercase tracking-wide border-l-4 ${isActive ? 'text-cyan-600 bg-cyan-600/10 border-l-cyan-600' : 'text-gray-300 border-l-transparent'}`}
+                  style={{fontFamily: 'Impact, sans-serif'}}
                 >
                   <ShoppingBag size={18} className="mr-3" />
                   MY ORDERS
@@ -533,18 +374,8 @@ const categories = [
                       setMenuVisible(false);
                     }
                   }}
-                  className="w-full flex items-center px-6 py-4 text-left font-medium transition-all duration-300"
-                  style={{ color: '#E0BBE4' }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.background = 'rgba(255, 107, 157, 0.2)';
-                    e.currentTarget.style.color = '#FF6B9D';
-                    e.currentTarget.style.borderLeft = '4px solid #FF6B9D';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.background = 'transparent';
-                    e.currentTarget.style.color = '#E0BBE4';
-                    e.currentTarget.style.borderLeft = 'none';
-                  }}
+                  className="w-full flex items-center px-6 py-4 text-left text-gray-300 font-black uppercase tracking-wide hover:bg-purple-600/20 hover:text-purple-400 transition-all duration-200 border-l-4 border-transparent hover:border-l-purple-600"
+                  style={{fontFamily: 'Impact, sans-serif'}}
                 >
                   <LogOut size={18} className="mr-3" />
                   LOGOUT
@@ -554,18 +385,8 @@ const categories = [
               <NavLink
                 to="/login"
                 onClick={() => setMenuVisible(false)}
-                className="flex items-center px-6 py-4 transition-all duration-300 font-medium"
-                style={{ color: '#E0BBE4' }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'rgba(255, 20, 147, 0.2)';
-                  e.currentTarget.style.color = '#FF1493';
-                  e.currentTarget.style.borderLeft = '4px solid #FF1493';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'transparent';
-                  e.currentTarget.style.color = '#E0BBE4';
-                  e.currentTarget.style.borderLeft = 'none';
-                }}
+                className="flex items-center px-6 py-4 text-gray-300 hover:bg-cyan-600/10 hover:text-cyan-400 transition-all duration-200 font-black uppercase tracking-wide border-l-4 border-transparent hover:border-l-cyan-600"
+                style={{fontFamily: 'Impact, sans-serif'}}
               >
                 <User size={18} className="mr-3" />
                 LOGIN / SIGN UP
@@ -573,6 +394,9 @@ const categories = [
             )}
           </div>
         </div>
+
+        {/* Bottom Accent */}
+        <div className="h-2 bg-gradient-to-r from-pink-600 via-cyan-600 to-purple-600"></div>
       </div>
     </>
   );

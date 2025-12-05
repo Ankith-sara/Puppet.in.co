@@ -135,55 +135,22 @@ const List = ({ token }) => {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [viewMode, setViewMode] = useState('grid');
 
-  // Company-related states
-  const [companies, setCompanies] = useState([
-    'Biba',
-    'Fabindia',
-    'Vasudhaa Vastrram Vishram',
-    'Anemone Vinkel'
-  ]);
-  const [newCompanyName, setNewCompanyName] = useState('');
-  const [showAddCompany, setShowAddCompany] = useState(false);
-
   const categoryData = {
-    Women: {
-      subCategories: ["", "Kurtis", "Kurta Sets", "Tops", "Blazers", "Dresses", "Co-ord Sets", "Corset-tops", "Short-tops", "Shirts"],
-      sizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL']
+    "Vintage Wall Art": {
+      subCategories: ["", "Wall Art", "Retro Posters", "Bold Collages"]
     },
-    Men: {
-      subCategories: ["", "Shirts", "Sleeve Shirts", "Kurtas", "Co-ord Sets", "Vests", "Trousers", "Jackets"],
-      sizes: ['28', '30', '32', '34', '36', '38', '40', '42', '44', '46']
+    "Sculptural Lighting": {
+      subCategories: ["", "Provocative Lamps", "Gallery Art Lights"]
     },
-    "Handmade Toys": {
-      subCategories: ["", "Home Décor", "Bonthapally Toys", "Baskets", "Bags and Pouches", "Wall Decor"],
-      sizes: []
+    "Statement Furniture": {
+      subCategories: ["", "Upcycled Cabinets", "Unique Chairs", "Designer Tables", "Custom Shelving"]
     },
-    Kitchenware: {
-      subCategories: ["", "Brass Bowls", "Wooden Spoons"],
-      sizes: []
-    },
-    "Special Product": {
-      subCategories: ["", "Bags"],
-      sizes: []
+    "Mosaic & Mirror Art": {
+      subCategories: ["", "Reflective Displays", "Light Art", "Mosaic Pieces"]
     }
   };
 
-  const currentCategoryData = editedProduct ? (categoryData[editedProduct.category] || { subCategories: [], sizes: [] }) : { subCategories: [], sizes: [] };
-
-  const handleAddNewCompany = () => {
-    if (newCompanyName.trim() && !companies.includes(newCompanyName.trim())) {
-      const updatedCompanies = [...companies, newCompanyName.trim()].sort();
-      setCompanies(updatedCompanies);
-      setEditedProduct(prev => ({ ...prev, company: newCompanyName.trim() }));
-      setNewCompanyName('');
-      setShowAddCompany(false);
-      toast.success(`Company "${newCompanyName.trim()}" added successfully!`);
-    } else if (companies.includes(newCompanyName.trim())) {
-      toast.error('This company already exists!');
-    } else {
-      toast.error('Please enter a valid company name.');
-    }
-  };
+  const currentCategoryData = editedProduct ? (categoryData[editedProduct.category] || { subCategories: [] }) : { subCategories: []};
 
   const fetchList = async () => {
     setLoading(true);
@@ -248,9 +215,7 @@ const List = ({ token }) => {
       formData.append('price', editedProduct.price);
       formData.append('category', editedProduct.category);
       formData.append('subCategory', editedProduct.subCategory);
-      formData.append('company', editedProduct.company || 'Aharyas');
       formData.append('bestseller', editedProduct.bestseller);
-      formData.append('sizes', JSON.stringify(editedProduct.sizes || []));
 
       images.forEach((image, index) => {
         if (image) formData.append(`image${index + 1}`, image);
@@ -283,15 +248,6 @@ const List = ({ token }) => {
     }
   };
 
-  const toggleSize = (size) => {
-    setEditedProduct(prev => ({
-      ...prev,
-      sizes: prev.sizes?.includes(size)
-        ? prev.sizes.filter(s => s !== size)
-        : [...(prev.sizes || []), size]
-    }));
-  };
-
   const removeImage = (index) => {
     setImages(prev => prev.map((img, i) => i === index ? null : img));
   };
@@ -307,8 +263,6 @@ const List = ({ token }) => {
   const openEditModal = (product) => {
     setEditedProduct({
       ...product,
-      company: product.company || '',
-      sizes: product.sizes || []
     });
     setImages([null, null, null, null, null, null]);
     setIsEditing(true);
@@ -715,16 +669,6 @@ const List = ({ token }) => {
                           </div>
                         </div>
                       )}
-
-                      {/* Company Selection Status */}
-                      <div className="bg-gray-100 rounded-lg p-3">
-                        <div className="flex items-center gap-2 text-gray-700">
-                          <Building2 size={16} />
-                          <span className="text-sm font-medium">
-                            {editedProduct.company ? `Selected: ${editedProduct.company}` : 'Product will be listed as Aharyas by default'}
-                          </span>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
@@ -743,7 +687,6 @@ const List = ({ token }) => {
                             ...prev,
                             category: e.target.value,
                             subCategory: "",
-                            sizes: []
                           }))}
                           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-black transition-colors"
                         >
@@ -785,39 +728,6 @@ const List = ({ token }) => {
                       </div>
                     </div>
                   </div>
-
-                  {/* Sizes (if applicable) */}
-                  {currentCategoryData.sizes.length > 0 && (
-                    <div>
-                      <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                        <Package size={20} />
-                        Available Sizes
-                      </h3>
-                      <div className="flex flex-wrap gap-3 mb-4">
-                        {currentCategoryData.sizes.map((size) => (
-                          <button
-                            key={size}
-                            type="button"
-                            onClick={() => toggleSize(size)}
-                            className={`px-4 py-2 rounded-lg border-2 font-medium transition-all duration-200 ${editedProduct.sizes?.includes(size)
-                                ? 'bg-black text-white border-black'
-                                : 'bg-white text-gray-700 border-gray-300 hover:border-gray-400'
-                              }`}
-                          >
-                            {size}
-                          </button>
-                        ))}
-                      </div>
-                      {editedProduct.sizes?.length > 0 && (
-                        <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                          <div className="flex items-center gap-2 text-green-700">
-                            <CheckCircle2 size={16} />
-                            <span className="text-sm font-medium">{editedProduct.sizes.length} size{editedProduct.sizes.length !== 1 ? 's' : ''} selected</span>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  )}
 
                   {/* Bestseller */}
                   <div>

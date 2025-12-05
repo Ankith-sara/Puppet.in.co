@@ -31,6 +31,7 @@ import Wishlist from './pages/Wishlist';
 const App = () => {
   const location = useLocation();
   const hideNavAndFooter = location.pathname === '/login';
+  const hideChatIcon = location.pathname === '/aa-chatbot';
  
   return (
     <div>

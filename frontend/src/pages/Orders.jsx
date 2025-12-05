@@ -67,30 +67,30 @@ const Orders = () => {
   const getStatusIcon = (status) => {
     switch (status?.toLowerCase()) {
       case 'delivered':
-        return <CheckCircle size={16} className="text-green-600" />;
+        return <CheckCircle size={20} className="text-green-400" />;
       case 'shipped':
       case 'out for delivery':
-        return <Truck size={16} className="text-blue-600" />;
+        return <Truck size={20} className="text-cyan-400" />;
       case 'processing':
-        return <RefreshCw size={16} className="text-amber-600" />;
+        return <RefreshCw size={20} className="text-pink-400" />;
       default:
-        return <Package size={16} className="text-gray-500" />;
+        return <Package size={20} className="text-purple-400" />;
     }
   };
 
   const getStatusColor = (status) => {
     switch (status?.toLowerCase()) {
       case 'delivered':
-        return 'text-green-700 bg-green-50 border-green-200';
+        return 'text-green-400 bg-green-950 border-green-600';
       case 'shipped':
       case 'out for delivery':
-        return 'text-blue-700 bg-blue-50 border-blue-200';
+        return 'text-cyan-400 bg-cyan-950 border-cyan-600';
       case 'processing':
-        return 'text-amber-700 bg-amber-50 border-amber-200';
+        return 'text-pink-400 bg-pink-950 border-pink-600';
       case 'cancelled':
-        return 'text-red-700 bg-red-50 border-red-200';
+        return 'text-red-400 bg-red-950 border-red-600';
       default:
-        return 'text-gray-700 bg-gray-50 border-gray-200';
+        return 'text-purple-400 bg-purple-950 border-purple-600';
     }
   };
 
@@ -103,7 +103,6 @@ const Orders = () => {
       );
     }
 
-    // Sort orders
     if (sortOrder === 'newest') {
       filtered = filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
     } else if (sortOrder === 'oldest') {
@@ -115,35 +114,37 @@ const Orders = () => {
 
   const filteredOrders = getFilteredOrders();
 
-  const getOrderStats = () => {
-    const total = orderData.length;
-    const delivered = orderData.filter(item => item.status?.toLowerCase() === 'delivered').length;
-    const processing = orderData.filter(item =>
-      item.status?.toLowerCase() === 'processing' ||
-      item.status?.toLowerCase() === 'shipped' ||
-      item.status?.toLowerCase() === 'out for delivery'
-    ).length;
-    const totalSpent = orderData.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-
-    return { total, delivered, processing, totalSpent };
-  };
-
-  const stats = getOrderStats();
-
   if (loading) {
     return (
-      <div className="min-h-screen bg-white text-black mt-20">
-        <section className="py-12 px-4 sm:px-8 md:px-10 lg:px-20">
+      <div className="min-h-screen bg-black text-white pt-24 pb-12">
+        {/* Grid overlay */}
+        <div className="fixed inset-0 opacity-10 pointer-events-none" style={{
+          backgroundImage: `
+            linear-gradient(rgb(219 39 119) 1px, transparent 1px),
+            linear-gradient(90deg, rgb(219 39 119) 1px, transparent 1px)
+          `,
+          backgroundSize: '40px 40px',
+          transform: 'perspective(800px) rotateX(75deg) scale(2)',
+          transformOrigin: 'center bottom'
+        }}></div>
+
+        <section className="relative py-20 px-4 sm:px-8 md:px-10 lg:px-20">
           <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-8">
-              <div className="text-3xl mb-6">
-                <Title text1="ORDER" text2="HISTORY" />
-              </div>
+            <div className="text-center mb-12">
+              <h1 className="text-6xl md:text-8xl font-black mb-8 uppercase text-cyan-400" style={{
+                fontFamily: 'Impact, "Arial Black", sans-serif',
+                textShadow: '2px 2px 0px rgb(219 39 119)',
+                transform: 'skewY(-2deg)'
+              }}>
+                ORDER HISTORY
+              </h1>
             </div>
             <div className="flex items-center justify-center py-20">
               <div className="text-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-black mx-auto mb-4"></div>
-                <span className="text-gray-600 font-light">Loading your orders...</span>
+                <div className="animate-spin rounded-full h-16 w-16 border-4 border-pink-600 border-t-cyan-400 mx-auto mb-6"></div>
+                <span className="text-xl font-black uppercase text-gray-400" style={{
+                  fontFamily: 'Impact, sans-serif'
+                }}>LOADING YOUR ORDERS...</span>
               </div>
             </div>
           </div>
@@ -153,206 +154,282 @@ const Orders = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white text-black mt-20">
+    <div className="min-h-screen bg-black text-white pt-24 pb-12">
+      {/* Grid overlay */}
+      <div className="fixed inset-0 opacity-10 pointer-events-none" style={{
+        backgroundImage: `
+          linear-gradient(rgb(219 39 119) 1px, transparent 1px),
+          linear-gradient(90deg, rgb(219 39 119) 1px, transparent 1px)
+        `,
+        backgroundSize: '40px 40px',
+        transform: 'perspective(800px) rotateX(75deg) scale(2)',
+        transformOrigin: 'center bottom'
+      }}></div>
+
       {/* Header Section */}
-      <section className="py-12 px-4 sm:px-8 md:px-10 lg:px-20">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-8">
-            <div className="text-3xl mb-3
-            ">
-              <Title text1="ORDER" text2="HISTORY" />
-            </div>
-            {orderData.length > 0 && (
-              <p className="text-gray-500 font-light">
-                Track and manage your {orderData.length} order{orderData.length !== 1 ? 's' : ''}
-              </p>
-            )}
-          </div>
+      <section className="relative py-20 px-4 sm:px-8 md:px-10 lg:px-20">
+        <div className="max-w-7xl mx-auto text-center">
+          <h1 className="text-6xl md:text-8xl font-black mb-8 uppercase text-cyan-400" style={{
+            fontFamily: 'Impact, "Arial Black", sans-serif',
+            textShadow: '2px 2px 0px rgb(219 39 119)',
+            transform: 'skewY(-2deg)'
+          }}>
+            ORDER HISTORY
+          </h1>
+          
+          <div className="w-48 h-1 mx-auto mb-8 bg-gradient-to-r from-pink-600 via-cyan-600 to-purple-600"></div>
 
           {orderData.length > 0 && (
-            <>
-              {/* Filters and Sort */}
-              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-6 border-b border-gray-200">
-                <div className="flex flex-wrap gap-2">
-                  {[
-                    { key: 'all', label: 'All Orders' },
-                    { key: 'delivered', label: 'Delivered' }
-                  ].map(({ key, label }) => (
-                    <button
-                      key={key}
-                      onClick={() => setFilterStatus(key)}
-                      className={`px-4 py-2 text-sm font-light tracking-wide border transition-all duration-300 ${filterStatus === key
-                          ? 'bg-black text-white border-black'
-                          : 'bg-white text-gray-600 border-gray-300 hover:border-black hover:text-black'
-                        }`}
-                    >
-                      {label}
-                    </button>
-                  ))}
-                </div>
-
-                <div className="flex items-center gap-4">
-                  <span className="text-sm font-light text-gray-500 tracking-wide">SORT BY:</span>
-                  <select
-                    value={sortOrder}
-                    onChange={(e) => setSortOrder(e.target.value)}
-                    className="appearance-none border border-gray-300 bg-white px-4 py-2 pr-8 font-light tracking-wide focus:border-black focus:outline-none transition-colors"
-                  >
-                    <option value="newest">Newest First</option>
-                    <option value="oldest">Oldest First</option>
-                  </select>
-                </div>
-              </div>
-            </>
+            <p className="text-2xl md:text-3xl text-gray-400 font-black uppercase" style={{
+              fontFamily: 'Impact, sans-serif'
+            }}>
+              {orderData.length} ORDER{orderData.length !== 1 ? 'S' : ''} TRACKED
+            </p>
           )}
         </div>
       </section>
 
+      {/* Filters and Sort */}
+      {orderData.length > 0 && (
+        <section className="relative px-4 sm:px-8 md:px-10 lg:px-20 mb-12">
+          <div className="max-w-7xl mx-auto">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 p-6 bg-purple-950 border-2 border-pink-600">
+              <div className="flex flex-wrap gap-3">
+                {[
+                  { key: 'all', label: 'ALL ORDERS', color: 'pink' },
+                  { key: 'delivered', label: 'DELIVERED', color: 'cyan' },
+                  { key: 'processing', label: 'PROCESSING', color: 'purple' }
+                ].map(({ key, label, color }) => {
+                  const isActive = filterStatus === key;
+                  const colorMap = {
+                    pink: isActive ? 'bg-pink-600 text-white border-pink-600' : 'bg-transparent text-pink-400 border-pink-600 hover:bg-pink-600 hover:text-white',
+                    cyan: isActive ? 'bg-cyan-600 text-white border-cyan-600' : 'bg-transparent text-cyan-400 border-cyan-600 hover:bg-cyan-600 hover:text-white',
+                    purple: isActive ? 'bg-purple-600 text-white border-purple-600' : 'bg-transparent text-purple-400 border-purple-600 hover:bg-purple-600 hover:text-white'
+                  };
+                  
+                  return (
+                    <button
+                      key={key}
+                      onClick={() => setFilterStatus(key)}
+                      className={`px-6 py-3 text-sm font-black uppercase tracking-wider border-2 transition-all duration-300 ${colorMap[color]}`}
+                      style={{ fontFamily: 'Impact, sans-serif' }}
+                    >
+                      {label}
+                    </button>
+                  );
+                })}
+              </div>
+
+              <div className="flex items-center gap-4">
+                <span className="text-sm font-black text-gray-400 uppercase tracking-wider" style={{
+                  fontFamily: 'Impact, sans-serif'
+                }}>SORT:</span>
+                <select
+                  value={sortOrder}
+                  onChange={(e) => setSortOrder(e.target.value)}
+                  className="appearance-none border-2 border-cyan-600 bg-purple-950 text-cyan-400 px-6 py-3 pr-10 font-black uppercase tracking-wider focus:border-pink-600 focus:outline-none transition-colors"
+                  style={{ fontFamily: 'Impact, sans-serif' }}
+                >
+                  <option value="newest">NEWEST FIRST</option>
+                  <option value="oldest">OLDEST FIRST</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Orders Content */}
-      <section className="px-4 sm:px-8 md:px-10 lg:px-20 pb-20">
+      <section className="relative px-4 sm:px-8 md:px-10 lg:px-20 pb-20">
         <div className="max-w-7xl mx-auto">
           {orderData.length === 0 ? (
             // Empty State
-            <div className="flex flex-col items-center justify-center py-20 bg-white border border-gray-200 shadow-sm">
-              <div className="w-16 h-16 border-2 border-gray-300 rounded-full flex items-center justify-center mb-6">
-                <ShoppingBag size={32} className="text-gray-400" />
+            <div className="flex flex-col items-center justify-center py-20 bg-purple-950 border-2 border-pink-600">
+              <div className="w-24 h-24 border-2 border-cyan-600 flex items-center justify-center mb-8">
+                <ShoppingBag size={48} className="text-cyan-400" />
               </div>
               <div className="text-center max-w-md mb-8">
-                <h3 className="text-2xl font-medium mb-3 tracking-wide">NO ORDERS YET</h3>
-                <p className="text-gray-600 font-light leading-relaxed">
-                  Your order history is empty. Start exploring our amazing collection and place your first order.
+                <h3 className="text-4xl md:text-5xl font-black mb-6 uppercase text-pink-600" style={{
+                  fontFamily: 'Impact, sans-serif'
+                }}>
+                  NO ORDERS YET
+                </h3>
+                <div className="w-24 h-1 mx-auto mb-6 bg-gradient-to-r from-pink-600 to-cyan-600"></div>
+                <p className="text-lg text-gray-400 leading-relaxed">
+                  Your order history is empty. Time to make some bold choices!
                 </p>
               </div>
               <button
                 onClick={() => navigate('/shop/collection')}
-                className="px-8 py-3 bg-black text-white font-light tracking-wide hover:bg-gray-800 transition-all duration-300"
+                className="px-8 py-4 bg-gradient-to-r from-pink-600 to-purple-600 text-white font-black uppercase tracking-wider border-2 border-pink-600 hover:scale-105 transition-all duration-300"
+                style={{ fontFamily: 'Impact, sans-serif' }}
               >
                 BROWSE PRODUCTS
               </button>
             </div>
           ) : (
             // Orders List
-            <div className="space-y-6">
-              {filteredOrders.map((item, index) => (
-                <div key={index} className="bg-white border border-gray-200 shadow-sm hover:shadow-lg transition-all duration-300 group">
-                  {/* Order Header */}
-                  <div className="p-6 border-b border-gray-100 bg-gray-50">
-                    <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
-                      <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-                        <div className="flex items-center gap-2">
-                          <Hash size={14} className="text-gray-400" />
-                          <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">ORDER ID:</span>
-                          <span className="font-medium text-black tracking-wide">{item.orderId}</span>
+            <div className="space-y-8">
+              {filteredOrders.map((item, index) => {
+                const statusColors = {
+                  delivered: 'pink',
+                  shipped: 'cyan',
+                  processing: 'purple'
+                };
+                const mainColor = statusColors[item.status?.toLowerCase()] || 'pink';
+                const borderColor = mainColor === 'pink' ? 'border-pink-600' : mainColor === 'cyan' ? 'border-cyan-600' : 'border-purple-600';
+                
+                return (
+                  <div key={index} className={`bg-purple-950 border-2 ${borderColor} hover:scale-[1.02] transition-all duration-300 group`}>
+                    {/* Order Header */}
+                    <div className="p-6 border-b-2 border-pink-900 bg-black bg-opacity-40">
+                      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-4 flex-wrap">
+                          <div className="flex items-center gap-2">
+                            <Hash size={16} className="text-pink-400" />
+                            <span className="text-xs font-black text-gray-400 uppercase tracking-wider" style={{
+                              fontFamily: 'Impact, sans-serif'
+                            }}>ORDER:</span>
+                            <span className="font-black text-cyan-400 tracking-wide" style={{
+                              fontFamily: 'Impact, sans-serif'
+                            }}>{item.orderId}</span>
+                          </div>
+
+                          <div className="flex items-center gap-2">
+                            <Calendar size={16} className="text-cyan-400" />
+                            <span className="text-sm text-gray-400 font-bold">{formatDate(item.date)}</span>
+                          </div>
+
+                          <div className="flex items-center gap-2">
+                            <CreditCard size={16} className="text-purple-400" />
+                            <span className="text-sm text-gray-400 font-bold uppercase">{item.paymentMethod}</span>
+                          </div>
                         </div>
 
-                        <div className="flex items-center gap-2">
-                          <Calendar size={14} className="text-gray-400" />
-                          <span className="text-sm text-gray-600 font-light">{formatDate(item.date)}</span>
-                        </div>
-
-                        <div className="flex items-center gap-2">
-                          <CreditCard size={14} className="text-gray-400" />
-                          <span className="text-sm text-gray-600 font-light">{item.paymentMethod}</span>
+                        <div className="flex items-center gap-3">
+                          <div className={`flex items-center gap-2 px-4 py-2 border-2 ${getStatusColor(item.status)}`}>
+                            {getStatusIcon(item.status)}
+                            <span className="text-sm font-black uppercase tracking-wider" style={{
+                              fontFamily: 'Impact, sans-serif'
+                            }}>
+                              {item.status || 'Processing'}
+                            </span>
+                          </div>
                         </div>
                       </div>
+                    </div>
 
-                      <div className="flex items-center gap-3">
-                        <div className="flex items-center gap-2">
-                          {getStatusIcon(item.status)}
-                          <span className={`px-3 py-1 border text-xs font-medium uppercase tracking-wider ${getStatusColor(item.status)}`}>
-                            {item.status || 'Processing'}
-                          </span>
+                    {/* Order Content */}
+                    <div className="p-6">
+                      <div className="flex flex-col lg:flex-row gap-6">
+                        {/* Product Image */}
+                        <div className="flex-shrink-0">
+                          <div className="w-full h-40 sm:w-48 sm:h-48 lg:w-56 lg:h-56 border-2 border-cyan-600 overflow-hidden group-hover:border-pink-600 transition-colors">
+                            <img
+                              className="w-full h-full object-contain bg-black"
+                              src={item.image || item.images?.[0]}
+                              alt={item.name}
+                              onError={(e) => {
+                                e.target.src = '/api/placeholder/224/224';
+                              }}
+                            />
+                          </div>
+                        </div>
+
+                        {/* Order Details */}
+                        <div className="flex-grow flex flex-col lg:flex-row justify-between gap-6">
+                          <div className="flex-grow space-y-6">
+                            <div>
+                              <h3 className="font-black text-2xl md:text-3xl text-cyan-400 mb-3 uppercase group-hover:text-pink-400 transition-colors" style={{
+                                fontFamily: 'Impact, sans-serif'
+                              }}>
+                                {item.name}
+                              </h3>
+                              <div className="w-16 h-1 bg-gradient-to-r from-pink-600 to-cyan-600"></div>
+                            </div>
+
+                            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+                              <div className="space-y-2">
+                                <span className="block text-xs font-black text-gray-500 uppercase tracking-wider" style={{
+                                  fontFamily: 'Impact, sans-serif'
+                                }}>
+                                  PRICE
+                                </span>
+                                <span className="font-black text-xl text-pink-400" style={{
+                                  fontFamily: 'Impact, sans-serif'
+                                }}>
+                                  {currency}{item.price}
+                                </span>
+                              </div>
+
+                              <div className="space-y-2">
+                                <span className="block text-xs font-black text-gray-500 uppercase tracking-wider" style={{
+                                  fontFamily: 'Impact, sans-serif'
+                                }}>
+                                  QUANTITY
+                                </span>
+                                <span className="font-black text-xl text-cyan-400" style={{
+                                  fontFamily: 'Impact, sans-serif'
+                                }}>{item.quantity}</span>
+                              </div>
+
+                              <div className="space-y-2">
+                                <span className="block text-xs font-black text-gray-500 uppercase tracking-wider" style={{
+                                  fontFamily: 'Impact, sans-serif'
+                                }}>
+                                  SIZE
+                                </span>
+                                <span className="font-black text-xl text-purple-400" style={{
+                                  fontFamily: 'Impact, sans-serif'
+                                }}>{item.size}</span>
+                              </div>
+
+                              <div className="space-y-2">
+                                <span className="block text-xs font-black text-gray-500 uppercase tracking-wider" style={{
+                                  fontFamily: 'Impact, sans-serif'
+                                }}>
+                                  TOTAL
+                                </span>
+                                <span className="font-black text-2xl text-pink-400" style={{
+                                  fontFamily: 'Impact, sans-serif'
+                                }}>
+                                  {currency}{(item.price * item.quantity).toFixed(2)}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Action Button */}
+                          <div className="flex items-center lg:items-start">
+                            <button
+                              className="flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-cyan-600 to-purple-600 text-white font-black uppercase tracking-wider border-2 border-cyan-600 hover:scale-105 transition-all duration-300 w-full lg:w-auto"
+                              onClick={() => navigate(`/trackorder/${item.orderId}`)}
+                              style={{ fontFamily: 'Impact, sans-serif' }}
+                            >
+                              <Truck size={20} />
+                              <span>TRACK</span>
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-
-                  {/* Order Content */}
-                  <div className="p-6">
-                    <div className="flex flex-col lg:flex-row gap-2">
-                      {/* Product Image */}
-                      <div className="flex-shrink-0">
-                        <div className="w-full h-24 sm:w-32 sm:h-32 lg:w-40 lg:h-40">
-                          <img
-                            className="w-full h-full object-contain"
-                            src={item.image || item.images?.[0]}
-                            alt={item.name}
-                            onError={(e) => {
-                              e.target.src = '/api/placeholder/160/160';
-                            }}
-                          />
-                        </div>
-                      </div>
-
-                      {/* Order Details */}
-                      <div className="flex-grow flex flex-col lg:flex-row justify-between gap-6">
-                        <div className="flex-grow space-y-4">
-                          <div>
-                            <h3 className="font-medium text-xl text-black mb-2 tracking-wide group-hover:text-gray-700 transition-colors">
-                              {item.name}
-                            </h3>
-                          </div>
-
-                          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                            <div className="space-y-1">
-                              <span className="block text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                PRICE
-                              </span>
-                              <span className="font-medium text-black">
-                                {currency}{item.price}
-                              </span>
-                            </div>
-
-                            <div className="space-y-1">
-                              <span className="block text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                QUANTITY
-                              </span>
-                              <span className="font-medium text-black">{item.quantity}</span>
-                            </div>
-
-                            <div className="space-y-1">
-                              <span className="block text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                SIZE
-                              </span>
-                              <span className="font-medium text-black">{item.size}</span>
-                            </div>
-
-                            <div className="space-y-1">
-                              <span className="block text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                TOTAL
-                              </span>
-                              <span className="font-medium text-black text-lg">
-                                {currency}{(item.price * item.quantity).toFixed(2)}
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Action Buttons */}
-                        <div className="flex items-center gap-3 w-full lg:w-auto lg:min-w-[200px]">
-                          <button
-                            className="flex items-center justify-center gap-2 px-6 py-3 bg-black text-white font-light tracking-wide hover:bg-gray-800 transition-all duration-300"
-                            onClick={() => navigate(`/trackorder/${item.orderId}`)}
-                          >
-                            <Truck size={16} />
-                            <span>TRACK ORDER</span>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
 
               {/* Continue Shopping Section */}
-              <div className="mt-12 bg-gray-50 border border-gray-200 p-8 text-center">
-                <h3 className="text-2xl font-medium text-black mb-3 tracking-wide">WANT TO ORDER MORE?</h3>
-                <p className="text-gray-600 font-light leading-relaxed mb-6 max-w-md mx-auto">
-                  Discover new arrivals and trending products in our carefully curated collection
+              <div className="mt-16 bg-purple-950 border-2 border-pink-600 p-12 text-center">
+                <h3 className="text-4xl md:text-5xl font-black text-pink-600 mb-4 uppercase" style={{
+                  fontFamily: 'Impact, sans-serif'
+                }}>WANT MORE?</h3>
+                <div className="w-24 h-1 mx-auto mb-6 bg-gradient-to-r from-pink-600 to-cyan-600"></div>
+                <p className="text-lg text-gray-400 leading-relaxed mb-8 max-w-md mx-auto">
+                  Discover more bold pieces that make statements
                 </p>
                 <button
                   onClick={() => navigate('/shop/collection')}
-                  className="inline-flex items-center gap-2 px-8 py-3 bg-black text-white font-light tracking-wide hover:bg-gray-800 transition-all duration-300"
+                  className="inline-flex items-center gap-3 px-10 py-4 bg-gradient-to-r from-pink-600 to-purple-600 text-white font-black uppercase tracking-wider border-2 border-pink-600 hover:scale-105 transition-all duration-300"
+                  style={{ fontFamily: 'Impact, sans-serif' }}
                 >
                   <span>CONTINUE SHOPPING</span>
                 </button>
@@ -361,6 +438,9 @@ const Orders = () => {
           )}
         </div>
       </section>
+
+      {/* Bottom border */}
+      <div className="h-2 border-t-2 border-pink-900"></div>
     </div>
   );
 };

@@ -21,104 +21,229 @@ const sendOtpMail = async (email, otp, role = 'user') => {
   }
 
   const isAdmin = role === 'admin';
-  const portalType = isAdmin ? 'Admin Portal' : 'Customer Account';
+  const portalType = isAdmin ? 'ADMIN PORTAL' : 'CUSTOMER ACCESS';
   const registrationType = isAdmin ? 'admin registration' : 'account registration';
-  const messageType = isAdmin ? 'admin account verification' : 'account verification';
 
   const mailOptions = {
-    from: `"Aharyas" <${process.env.EMAIL_USER}>`,
+    from: `"PUPPET" <${process.env.EMAIL_USER}>`,
     to: email,
-    subject: `🔐 Your Verification Code - Aharyas ${isAdmin ? 'Admin' : 'Account'}`,
+    subject: `${isAdmin ? 'ADMIN ' : ' '}VERIFICATION CODE – PUPPET`,
     html: `
       <!DOCTYPE html>
-      <html>
+      <html lang="en">
       <head>
           <meta charset="UTF-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>Email Verification</title>
+          <title>Email Verification - PUPPET</title>
+          <style>
+              @import url('https://fonts.googleapis.com/css2?family=Impact&display=swap');
+          </style>
       </head>
-      <body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8f9fa;">
-          <div style="max-width: 650px; margin: 0 auto; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-              
-              <!-- Header -->
-              <div style="background: linear-gradient(135deg, #8B4513 0%, #D2B48C 100%); padding: 30px 20px; text-align: center;">
-                  <h1 style="color: white; margin: 0; font-size: 28px; font-weight: 300;">AHARYAS</h1>
-                  <p style="color: rgba(255,255,255,0.9); margin: 8px 0 0 0; font-size: 14px;">${portalType} Access</p>
-              </div>
+      <body style="margin: 0; padding: 0; font-family: 'Arial Black', Impact, sans-serif; background: #000000; color: #ffffff;">
+          <table cellpadding="0" cellspacing="0" border="0" width="100%" style="background: #000000; min-height: 100vh; position: relative;">
+              <!-- Grid Background Effect -->
+              <tr>
+                  <td style="position: relative;">
+                      <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image: repeating-linear-gradient(0deg, rgba(219, 39, 119, 0.1) 0px, transparent 1px, transparent 40px), repeating-linear-gradient(90deg, rgba(219, 39, 119, 0.1) 0px, transparent 1px, transparent 40px); opacity: 0.3; pointer-events: none;"></div>
+                  </td>
+              </tr>
+              <tr>
+                  <td align="center" style="padding: 40px 20px; position: relative; z-index: 1;">
+                      <table cellpadding="0" cellspacing="0" border="0" width="600" style="max-width: 600px; background: linear-gradient(135deg, #1a0a2e 0%, #0f0520 100%); box-shadow: 0 0 40px rgba(219, 39, 119, 0.3), 0 0 80px rgba(6, 182, 212, 0.2); border: 2px solid #db2777;">
+                          
+                          <!-- Top Neon Border -->
+                          <tr>
+                              <td style="height: 4px; background: linear-gradient(90deg, #06b6d4 0%, #db2777 50%, #a855f7 100%);"></td>
+                          </tr>
 
-              <!-- Main Content -->
-              <div style="padding: 40px 30px; text-align: center;">
-                  <h2 style="color: #333; margin: 0 0 15px 0; font-size: 24px;">Email Verification Required</h2>
-                  <p style="color: #666; margin: 0 0 30px 0; font-size: 16px; line-height: 1.5;">
-                      We've sent you a verification code to complete your ${registrationType}. 
-                      Please enter the code below to verify your email address.
-                  </p>
+                          <!-- Header with Glitch Effect -->
+                          <tr>
+                              <td style="padding: 40px 40px 30px; text-align: center; background: linear-gradient(135deg, #000000 0%, #1a0a2e 100%); border-bottom: 2px solid #db2777; position: relative;">
+                                  <h1 style="margin: 0 0 12px 0; font-family: Impact, 'Arial Black', sans-serif; font-size: 56px; font-weight: 900; letter-spacing: 8px; color: #06b6d4; text-transform: uppercase; text-shadow: 2px 2px 0px #db2777, 4px 4px 0px rgba(219, 39, 119, 0.5); transform: skewY(-2deg);">PUPPET</h1>
+                                  <div style="width: 120px; height: 2px; background: linear-gradient(90deg, #db2777, #06b6d4, #a855f7); margin: 0 auto 16px;"></div>
+                                  <p style="margin: 0; font-family: Impact, sans-serif; font-size: 12px; letter-spacing: 4px; color: #a855f7; text-transform: uppercase; font-weight: 900;">${portalType}</p>
+                              </td>
+                          </tr>
 
-                  <!-- OTP Display -->
-                  <div style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 12px; padding: 30px; margin: 30px 0; border: 2px dashed #dee2e6;">
-                      <p style="color: #666; margin: 0 0 15px 0; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">Your Verification Code</p>
-                      <div style="font-size: 36px; font-weight: bold; color: #333; letter-spacing: 8px; font-family: 'Courier New', monospace; margin: 10px 0; text-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                          ${otp}
-                      </div>
-                      <p style="color: #999; margin: 15px 0 0 0; font-size: 12px;">
-                          This code will expire in 5 minutes
-                      </p>
-                  </div>
+                          ${isAdmin ? `
+                          <!-- Admin Alert Banner -->
+                          <tr>
+                              <td style="background: linear-gradient(135deg, #db2777 0%, #be185d 100%); padding: 16px 32px; text-align: center; border-top: 1px solid #f472b6; border-bottom: 1px solid #be185d;">
+                                  <p style="margin: 0; font-family: Impact, sans-serif; font-size: 12px; color: #ffffff; font-weight: 900; letter-spacing: 3px; text-transform: uppercase; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">ADMIN ACCESS VERIFICATION</p>
+                              </td>
+                          </tr>
+                          ` : ''}
 
-                  <!-- Security Notice -->
-                  <div style="background: #fff8e1; border-radius: 8px; padding: 20px; margin: 25px 0; text-align: left; border-left: 4px solid #ffb74d;">
-                      <h4 style="margin: 0 0 10px 0; color: #f57c00; font-size: 16px;">🛡️ Security Notice</h4>
-                      <ul style="color: #666; margin: 0; padding-left: 20px; font-size: 14px; line-height: 1.6;">
-                          <li>Never share this code with anyone</li>
-                          <li>Our team will never ask for your verification code</li>
-                          <li>This code is valid for 5 minutes only</li>
-                          <li>If you didn't request this, please ignore this email</li>
-                      </ul>
-                  </div>
+                          <!-- Main Content -->
+                          <tr>
+                              <td style="padding: 40px 40px 30px; text-align: center; background: linear-gradient(135deg, #1a0a2e 0%, #0f0520 100%);">
+                                  <h2 style="margin: 0 0 20px 0; font-family: Impact, sans-serif; font-size: 36px; font-weight: 900; letter-spacing: 2px; color: #06b6d4; text-transform: uppercase; text-shadow: 1px 1px 0px #db2777;">EMAIL VERIFICATION</h2>
+                                  <p style="margin: 0; font-family: Arial, sans-serif; font-size: 14px; color: #a3a3a3; font-weight: 700; line-height: 1.8; max-width: 440px; margin: 0 auto; text-transform: uppercase; letter-spacing: 1px;">
+                                      WE'VE SENT YOU A VERIFICATION CODE TO COMPLETE YOUR ${registrationType.toUpperCase()}. ENTER THE CODE BELOW TO VERIFY.
+                                  </p>
+                              </td>
+                          </tr>
 
-                  <!-- Instructions -->
-                  <div style="background: ${isAdmin ? '#fff3e0' : '#e8f5e8'}; border-radius: 8px; padding: 20px; margin: 25px 0;">
-                      <h4 style="margin: 0 0 10px 0; color: ${isAdmin ? '#f57c00' : '#2e7d32'}; font-size: 16px;">📝 What to do next:</h4>
-                      <p style="color: ${isAdmin ? '#ef6c00' : '#388e3c'}; margin: 0; font-size: 14px; line-height: 1.6;">
-                          1. Return to the ${isAdmin ? 'admin ' : ''}registration page<br>
-                          2. Enter the 6-digit code above<br>
-                          3. Click "Verify & Create Account" to complete your registration
-                      </p>
-                  </div>
+                          <!-- OTP Display Card -->
+                          <tr>
+                              <td style="padding: 0 40px 30px;">
+                                  <table cellpadding="0" cellspacing="0" border="0" width="100%" style="background: linear-gradient(135deg, #000000 0%, #1a0a2e 100%); border: 3px solid #06b6d4; box-shadow: 0 0 20px rgba(6, 182, 212, 0.5), inset 0 0 20px rgba(6, 182, 212, 0.1);">
+                                      <tr>
+                                          <td style="padding: 40px 32px; text-align: center;">
+                                              <p style="margin: 0 0 24px 0; font-family: Impact, sans-serif; font-size: 11px; color: #a855f7; font-weight: 900; letter-spacing: 3px; text-transform: uppercase;">YOUR VERIFICATION CODE</p>
+                                              
+                                              <!-- OTP Code with Neon Effect -->
+                                              <div style="font-family: 'Courier New', Courier, monospace; font-size: 52px; font-weight: 900; color: #06b6d4; letter-spacing: 16px; margin: 0 0 24px 0; text-shadow: 0 0 10px #06b6d4, 0 0 20px #06b6d4, 0 0 30px #db2777, 2px 2px 0px #db2777;">
+                                                  ${otp}
+                                              </div>
+                                              
+                                              <div style="display: inline-block; background: linear-gradient(135deg, #db2777 0%, #be185d 100%); border: 2px solid #f472b6; padding: 12px 24px; box-shadow: 0 4px 12px rgba(219, 39, 119, 0.4);">
+                                                  <p style="margin: 0; font-family: Impact, sans-serif; font-size: 11px; color: #ffffff; font-weight: 900; letter-spacing: 2px; text-transform: uppercase;">
+                                                       EXPIRES IN <strong style="color: #ffffff; font-weight: 900;">5 MINUTES</strong>
+                                                  </p>
+                                              </div>
+                                          </td>
+                                      </tr>
+                                  </table>
+                              </td>
+                          </tr>
 
-                  ${isAdmin ? `
-                  <!-- Admin Specific Notice -->
-                  <div style="background: #ffebee; border-radius: 8px; padding: 20px; margin: 25px 0; text-align: left; border-left: 4px solid #f44336;">
-                      <h4 style="margin: 0 0 10px 0; color: #c62828; font-size: 16px;">⚠️ Admin Access Notice</h4>
-                      <p style="color: #d32f2f; margin: 0; font-size: 14px; line-height: 1.6;">
-                          This verification is for administrative access to the Aharyas platform. 
-                          Only authorized personnel should complete this verification process.
-                      </p>
-                  </div>
-                  ` : ''}
+                          <!-- Instructions -->
+                          <tr>
+                              <td style="padding: 0 40px 30px;">
+                                  <table cellpadding="0" cellspacing="0" border="0" width="100%" style="border: 2px solid #a855f7; background: linear-gradient(135deg, #1a0a2e 0%, #000000 100%); box-shadow: 0 0 15px rgba(168, 85, 247, 0.3);">
+                                      <tr>
+                                          <td style="padding: 20px 24px; background: linear-gradient(135deg, #a855f7 0%, #7c3aed 100%); border-bottom: 2px solid #c084fc;">
+                                              <h3 style="margin: 0; font-family: Impact, sans-serif; font-size: 12px; font-weight: 900; letter-spacing: 3px; text-transform: uppercase; color: #ffffff; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">NEXT STEPS</h3>
+                                          </td>
+                                      </tr>
+                                      <tr>
+                                          <td style="padding: 24px;">
+                                              <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                                                  <tr>
+                                                      <td style="padding: 10px 0; font-family: Arial, sans-serif; font-size: 13px; color: #d4d4d4; font-weight: 700; line-height: 1.8; text-transform: uppercase; letter-spacing: 1px;">
+                                                          <strong style="color: #06b6d4; font-weight: 900; font-size: 16px;">1.</strong> RETURN TO THE ${isAdmin ? 'ADMIN ' : ''}REGISTRATION PAGE
+                                                      </td>
+                                                  </tr>
+                                                  <tr>
+                                                      <td style="height: 2px; background: linear-gradient(90deg, #db2777, transparent);"></td>
+                                                  </tr>
+                                                  <tr>
+                                                      <td style="padding: 10px 0; font-family: Arial, sans-serif; font-size: 13px; color: #d4d4d4; font-weight: 700; line-height: 1.8; text-transform: uppercase; letter-spacing: 1px;">
+                                                          <strong style="color: #06b6d4; font-weight: 900; font-size: 16px;">2.</strong> ENTER THE 6-DIGIT CODE SHOWN ABOVE
+                                                      </td>
+                                                  </tr>
+                                                  <tr>
+                                                      <td style="height: 2px; background: linear-gradient(90deg, #db2777, transparent);"></td>
+                                                  </tr>
+                                                  <tr>
+                                                      <td style="padding: 10px 0; font-family: Arial, sans-serif; font-size: 13px; color: #d4d4d4; font-weight: 700; line-height: 1.8; text-transform: uppercase; letter-spacing: 1px;">
+                                                          <strong style="color: #06b6d4; font-weight: 900; font-size: 16px;">3.</strong> CLICK "VERIFY & CREATE ACCOUNT"
+                                                      </td>
+                                                  </tr>
+                                              </table>
+                                          </td>
+                                      </tr>
+                                  </table>
+                              </td>
+                          </tr>
 
-                  <!-- Trouble with verification -->
-                  <div style="margin-top: 30px; padding: 20px; background: #f8f9fa; border-radius: 8px;">
-                      <h4 style="margin: 0 0 10px 0; color: #333; font-size: 16px;">Having trouble?</h4>
-                      <p style="color: #666; margin: 0; font-size: 14px; line-height: 1.6;">
-                          • Make sure you're entering the code exactly as shown<br>
-                          • Check if the code has expired (valid for 5 minutes)<br>
-                          • Try requesting a new verification code<br>
-                          • Contact support if the issue persists
-                      </p>
-                  </div>
-              </div>
+                          ${isAdmin ? `
+                          <!-- Admin Notice -->
+                          <tr>
+                              <td style="padding: 0 40px 30px;">
+                                  <table cellpadding="0" cellspacing="0" border="0" width="100%" style="background: linear-gradient(135deg, #450a0a 0%, #7f1d1d 100%); border: 2px solid #dc2626; border-left: 6px solid #dc2626; box-shadow: 0 0 20px rgba(220, 38, 38, 0.4);">
+                                      <tr>
+                                          <td style="padding: 20px 24px;">
+                                              <h4 style="margin: 0 0 12px 0; font-family: Impact, sans-serif; font-size: 13px; font-weight: 900; letter-spacing: 2px; color: #fca5a5; text-transform: uppercase; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">ADMIN ACCESS NOTICE</h4>
+                                              <p style="margin: 0; font-family: Arial, sans-serif; font-size: 13px; color: #fecaca; font-weight: 700; line-height: 1.7; text-transform: uppercase; letter-spacing: 0.5px;">
+                                                  THIS VERIFICATION IS FOR ADMINISTRATIVE ACCESS. ONLY AUTHORIZED PERSONNEL SHOULD COMPLETE THIS PROCESS.
+                                              </p>
+                                          </td>
+                                      </tr>
+                                  </table>
+                              </td>
+                          </tr>
+                          ` : ''}
 
-              <!-- Footer -->
-              <div style="background: #f8f9fa; padding: 25px 20px; text-align: center; border-top: 1px solid #eee;">
-                  <p style="margin: 0 0 10px 0; color: #666; font-size: 14px;">
-                      This is an automated message for ${messageType}
-                  </p>
-                  <p style="margin: 0; color: #999; font-size: 12px;">
-                      Need help? Contact us at <a href="mailto:support@aharyas.com" style="color: #667eea; text-decoration: none;">support@aharyas.com</a>
-                  </p>
-              </div>
-          </div>
+                          <!-- Security Notice -->
+                          <tr>
+                              <td style="padding: 0 40px 30px;">
+                                  <table cellpadding="0" cellspacing="0" border="0" width="100%" style="background: linear-gradient(135deg, #451a03 0%, #78350f 100%); border: 2px solid #d97706; border-left: 6px solid #f59e0b; box-shadow: 0 0 20px rgba(217, 119, 6, 0.4);">
+                                      <tr>
+                                          <td style="padding: 20px 24px;">
+                                              <h4 style="margin: 0 0 16px 0; font-family: Impact, sans-serif; font-size: 13px; font-weight: 900; letter-spacing: 2px; color: #fcd34d; text-transform: uppercase; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">SECURITY NOTICE</h4>
+                                              <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                                                  <tr>
+                                                      <td style="padding: 6px 0; font-family: Arial, sans-serif; font-size: 12px; color: #fde68a; font-weight: 700; line-height: 1.7; text-transform: uppercase; letter-spacing: 0.5px;">
+                                                          • NEVER SHARE THIS CODE
+                                                      </td>
+                                                  </tr>
+                                                  <tr>
+                                                      <td style="padding: 6px 0; font-family: Arial, sans-serif; font-size: 12px; color: #fde68a; font-weight: 700; line-height: 1.7; text-transform: uppercase; letter-spacing: 0.5px;">
+                                                          • WE'LL NEVER ASK FOR YOUR CODE
+                                                      </td>
+                                                  </tr>
+                                                  <tr>
+                                                      <td style="padding: 6px 0; font-family: Arial, sans-serif; font-size: 12px; color: #fde68a; font-weight: 700; line-height: 1.7; text-transform: uppercase; letter-spacing: 0.5px;">
+                                                          • VALID FOR 5 MINUTES ONLY
+                                                      </td>
+                                                  </tr>
+                                                  <tr>
+                                                      <td style="padding: 6px 0; font-family: Arial, sans-serif; font-size: 12px; color: #fde68a; font-weight: 700; line-height: 1.7; text-transform: uppercase; letter-spacing: 0.5px;">
+                                                          • DIDN'T REQUEST? IGNORE THIS
+                                                      </td>
+                                                  </tr>
+                                              </table>
+                                          </td>
+                                      </tr>
+                                  </table>
+                              </td>
+                          </tr>
+
+                          <!-- Help Section -->
+                          <tr>
+                              <td style="padding: 0 40px 40px;">
+                                  <table cellpadding="0" cellspacing="0" border="0" width="100%" style="background: linear-gradient(135deg, #000000 0%, #1a0a2e 100%); border: 2px solid #06b6d4; box-shadow: 0 0 15px rgba(6, 182, 212, 0.3);">
+                                      <tr>
+                                          <td style="padding: 24px; text-align: center;">
+                                              <h4 style="margin: 0 0 12px 0; font-family: Impact, sans-serif; font-size: 14px; font-weight: 900; color: #06b6d4; text-transform: uppercase; letter-spacing: 2px;">HAVING TROUBLE?</h4>
+                                              <p style="margin: 0; font-family: Arial, sans-serif; font-size: 12px; color: #a3a3a3; font-weight: 700; line-height: 1.8; text-transform: uppercase; letter-spacing: 0.5px;">
+                                                  CHECK CODE CAREFULLY • VERIFY NOT EXPIRED • REQUEST NEW CODE • CONTACT SUPPORT
+                                              </p>
+                                          </td>
+                                      </tr>
+                                  </table>
+                              </td>
+                          </tr>
+
+                          <!-- Footer -->
+                          <tr>
+                              <td style="padding: 30px 40px; text-align: center; background: #000000; border-top: 2px solid #db2777;">
+                                  <p style="margin: 0 0 8px 0; font-family: Impact, sans-serif; font-size: 11px; color: #a3a3a3; font-weight: 900; letter-spacing: 2px; text-transform: uppercase;">
+                                      AUTOMATED VERIFICATION EMAIL
+                                  </p>
+                                  <p style="margin: 0 0 20px 0; font-family: Arial, sans-serif; font-size: 12px; color: #a3a3a3; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">
+                                      NEED HELP? <a href="mailto:dotkpuppet@gmail.com" style="color: #06b6d4; text-decoration: none; font-weight: 900; text-shadow: 0 0 10px rgba(6, 182, 212, 0.5);">dotkpuppet@gmail.com</a>
+                                  </p>
+                                  <div style="margin: 20px 0 0 0; padding-top: 20px; border-top: 1px solid #db2777;">
+                                      <p style="margin: 0; font-family: Impact, sans-serif; font-size: 10px; color: #737373; font-weight: 900; line-height: 1.6; letter-spacing: 2px; text-transform: uppercase;">
+                                          © ${new Date().getFullYear()} PUPPET. ALL RIGHTS RESERVED.<br>
+                                          <span style="color: #a855f7;">PRESERVING HERITAGE, ONE THREAD AT A TIME.</span>
+                                      </p>
+                                  </div>
+                              </td>
+                          </tr>
+
+                          <!-- Bottom Neon Border -->
+                          <tr>
+                              <td style="height: 4px; background: linear-gradient(90deg, #a855f7 0%, #db2777 50%, #06b6d4 100%);"></td>
+                          </tr>
+
+                      </table>
+                  </td>
+              </tr>
+          </table>
       </body>
       </html>
     `,

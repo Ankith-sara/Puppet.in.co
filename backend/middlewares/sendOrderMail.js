@@ -20,15 +20,13 @@ const sendOrderMail = async (email, subject, text, html) => {
         console.error('Missing email or subject for order mail');
         return false;
     }
-
     const mailOptions = {
-        from: `"Aharyas" <${process.env.EMAIL_USER}>`,
+        from: `"PUPPET" <${process.env.EMAIL_USER}>`,
         to: email,
         subject,
         text,
         html,
     };
-
     try {
         const info = await transporter.sendMail(mailOptions);
         console.log(`Order email sent successfully to ${email}:`, info.messageId);
@@ -39,7 +37,6 @@ const sendOrderMail = async (email, subject, text, html) => {
     }
 };
 
-// Helper function to format date
 const formatDate = (timestamp) => {
     return new Date(timestamp).toLocaleDateString('en-IN', {
         year: 'numeric',
@@ -50,14 +47,13 @@ const formatDate = (timestamp) => {
     });
 };
 
-// Helper function to get payment status badge
 const getPaymentBadge = (paymentMethod, isPaid) => {
     if (paymentMethod === 'COD') {
-        return '<span style="background: #ff9800; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: bold;">Cash on Delivery</span>';
+        return '<span style="display: inline-block; background: linear-gradient(135deg, #a855f7, #7c3aed); color: #ffffff; padding: 10px 20px; font-family: Impact, sans-serif; font-size: 10px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; border: 2px solid #c084fc; box-shadow: 0 0 15px rgba(168, 85, 247, 0.6); text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">💵 CASH ON DELIVERY</span>';
     }
     return isPaid ?
-        '<span style="background: #4CAF50; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: bold;">Paid Online</span>' :
-        '<span style="background: #f44336; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: bold;">Payment Pending</span>';
+        '<span style="display: inline-block; background: linear-gradient(135deg, #10b981, #059669); color: #ffffff; padding: 10px 20px; font-family: Impact, sans-serif; font-size: 10px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; border: 2px solid #34d399; box-shadow: 0 0 15px rgba(16, 185, 129, 0.6); text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">✓ PAID</span>' :
+        '<span style="display: inline-block; background: linear-gradient(135deg, #ef4444, #dc2626); color: #ffffff; padding: 10px 20px; font-family: Impact, sans-serif; font-size: 10px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; border: 2px solid #f87171; box-shadow: 0 0 15px rgba(239, 68, 68, 0.6); text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">⏳ PENDING</span>';
 };
 
 // Professional function to send both customer and admin emails
@@ -65,7 +61,6 @@ const sendOrderEmails = async (orderData, user) => {
     try {
         const { _id: orderId, amount, items, address, paymentMethod, payment, date } = orderData;
 
-        // Validate required data
         if (!user || !user.email || !user.name) {
             console.error('User data is incomplete:', user);
             return false;
@@ -78,256 +73,243 @@ const sendOrderEmails = async (orderData, user) => {
 
         console.log(`Starting email send for order ${orderId} to ${user.email}`);
 
-        // Find product owner (admin) for the first product to determine vendor
-        let owner = null;
-        try {
-            const product = await productModel.findById(items[0].productId).populate("adminId");
-            if (product && product.adminId) {
-                owner = product.adminId;
-            } else {
-                console.error("Could not find product owner for order, skipping admin email");
-            }
-        } catch (error) {
-            console.error("Error finding product owner:", error.message);
-        }
-
         // === CUSTOMER EMAIL ===
-        const customerSubject = `🎉 Order Confirmed #${orderId} - Thank you for shopping with Aharyas!`;
+        const customerSubject = `🎉 ORDER CONFIRMED #${orderId.toString().slice(-6)} – PUPPET`;
 
         const customerHtml = `
             <!DOCTYPE html>
-            <html>
+            <html lang="en">
             <head>
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>Order Confirmation</title>
+                <title>Order Confirmation - PUPPET</title>
+                <style>
+                    @import url('https://fonts.googleapis.com/css2?family=Impact&display=swap');
+                </style>
             </head>
-            <body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8f9fa;">
-                <div style="max-width: 650px; margin: 0 auto; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-                    
-                    <!-- Header -->
-                    <div style="background: linear-gradient(135deg, #8B4513 0%, #D2B48C 100%); padding: 30px 20px; text-align: center;">
-                        <h1 style="color: white; margin: 0; font-size: 28px; font-weight: 300;">AHARYAS</h1>
-                        <p style="color: rgba(255,255,255,0.9); margin: 8px 0 0 0; font-size: 14px;">Premium Fashion Store</p>
-                    </div>
+            <body style="margin: 0; padding: 0; font-family: 'Arial Black', Impact, sans-serif; background: #000000; color: #ffffff;">
+                <table cellpadding="0" cellspacing="0" border="0" width="100%" style="background: #000000; min-height: 100vh; position: relative;">
+                    <!-- Grid Background -->
+                    <tr>
+                        <td style="position: relative;">
+                            <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image: repeating-linear-gradient(0deg, rgba(219, 39, 119, 0.1) 0px, transparent 1px, transparent 40px), repeating-linear-gradient(90deg, rgba(219, 39, 119, 0.1) 0px, transparent 1px, transparent 40px); opacity: 0.3; pointer-events: none;"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center" style="padding: 40px 20px; position: relative; z-index: 1;">
+                            <table cellpadding="0" cellspacing="0" border="0" width="600" style="max-width: 600px; background: linear-gradient(135deg, #1a0a2e 0%, #0f0520 100%); box-shadow: 0 0 40px rgba(219, 39, 119, 0.3), 0 0 80px rgba(6, 182, 212, 0.2); border: 2px solid #db2777;">
+                                
+                                <!-- Top Neon Border -->
+                                <tr>
+                                    <td style="height: 4px; background: linear-gradient(90deg, #06b6d4 0%, #db2777 50%, #a855f7 100%);"></td>
+                                </tr>
 
-                    <!-- Success Message -->
-                    <div style="padding: 30px 20px; text-align: center; border-bottom: 1px solid #eee;">
-                        <h2 style="color: #333; margin: 0 0 10px 0; font-size: 24px;">Order Confirmed!</h2>
-                        <p style="color: #666; margin: 0; font-size: 16px;">Hi ${user.name}, your order has been successfully placed.</p>
-                    </div>
+                                <!-- Header -->
+                                <tr>
+                                    <td style="padding: 40px 40px 30px; text-align: center; background: linear-gradient(135deg, #000000 0%, #1a0a2e 100%); border-bottom: 2px solid #db2777;">
+                                        <h1 style="margin: 0 0 12px 0; font-family: Impact, 'Arial Black', sans-serif; font-size: 56px; font-weight: 900; letter-spacing: 8px; color: #06b6d4; text-transform: uppercase; text-shadow: 2px 2px 0px #db2777, 4px 4px 0px rgba(219, 39, 119, 0.5); transform: skewY(-2deg);">PUPPET</h1>
+                                        <div style="width: 120px; height: 2px; background: linear-gradient(90deg, #db2777, #06b6d4, #a855f7); margin: 0 auto 16px;"></div>
+                                        <p style="margin: 0; font-family: Impact, sans-serif; font-size: 12px; letter-spacing: 4px; color: #a855f7; text-transform: uppercase; font-weight: 900;">ORDER CONFIRMED</p>
+                                    </td>
+                                </tr>
 
-                    <!-- Order Details -->
-                    <div style="padding: 30px 20px;">
-                        <div style="background: #f8f9fa; border-radius: 8px; padding: 20px; margin-bottom: 25px;">
-                            <h3 style="margin: 0 0 15px 0; color: #333; font-size: 18px;">📋 Order Summary</h3>
-                            <table style="width: 100%; border-collapse: collapse;">
+                                <!-- Success Banner -->
                                 <tr>
-                                    <td style="padding: 8px 0; color: #666; width: 40%;">Order ID:</td>
-                                    <td style="padding: 8px 0; color: #333; font-weight: 600;">#${orderId}</td>
+                                    <td style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); padding: 20px 32px; text-align: center; border-top: 1px solid #34d399; border-bottom: 1px solid #059669;">
+                                        <p style="margin: 0; font-family: Impact, sans-serif; font-size: 14px; color: #ffffff; font-weight: 900; letter-spacing: 3px; text-transform: uppercase; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">✓ ORDER PLACED SUCCESSFULLY</p>
+                                    </td>
                                 </tr>
+
+                                <!-- Welcome Message -->
                                 <tr>
-                                    <td style="padding: 8px 0; color: #666;">Order Date:</td>
-                                    <td style="padding: 8px 0; color: #333;">${formatDate(date)}</td>
+                                    <td style="padding: 40px 40px 30px; text-align: center; background: linear-gradient(135deg, #1a0a2e 0%, #0f0520 100%);">
+                                        <h2 style="margin: 0 0 20px 0; font-family: Impact, sans-serif; font-size: 42px; font-weight: 900; letter-spacing: 2px; color: #06b6d4; text-transform: uppercase; text-shadow: 1px 1px 0px #db2777;">THANKS ${user.name.toUpperCase()}</h2>
+                                        <p style="margin: 0; font-family: Arial, sans-serif; font-size: 14px; color: #a3a3a3; font-weight: 700; line-height: 1.8; max-width: 440px; margin: 0 auto; text-transform: uppercase; letter-spacing: 1px;">
+                                            YOUR ORDER HAS BEEN CONFIRMED. WE'RE PREPARING YOUR HANDCRAFTED PIECES WITH CARE.
+                                        </p>
+                                    </td>
                                 </tr>
+
+                                <!-- Order Summary -->
                                 <tr>
-                                    <td style="padding: 8px 0; color: #666;">Payment Method:</td>
-                                    <td style="padding: 8px 0;">${getPaymentBadge(paymentMethod, payment)}</td>
+                                    <td style="padding: 0 40px 30px;">
+                                        <table cellpadding="0" cellspacing="0" border="0" width="100%" style="background: linear-gradient(135deg, #000000 0%, #1a0a2e 100%); border: 3px solid #06b6d4; box-shadow: 0 0 20px rgba(6, 182, 212, 0.5), inset 0 0 20px rgba(6, 182, 212, 0.1);">
+                                            <tr>
+                                                <td style="padding: 20px 24px; background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%); border-bottom: 2px solid #22d3ee;">
+                                                    <h3 style="margin: 0; font-family: Impact, sans-serif; font-size: 12px; font-weight: 900; letter-spacing: 3px; text-transform: uppercase; color: #ffffff; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">📋 ORDER DETAILS</h3>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding: 32px 24px;">
+                                                    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                                                        <tr>
+                                                            <td style="padding: 14px 0; font-family: Impact, sans-serif; font-size: 11px; color: #a855f7; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; width: 40%;">ORDER ID</td>
+                                                            <td style="padding: 14px 0; font-family: 'Courier New', monospace; font-size: 16px; color: #06b6d4; font-weight: 900; letter-spacing: 1px;">#${orderId}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="2" style="height: 2px; background: linear-gradient(90deg, #db2777, transparent);"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="padding: 14px 0; font-family: Impact, sans-serif; font-size: 11px; color: #a855f7; font-weight: 900; letter-spacing: 2px; text-transform: uppercase;">ORDER DATE</td>
+                                                            <td style="padding: 14px 0; font-family: 'Courier New', monospace; font-size: 14px; color: #06b6d4; font-weight: 700;">${formatDate(date)}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="2" style="height: 2px; background: linear-gradient(90deg, #db2777, transparent);"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="padding: 14px 0; font-family: Impact, sans-serif; font-size: 11px; color: #a855f7; font-weight: 900; letter-spacing: 2px; text-transform: uppercase;">PAYMENT</td>
+                                                            <td style="padding: 14px 0;">${getPaymentBadge(paymentMethod, payment)}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="2" style="height: 3px; background: linear-gradient(90deg, #db2777, #06b6d4);"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="padding: 20px 0 0 0; font-family: Impact, sans-serif; font-size: 12px; color: #db2777; font-weight: 900; letter-spacing: 2px; text-transform: uppercase;">TOTAL AMOUNT</td>
+                                                            <td style="padding: 20px 0 0 0; font-family: Impact, sans-serif; font-size: 42px; color: #06b6d4; font-weight: 900; text-shadow: 0 0 20px rgba(6, 182, 212, 0.5);">₹${amount.toLocaleString('en-IN')}</td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
                                 </tr>
+
+                                <!-- Order Items -->
                                 <tr>
-                                    <td style="padding: 8px 0; color: #666;">Total Amount:</td>
-                                    <td style="padding: 8px 0; color: #4CAF50; font-weight: bold; font-size: 18px;">₹${amount}</td>
+                                    <td style="padding: 0 40px 30px;">
+                                        <h3 style="margin: 0 0 20px 0; font-family: Impact, sans-serif; font-size: 12px; font-weight: 900; letter-spacing: 3px; text-transform: uppercase; color: #db2777; text-shadow: 0 0 10px rgba(219, 39, 119, 0.5);">🛍️ YOUR ITEMS</h3>
+                                        ${items.map((item, index) => `
+                                            <table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-bottom: ${index < items.length - 1 ? '16px' : '0'}; border: 2px solid ${index % 2 === 0 ? '#06b6d4' : '#db2777'}; background: linear-gradient(135deg, #000000 0%, #1a0a2e 100%); box-shadow: 0 0 15px ${index % 2 === 0 ? 'rgba(6, 182, 212, 0.3)' : 'rgba(219, 39, 119, 0.3)'};">
+                                                <tr>
+                                                    <td style="padding: 24px;">
+                                                        <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                                                            <tr>
+                                                                <td style="width: 100px; vertical-align: top;">
+                                                                    <img src="${item.image || item.images?.[0] || ''}" alt="${item.name}" style="width: 90px; height: 90px; object-fit: cover; border: 3px solid ${index % 2 === 0 ? '#06b6d4' : '#db2777'}; box-shadow: 0 0 15px ${index % 2 === 0 ? 'rgba(6, 182, 212, 0.5)' : 'rgba(219, 39, 119, 0.5)'}; display: block;" />
+                                                                </td>
+                                                                <td style="padding-left: 20px; vertical-align: top;">
+                                                                    <h4 style="margin: 0 0 12px 0; font-family: Impact, sans-serif; font-size: 18px; font-weight: 900; color: ${index % 2 === 0 ? '#06b6d4' : '#db2777'}; text-transform: uppercase; letter-spacing: 1px;">${item.name || 'PRODUCT'}</h4>
+                                                                    <table cellpadding="0" cellspacing="0" border="0">
+                                                                        <tr>
+                                                                            <td style="padding: 4px 16px 4px 0; font-family: Arial, sans-serif; font-size: 11px; color: #a3a3a3; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">
+                                                                                QTY: <span style="color: #ffffff; font-weight: 900;">${item.quantity}</span>
+                                                                            </td>
+                                                                            ${item.size ? `
+                                                                            <td style="padding: 4px 0; font-family: Arial, sans-serif; font-size: 11px; color: #a3a3a3; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">
+                                                                                SIZE: <span style="color: #ffffff; font-weight: 900;">${item.size}</span>
+                                                                            </td>
+                                                                            ` : ''}
+                                                                        </tr>
+                                                                    </table>
+                                                                    <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #db2777;">
+                                                                        <span style="font-family: Impact, sans-serif; font-size: 24px; color: #a855f7; font-weight: 900; text-shadow: 0 0 10px rgba(168, 85, 247, 0.5);">₹${(item.price * item.quantity).toLocaleString('en-IN')}</span>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        `).join('')}
+                                    </td>
                                 </tr>
+
+                                <!-- Delivery Address -->
+                                <tr>
+                                    <td style="padding: 0 40px 30px;">
+                                        <table cellpadding="0" cellspacing="0" border="0" width="100%" style="border: 2px solid #a855f7; background: linear-gradient(135deg, #1a0a2e 0%, #000000 100%); box-shadow: 0 0 15px rgba(168, 85, 247, 0.3);">
+                                            <tr>
+                                                <td style="padding: 20px 24px; background: linear-gradient(135deg, #a855f7 0%, #7c3aed 100%); border-bottom: 2px solid #c084fc;">
+                                                    <h3 style="margin: 0; font-family: Impact, sans-serif; font-size: 12px; font-weight: 900; letter-spacing: 3px; text-transform: uppercase; color: #ffffff; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">📍 DELIVERY ADDRESS</h3>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding: 24px;">
+                                                    <p style="margin: 0; font-family: Arial, sans-serif; font-size: 14px; color: #ffffff; font-weight: 700; line-height: 1.9; letter-spacing: 0.5px;">
+                                                        <strong style="font-weight: 900; color: #a855f7; text-transform: uppercase;">${address.firstName || ''} ${address.lastName || ''}</strong><br>
+                                                        ${address.street || ''}<br>
+                                                        ${address.city || ''}, ${address.state || ''} ${address.zipcode || ''}<br>
+                                                        ${address.country || ''}<br>
+                                                        <span style="color: #06b6d4; margin-top: 8px; display: inline-block; font-weight: 900;">📞 ${address.phone || 'N/A'}</span>
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+
+                                <!-- What's Next -->
+                                <tr>
+                                    <td style="padding: 0 40px 30px;">
+                                        <table cellpadding="0" cellspacing="0" border="0" width="100%" style="background: linear-gradient(135deg, #000000 0%, #1a0a2e 100%); border: 3px solid #db2777; border-left: 6px solid #db2777; box-shadow: 0 0 20px rgba(219, 39, 119, 0.4);">
+                                            <tr>
+                                                <td style="padding: 24px;">
+                                                    <h3 style="margin: 0 0 16px 0; font-family: Impact, sans-serif; font-size: 16px; font-weight: 900; letter-spacing: 2px; color: #db2777; text-transform: uppercase; text-shadow: 0 0 10px rgba(219, 39, 119, 0.5);">⚡ WHAT'S NEXT?</h3>
+                                                    <p style="margin: 0; font-family: Arial, sans-serif; font-size: 13px; color: #d4d4d4; font-weight: 700; line-height: 1.8; text-transform: uppercase; letter-spacing: 0.5px;">
+                                                        ${paymentMethod === 'COD' ?
+                                                            'YOUR ORDER IS BEING PREPARED. WE\'LL NOTIFY YOU WITH TRACKING DETAILS ONCE IT SHIPS. <span style="color: #a855f7; font-weight: 900;">KEEP EXACT CASH READY ON DELIVERY.</span>' :
+                                                            'PAYMENT CONFIRMED! OUR ARTISANS ARE PREPARING YOUR ORDER WITH CARE. YOU\'LL RECEIVE TRACKING INFO ONCE DISPATCHED.'
+                                                        }
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+
+                                <!-- Support -->
+                                <tr>
+                                    <td style="padding: 0 40px 30px;">
+                                        <table cellpadding="0" cellspacing="0" border="0" width="100%" style="background: linear-gradient(135deg, #451a03 0%, #78350f 100%); border: 2px solid #d97706; border-left: 6px solid #f59e0b; box-shadow: 0 0 20px rgba(217, 119, 6, 0.4);">
+                                            <tr>
+                                                <td style="padding: 20px 24px; text-align: center;">
+                                                    <h4 style="margin: 0 0 12px 0; font-family: Impact, sans-serif; font-size: 13px; font-weight: 900; letter-spacing: 2px; color: #fcd34d; text-transform: uppercase; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">💬 NEED HELP?</h4>
+                                                    <p style="margin: 0 0 12px 0; font-family: Arial, sans-serif; font-size: 11px; color: #fde68a; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">
+                                                        QUESTIONS? REACH US AT
+                                                    </p>
+                                                    <a href="mailto: dotkpuppet@gmail.com" style="font-family: Impact, sans-serif; font-size: 11px; color: #fcd34d; text-decoration: none; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; border-bottom: 2px solid #f59e0b; text-shadow: 0 0 10px rgba(252, 211, 77, 0.5);">📧 dotkpuppet@gmail.com</a>
+                                                    <span style="color: #fde68a; margin: 0 8px;">|</span>
+                                                    <a href="tel:+919063284008" style="font-family: Impact, sans-serif; font-size: 11px; color: #fcd34d; text-decoration: none; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; border-bottom: 2px solid #f59e0b; text-shadow: 0 0 10px rgba(252, 211, 77, 0.5);">📞 +91 9063284008</a>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+
+                                <!-- Closing -->
+                                <tr>
+                                    <td style="padding: 30px 40px; text-align: center; background: linear-gradient(135deg, #1a0a2e 0%, #000000 100%); border-top: 2px solid #db2777;">
+                                        <p style="margin: 0 0 8px 0; font-family: Impact, sans-serif; font-size: 16px; color: #06b6d4; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; text-shadow: 0 0 10px rgba(6, 182, 212, 0.5);">THANK YOU FOR CHOOSING PUPPET</p>
+                                        <p style="margin: 0; font-family: Arial, sans-serif; font-size: 12px; color: #a3a3a3; font-weight: 700; line-height: 1.7; text-transform: uppercase; letter-spacing: 1px;">
+                                            PRESERVING HERITAGE TOGETHER
+                                        </p>
+                                    </td>
+                                </tr>
+
+                                <!-- Footer -->
+                                <tr>
+                                    <td style="padding: 30px 40px; text-align: center; background: #000000; border-top: 2px solid #db2777;">
+                                        <p style="margin: 0; font-family: Impact, sans-serif; font-size: 10px; color: #737373; font-weight: 900; line-height: 1.6; letter-spacing: 2px; text-transform: uppercase;">
+                                            © ${new Date().getFullYear()} PUPPET. ALL RIGHTS RESERVED.<br>
+                                            <span style="color: #a855f7;">PRESERVING HERITAGE, ONE THREAD AT A TIME.</span>
+                                        </p>
+                                    </td>
+                                </tr>
+
+                                <!-- Bottom Neon Border -->
+                                <tr>
+                                    <td style="height: 4px; background: linear-gradient(90deg, #a855f7 0%, #db2777 50%, #06b6d4 100%);"></td>
+                                </tr>
+
                             </table>
-                        </div>
-
-                        <!-- Items -->
-                        <div style="margin-bottom: 25px;">
-                            <h3 style="margin: 0 0 15px 0; color: #333; font-size: 18px;">🛍️ Items Ordered</h3>
-                            ${items.map(item => `
-                                <div style="border: 1px solid #eee; border-radius: 8px; padding: 15px; margin-bottom: 10px;">
-                                    <div style="display: table; width: 100%;">
-                                        <div style="display: table-cell; vertical-align: middle;">
-                                            <h4 style="margin: 0 0 5px 0; color: #333; font-size: 16px;">${item.name || 'Product'}</h4>
-                                            <p style="margin: 0; color: #666; font-size: 14px;">
-                                                Quantity: ${item.quantity} ${item.size ? `• Size: ${item.size}` : ''} • ₹${item.price} each
-                                            </p>
-                                        </div>
-                                        <div style="display: table-cell; vertical-align: middle; text-align: right;">
-                                            <span style="color: #4CAF50; font-weight: bold; font-size: 16px;">₹${item.price * item.quantity}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            `).join('')}
-                        </div>
-
-                        <!-- Delivery Address -->
-                        <div style="background: #fff8e1; border-radius: 8px; padding: 20px; margin-bottom: 25px;">
-                            <h3 style="margin: 0 0 15px 0; color: #333; font-size: 18px;">🚚 Delivery Address</h3>
-                            <div style="color: #666; line-height: 1.6;">
-                                <strong style="color: #333;">${address.firstName || ''} ${address.lastName || ''}</strong><br>
-                                ${address.street || ''}<br>
-                                ${address.city || ''}, ${address.state || ''} - ${address.zipcode || ''}<br>
-                                ${address.country || ''}<br>
-                                📞 ${address.phone || 'N/A'}
-                            </div>
-                        </div>
-
-                        <!-- Next Steps -->
-                        <div style="background: #e8f5e8; border-radius: 8px; padding: 20px; text-align: center;">
-                            <h3 style="margin: 0 0 10px 0; color: #2e7d32; font-size: 18px;">What's Next? 🚀</h3>
-                            <p style="margin: 0; color: #388e3c; line-height: 1.6;">
-                                ${paymentMethod === 'COD' ?
-                'Your order will be processed and shipped soon. Please keep the exact amount ready for cash payment.' :
-                'Your payment has been received. We\'ll process your order and send tracking details soon.'
-            }
-                            </p>
-                        </div>
-                    </div>
-
-                    <!-- Footer -->
-                    <div style="background: #f8f9fa; padding: 25px 20px; text-align: center; border-top: 1px solid #eee;">
-                        <p style="margin: 0 0 10px 0; color: #666; font-size: 14px;">Thank you for choosing Aharyas!</p>
-                        <p style="margin: 0; color: #999; font-size: 12px;">
-                            Need help? Contact us at <a href="mailto:support@aharyas.com" style="color: #667eea; text-decoration: none;">support@aharyas.com</a>
-                        </p>
-                    </div>
-                </div>
+                        </td>
+                    </tr>
+                </table>
             </body>
             </html>
         `;
 
-        // Send customer email
         const customerEmailSent = await sendOrderMail(user.email, customerSubject, '', customerHtml);
-
-        // Send admin email only if owner found
-        let adminEmailSent = false;
-        if (owner && owner.email) {
-            const adminSubject = `🔔 New Order Alert #${orderId} - Aharyas Store`;
-
-            const adminHtml = `
-                <!DOCTYPE html>
-                <html>
-                <head>
-                    <meta charset="UTF-8">
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                    <title>New Order Alert</title>
-                </head>
-                <body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8f9fa;">
-                    <div style="max-width: 650px; margin: 0 auto; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-                        
-                        <!-- Header -->
-                        <div style="background: linear-gradient(135deg, #8B4513 0%, #D2B48C 100%); padding: 30px 20px; text-align: center;">
-                            <h1 style="color: white; margin: 0; font-size: 28px; font-weight: 300;">AHARYAS ADMIN</h1>
-                            <p style="color: rgba(255,255,255,0.9); margin: 8px 0 0 0; font-size: 14px;">New Order Management</p>
-                        </div>
-
-                        <!-- Alert Message -->
-                        <div style="padding: 30px 20px; text-align: center; border-bottom: 1px solid #eee;">
-                            <h2 style="color: #333; margin: 0 0 10px 0; font-size: 24px;">New Order Received!</h2>
-                            <p style="color: #666; margin: 0; font-size: 16px;">Hi ${owner.name}, you have a new order to process.</p>
-                        </div>
-
-                        <!-- Order Details -->
-                        <div style="padding: 30px 20px;">
-                            <div style="background: #fff3e0; border-radius: 8px; padding: 20px; margin-bottom: 25px;">
-                                <h3 style="margin: 0 0 15px 0; color: #333; font-size: 18px;">📋 Order Information</h3>
-                                <table style="width: 100%; border-collapse: collapse;">
-                                    <tr>
-                                        <td style="padding: 8px 0; color: #666; width: 40%;">Order ID:</td>
-                                        <td style="padding: 8px 0; color: #333; font-weight: 600;">#${orderId}</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="padding: 8px 0; color: #666;">Order Date:</td>
-                                        <td style="padding: 8px 0; color: #333;">${formatDate(date)}</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="padding: 8px 0; color: #666;">Payment Status:</td>
-                                        <td style="padding: 8px 0;">${getPaymentBadge(paymentMethod, payment)}</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="padding: 8px 0; color: #666;">Order Value:</td>
-                                        <td style="padding: 8px 0; color: #4CAF50; font-weight: bold; font-size: 18px;">₹${amount}</td>
-                                    </tr>
-                                </table>
-                            </div>
-
-                            <!-- Customer Details -->
-                            <div style="background: #e3f2fd; border-radius: 8px; padding: 20px; margin-bottom: 25px;">
-                                <h3 style="margin: 0 0 15px 0; color: #333; font-size: 18px;">👤 Customer Details</h3>
-                                <table style="width: 100%; border-collapse: collapse;">
-                                    <tr>
-                                        <td style="padding: 8px 0; color: #666; width: 30%;">Name:</td>
-                                        <td style="padding: 8px 0; color: #333; font-weight: 600;">${user.name}</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="padding: 8px 0; color: #666;">Email:</td>
-                                        <td style="padding: 8px 0; color: #333;">${user.email}</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="padding: 8px 0; color: #666;">Phone:</td>
-                                        <td style="padding: 8px 0; color: #333;">${address.phone || 'N/A'}</td>
-                                    </tr>
-                                </table>
-                            </div>
-
-                            <!-- Items to Ship -->
-                            <div style="margin-bottom: 25px;">
-                                <h3 style="margin: 0 0 15px 0; color: #333; font-size: 18px;">📦 Items to Process</h3>
-                                ${items.map(item => `
-                                    <div style="border: 1px solid #eee; border-radius: 8px; padding: 15px; margin-bottom: 10px;">
-                                        <div style="display: table; width: 100%;">
-                                            <div style="display: table-cell; vertical-align: middle;">
-                                                <h4 style="margin: 0 0 5px 0; color: #333; font-size: 16px;">${item.name || 'Product'}</h4>
-                                                <p style="margin: 0; color: #666; font-size: 14px;">
-                                                    <strong>Qty:</strong> ${item.quantity} ${item.size ? `• <strong>Size:</strong> ${item.size}` : ''} • <strong>Price:</strong> ₹${item.price} each
-                                                </p>
-                                            </div>
-                                            <div style="display: table-cell; vertical-align: middle; text-align: right;">
-                                                <span style="color: #4CAF50; font-weight: bold; font-size: 16px;">₹${item.price * item.quantity}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                `).join('')}
-                            </div>
-
-                            <!-- Shipping Address -->
-                            <div style="background: #f3e5f5; border-radius: 8px; padding: 20px; margin-bottom: 25px;">
-                                <h3 style="margin: 0 0 15px 0; color: #333; font-size: 18px;">🚚 Shipping Address</h3>
-                                <div style="color: #666; line-height: 1.6;">
-                                    <strong style="color: #333;">${address.firstName || ''} ${address.lastName || ''}</strong><br>
-                                    ${address.street || ''}<br>
-                                    ${address.city || ''}, ${address.state || ''} - ${address.zipcode || ''}<br>
-                                    ${address.country || ''}<br>
-                                    📞 ${address.phone || 'N/A'}
-                                </div>
-                            </div>
-
-                            <!-- Action Required -->
-                            <div style="background: #ffebee; border-radius: 8px; padding: 20px; text-align: center; border-left: 4px solid #f44336;">
-                                <h3 style="margin: 0 0 10px 0; color: #d32f2f; font-size: 18px;">⚡ Action Required</h3>
-                                <p style="margin: 0; color: #666; line-height: 1.6;">
-                                    Please process this order promptly and update the order status in your admin panel. 
-                                    ${paymentMethod === 'COD' ? 'This is a Cash on Delivery order.' : 'Payment has been received.'}
-                                </p>
-                            </div>
-                        </div>
-
-                        <!-- Footer -->
-                        <div style="background: #f8f9fa; padding: 25px 20px; text-align: center; border-top: 1px solid #eee;">
-                            <p style="margin: 0 0 10px 0; color: #666; font-size: 14px;">Aharyas Admin Panel</p>
-                            <p style="margin: 0; color: #999; font-size: 12px;">
-                                Manage orders at <a href="https://admin.aharyas.com" style="color: #667eea; text-decoration: none;">admin.aharyas.com</a>
-                            </p>
-                        </div>
-                    </div>
-                </body>
-                </html>
-            `;
-
-            adminEmailSent = await sendOrderMail(owner.email, adminSubject, '', adminHtml);
-        }
-        
         return customerEmailSent;
 
     } catch (error) {

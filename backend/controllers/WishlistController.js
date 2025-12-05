@@ -142,7 +142,7 @@ const getWishlistWithDetails = async (req, res) => {
         // Populate wishlist with product details
         const userWithWishlist = await userModel.findById(userId).populate({
             path: 'wishlist',
-            model: 'product' // Assuming your product model is named 'product'
+            model: 'product'
         })
 
         const wishlistWithDetails = userWithWishlist.wishlist || []

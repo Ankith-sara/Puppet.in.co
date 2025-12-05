@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Heart, Award, Users, Star, Sparkles, Zap, Trophy } from "lucide-react";
+import React from 'react';
+import { Heart, Award, Users, Star } from "lucide-react";
 
 const About = () => {
   const values = [
@@ -7,19 +7,19 @@ const About = () => {
       icon: Heart,
       title: "Authenticity",
       description: "Every piece tells a unique story and celebrates bold self-expression",
-      color: "#FF1493"
+      color: "pink"
     },
     {
       icon: Award,
       title: "Quality",
       description: "Curated selection of premium materials and craftsmanship",
-      color: "#00FFFF"
+      color: "cyan"
     },
     {
       icon: Users,
       title: "Community",
       description: "Building a tribe of fearless individuals who embrace their unique style",
-      color: "#FF6B9D"
+      color: "purple"
     }
   ];
 
@@ -88,45 +88,54 @@ const About = () => {
     }
   ];
 
-  return (
-    <div className="min-h-screen text-white pt-24 pb-12" style={{ 
-      background: 'linear-gradient(180deg, #0a0015 0%, #1a0a2e 50%, #0f051d 100%)'
-    }}>
-      <div className="fixed inset-0 opacity-5 pointer-events-none" style={{
-        backgroundImage: `
-          linear-gradient(#FF1493 1px, transparent 1px),
-          linear-gradient(90deg, #FF1493 1px, transparent 1px)
-        `,
-        backgroundSize: '50px 50px',
-        transform: 'perspective(500px) rotateX(60deg)',
-        transformOrigin: 'center bottom'
-      }}></div>
+  const colorClasses = {
+    pink: {
+      border: "border-pink-600",
+      text: "text-pink-600",
+      hover: "hover:border-pink-500",
+      bg: "bg-pink-600"
+    },
+    cyan: {
+      border: "border-cyan-600",
+      text: "text-cyan-600",
+      hover: "hover:border-cyan-500",
+      bg: "bg-cyan-600"
+    },
+    purple: {
+      border: "border-purple-600",
+      text: "text-purple-600",
+      hover: "hover:border-purple-500",
+      bg: "bg-purple-600"
+    }
+  };
 
-      <div className="fixed top-20 left-1/4 w-96 h-96 rounded-full opacity-10 blur-3xl pointer-events-none" style={{
-        background: 'radial-gradient(circle, #FF1493 0%, transparent 70%)'
-      }}></div>
-      <div className="fixed bottom-0 right-1/4 w-96 h-96 rounded-full opacity-10 blur-3xl pointer-events-none" style={{
-        background: 'radial-gradient(circle, #00FFFF 0%, transparent 70%)'
+  return (
+    <div className="min-h-screen bg-black text-white pt-24 pb-12">
+      {/* Grid overlay */}
+      <div className="fixed inset-0 opacity-10 pointer-events-none" style={{
+        backgroundImage: `
+          linear-gradient(rgb(219 39 119) 1px, transparent 1px),
+          linear-gradient(90deg, rgb(219 39 119) 1px, transparent 1px)
+        `,
+        backgroundSize: '40px 40px',
+        transform: 'perspective(800px) rotateX(75deg) scale(2)',
+        transformOrigin: 'center bottom'
       }}></div>
 
       {/* Hero Section */}
       <section className="relative py-20 px-4 sm:px-8 md:px-10 lg:px-20">
         <div className="max-w-7xl mx-auto text-center">
-          <h1 className="text-6xl md:text-8xl font-black mb-8 uppercase" style={{
+          <h1 className="text-6xl md:text-8xl font-black mb-8 uppercase text-cyan-400" style={{
             fontFamily: 'Impact, "Arial Black", sans-serif',
-            color: '#00FFFF',
-            textShadow: '4px 4px 0px #FF1493, 8px 8px 0px rgba(0,0,0,0.4)',
+            textShadow: '2px 2px 0px rgb(219 39 119)',
             transform: 'skewY(-2deg)'
           }}>
             OUR STORY
           </h1>
           
-          <div className="w-48 h-1 mx-auto mb-8" style={{
-            background: 'linear-gradient(90deg, #FF1493, #00FFFF, #FF6B9D)',
-            boxShadow: '0 0 15px rgba(255, 20, 147, 0.5)'
-          }}></div>
+          <div className="w-48 h-1 mx-auto mb-8 bg-gradient-to-r from-pink-600 via-cyan-600 to-purple-600"></div>
 
-          <p className="text-2xl md:text-3xl font-light max-w-3xl mx-auto" style={{ color: '#E0BBE4' }}>
+          <p className="text-2xl md:text-3xl text-gray-400 max-w-3xl mx-auto">
             Curating boldness for fearless spaces since 2025
           </p>
         </div>
@@ -136,43 +145,34 @@ const About = () => {
       <section className="relative py-16 px-4 sm:px-8 md:px-10 lg:px-20">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-            {/* Image */}
             <div className="relative order-2 lg:order-1">
-              <div className="relative overflow-hidden rounded-full w-80 h-80 mx-auto" style={{
-                border: '4px solid #FFD700',
-                boxShadow: '0 0 40px rgba(255, 215, 0, 0.6)'
-              }}>
+              <div className="relative overflow-hidden rounded-full w-80 h-80 mx-auto border-2 border-yellow-700">
                 <img
                   className="w-full h-full object-cover"
                   src="https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&h=800&fit=crop"
                   alt="Founder"
                 />
-                <div className="absolute inset-0" style={{
-                  background: 'linear-gradient(180deg, transparent 0%, rgba(255, 20, 147, 0.2) 100%)'
-                }}></div>
               </div>
             </div>
 
             {/* Content */}
             <div className="order-1 lg:order-2">
-              <h2 className="text-4xl md:text-5xl font-black mb-6 uppercase" style={{
-                fontFamily: 'Impact, sans-serif',
-                color: '#FF1493',
-                textShadow: '2px 2px 0px rgba(255, 20, 147, 0.2)'
+              <h2 className="text-4xl md:text-5xl font-black mb-6 uppercase text-pink-600" style={{
+                fontFamily: 'Impact, sans-serif'
               }}>
                 BORN FROM BOLD SPIRIT
               </h2>
 
-              <div className="space-y-6 text-lg leading-loose font-light">
-                <p className="first-letter:text-3xl first-letter:font-black first-letter:float-left first-letter:leading-none" style={{ color: '#E0BBE4' }}>
-                  <span style={{ color: '#FF1493' }}>P</span>uppet.co.in started in a small studio where art met audacity. Our founder noticed a gap in the market: beautiful homes filled with safe, boring art. She set out to change that.
+              <div className="space-y-6 text-lg leading-loose">
+                <p className="text-gray-400 first-letter:text-3xl first-letter:font-black first-letter:float-left first-letter:leading-none first-letter:text-pink-600">
+                  Puppet.co.in started in a small studio where art met audacity. Our founder noticed a gap in the market: beautiful homes filled with safe, boring art. She set out to change that.
                 </p>
 
-                <p style={{ color: '#FFB6C1' }}>
+                <p className="text-gray-500">
                   We believe your space should be as fearless as you are. Every piece we curate is selected to spark conversation, challenge norms, and celebrate the beauty of being unapologetically yourself.
                 </p>
 
-                <p style={{ color: '#E0BBE4' }}>
+                <p className="text-gray-400">
                   Today, we work with over 50 boundary-pushing artists from around the world, bringing provocative, premium pieces to bold individuals who refuse to blend in.
                 </p>
               </div>
@@ -184,21 +184,14 @@ const About = () => {
       {/* Mission Quote */}
       <section className="relative py-20 px-4 sm:px-8 md:px-10 lg:px-20">
         <div className="max-w-5xl mx-auto">
-          <div className="p-12" style={{
-            background: 'rgba(26, 10, 46, 0.7)',
-            backdropFilter: 'blur(10px)',
-            border: '3px solid #FF1493',
-            boxShadow: '0 0 30px rgba(255, 20, 147, 0.5)'
-          }}>
+          <div className="p-12 bg-purple-950 border-2 border-pink-600">
             <blockquote className="text-center">
-              <p className="text-3xl md:text-4xl font-black mb-6 leading-relaxed uppercase" style={{
-                fontFamily: 'Impact, sans-serif',
-                color: '#00FFFF',
-                textShadow: '2px 2px 0px rgba(0, 255, 255, 0.3)'
+              <p className="text-3xl md:text-4xl font-black mb-6 leading-relaxed uppercase text-cyan-600" style={{
+                fontFamily: 'Impact, sans-serif'
               }}>
                 "ART SHOULD MAKE YOU FEEL SOMETHING. YOUR HOME SHOULD TELL YOUR STORY. WE'RE HERE TO HELP YOU LIVE BOLDLY."
               </p>
-              <footer className="text-lg font-light" style={{ color: '#FFB6C1' }}>
+              <footer className="text-lg text-gray-400">
                 — Sumit Mishra, Founder
               </footer>
             </blockquote>
@@ -209,46 +202,37 @@ const About = () => {
       {/* Values Section */}
       <section className="relative py-16 px-4 sm:px-8 md:px-10 lg:px-20">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl md:text-5xl font-black text-center mb-12 uppercase" style={{
-            fontFamily: 'Impact, sans-serif',
-            color: '#FF1493',
-            textShadow: '3px 3px 0px rgba(255, 20, 147, 0.2)'
+          <h2 className="text-4xl md:text-5xl font-black text-center mb-12 uppercase text-pink-600" style={{
+            fontFamily: 'Impact, sans-serif'
           }}>
             OUR VALUES
           </h2>
 
           <div className="grid md:grid-cols-3 gap-8">
-            {values.map((value, index) => (
-              <div
-                key={value.title}
-                className="group transition-all duration-300 hover:scale-105"
-                style={{
-                  background: 'rgba(26, 10, 46, 0.7)',
-                  backdropFilter: 'blur(10px)',
-                  border: `2px solid ${value.color}`,
-                  boxShadow: `0 0 15px ${value.color}40`
-                }}
-              >
-                <div className="p-8 text-center h-full">
-                  <div className="w-16 h-16 mx-auto mb-6 flex items-center justify-center" style={{
-                    border: `2px solid ${value.color}`,
-                    boxShadow: `0 0 15px ${value.color}60`
-                  }}>
-                    <value.icon size={32} style={{ color: value.color }} />
+            {values.map((value) => {
+              const colors = colorClasses[value.color];
+              return (
+                <div
+                  key={value.title}
+                  className={`group transition-all duration-300 hover:scale-105 bg-purple-950 border-2 ${colors.border}`}
+                >
+                  <div className="p-8 text-center h-full">
+                    <div className={`w-16 h-16 mx-auto mb-6 flex items-center justify-center border-2 ${colors.border}`}>
+                      <value.icon size={32} className={colors.text} />
+                    </div>
+                    <h3 className={`text-2xl font-black tracking-wider uppercase mb-4 ${colors.text}`} style={{
+                      fontFamily: 'Impact, sans-serif'
+                    }}>
+                      {value.title}
+                    </h3>
+                    <div className={`w-12 h-0.5 mx-auto mb-4 ${colors.bg}`}></div>
+                    <p className="text-base leading-relaxed text-gray-400">
+                      {value.description}
+                    </p>
                   </div>
-                  <h3 className="text-2xl font-black tracking-wider uppercase mb-4" style={{
-                    color: value.color,
-                    fontFamily: 'Impact, sans-serif'
-                  }}>
-                    {value.title}
-                  </h3>
-                  <div className="w-12 h-0.5 mx-auto mb-4" style={{ background: value.color }}></div>
-                  <p className="text-base font-light leading-relaxed" style={{ color: '#E0BBE4' }}>
-                    {value.description}
-                  </p>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
@@ -256,56 +240,44 @@ const About = () => {
       {/* Team Section */}
       <section className="relative py-16 px-4 sm:px-8 md:px-10 lg:px-20">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl md:text-5xl font-black text-center mb-6 uppercase" style={{
-            fontFamily: 'Impact, sans-serif',
-            color: '#00FFFF',
-            textShadow: '3px 3px 0px rgba(0, 255, 255, 0.2)'
+          <h2 className="text-4xl md:text-5xl font-black text-center mb-6 uppercase text-cyan-600" style={{
+            fontFamily: 'Impact, sans-serif'
           }}>
             MEET THE TEAM
           </h2>
-          <p className="text-center text-lg font-light mb-12 max-w-2xl mx-auto" style={{ color: '#FFB6C1' }}>
+          <p className="text-center text-lg mb-12 max-w-2xl mx-auto text-gray-400">
             The passionate individuals behind Puppet.co.in's bold curation
           </p>
 
           <div className="grid md:grid-cols-3 gap-8">
             {team.map((member, index) => {
-              const colors = ['#FF1493', '#00FFFF', '#FF6B9D'];
-              const color = colors[index % colors.length];
+              const colorKeys = ['pink', 'cyan', 'purple'];
+              const colorKey = colorKeys[index % colorKeys.length];
+              const colors = colorClasses[colorKey];
               
               return (
                 <div
                   key={member.name}
-                  className="group transition-all duration-300 hover:scale-105"
-                  style={{
-                    background: 'rgba(26, 10, 46, 0.7)',
-                    backdropFilter: 'blur(10px)',
-                    border: `2px solid ${color}`,
-                    boxShadow: `0 0 15px ${color}40`
-                  }}
+                  className={`group transition-all duration-300 hover:scale-105 bg-purple-950 border-2 ${colors.border}`}
                 >
                   <div className="p-8 text-center">
                     <div className="relative w-32 h-32 mx-auto mb-4">
                       <img
                         src={member.image}
                         alt={member.name}
-                        className="w-full h-full rounded-full object-cover"
-                        style={{
-                          border: `3px solid ${color}`,
-                          boxShadow: `0 0 20px ${color}60`
-                        }}
+                        className={`w-full h-full rounded-full object-cover border-2 ${colors.border}`}
                       />
                     </div>
-                    <h3 className="text-xl font-black tracking-wider uppercase mb-2" style={{
-                      color: color,
+                    <h3 className={`text-xl font-black tracking-wider uppercase mb-2 ${colors.text}`} style={{
                       fontFamily: 'Impact, sans-serif'
                     }}>
                       {member.name}
                     </h3>
-                    <div className="text-sm font-medium mb-4" style={{ color: '#FFB6C1' }}>
+                    <div className="text-sm font-medium mb-4 text-gray-500">
                       {member.title}
                     </div>
-                    <div className="w-12 h-0.5 mx-auto mb-4" style={{ background: color }}></div>
-                    <p className="text-sm font-light leading-relaxed" style={{ color: '#E0BBE4' }}>
+                    <div className={`w-12 h-0.5 mx-auto mb-4 ${colors.bg}`}></div>
+                    <p className="text-sm leading-relaxed text-gray-400">
                       {member.bio}
                     </p>
                   </div>
@@ -319,10 +291,8 @@ const About = () => {
       {/* Testimonials */}
       <section className="relative py-16 px-4 sm:px-8 md:px-10 lg:px-20">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl md:text-5xl font-black text-center mb-12 uppercase" style={{
-            fontFamily: 'Impact, sans-serif',
-            color: '#FF1493',
-            textShadow: '3px 3px 0px rgba(255, 20, 147, 0.2)'
+          <h2 className="text-4xl md:text-5xl font-black text-center mb-12 uppercase text-pink-600" style={{
+            fontFamily: 'Impact, sans-serif'
           }}>
             WHAT OUR CUSTOMERS SAY
           </h2>
@@ -331,32 +301,25 @@ const About = () => {
             {testimonials.map((testimonial, index) => (
               <div
                 key={index}
-                className="transition-all duration-300 hover:scale-105"
-                style={{
-                  background: 'rgba(26, 10, 46, 0.7)',
-                  backdropFilter: 'blur(10px)',
-                  border: '2px solid #00FFFF',
-                  boxShadow: '0 0 15px rgba(0, 255, 255, 0.3)'
-                }}
+                className="transition-all duration-300 hover:scale-105 bg-purple-950 border-2 border-cyan-600"
               >
                 <div className="p-6">
                   <div className="flex gap-1 mb-4">
                     {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star key={i} size={20} className="fill-current" style={{ color: '#FFD700' }} />
+                      <Star key={i} size={20} className="fill-yellow-600 text-yellow-600" />
                     ))}
                   </div>
-                  <p className="mb-4 leading-relaxed italic font-light" style={{ color: '#E0BBE4' }}>
+                  <p className="mb-4 leading-relaxed italic text-gray-400">
                     "{testimonial.text}"
                   </p>
-                  <div className="w-12 h-0.5 mb-3" style={{ background: '#00FFFF' }}></div>
+                  <div className="w-12 h-0.5 mb-3 bg-cyan-600"></div>
                   <div>
-                    <div className="font-black text-sm uppercase" style={{ 
-                      color: '#00FFFF',
+                    <div className="font-black text-sm uppercase text-cyan-600" style={{ 
                       fontFamily: 'Impact, sans-serif'
                     }}>
                       {testimonial.author}
                     </div>
-                    <div className="text-xs font-light" style={{ color: '#FFB6C1' }}>
+                    <div className="text-xs text-gray-500">
                       {testimonial.location}
                     </div>
                   </div>
@@ -370,49 +333,39 @@ const About = () => {
       {/* The Styles We Curate */}
       <section className="relative py-16 px-4 sm:px-8 md:px-10 lg:px-20">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl md:text-5xl font-black text-center mb-6 uppercase" style={{
-            fontFamily: 'Impact, sans-serif',
-            color: '#00FFFF',
-            textShadow: '3px 3px 0px rgba(0, 255, 255, 0.2)'
+          <h2 className="text-4xl md:text-5xl font-black text-center mb-6 uppercase text-cyan-600" style={{
+            fontFamily: 'Impact, sans-serif'
           }}>
             THE STYLES WE CURATE
           </h2>
-          <p className="text-center text-lg font-light mb-12 max-w-2xl mx-auto" style={{ color: '#FFB6C1' }}>
+          <p className="text-center text-lg mb-12 max-w-2xl mx-auto text-gray-400">
             Provocative pieces with unapologetic presence
           </p>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {styles.map((style, index) => {
-              const colors = ['#FF1493', '#00FFFF', '#FF6B9D', '#FFD700'];
-              const color = colors[index % colors.length];
+              const colorKeys = ['pink', 'cyan', 'purple', 'pink'];
+              const colorKey = colorKeys[index % colorKeys.length];
+              const colors = colorClasses[colorKey];
               
               return (
                 <div key={index} className="group transition-all duration-300 hover:scale-105">
-                  <div className="overflow-hidden" style={{
-                    background: 'rgba(26, 10, 46, 0.7)',
-                    backdropFilter: 'blur(10px)',
-                    border: `2px solid ${color}`,
-                    boxShadow: `0 0 15px ${color}40`
-                  }}>
+                  <div className={`overflow-hidden bg-purple-950 border-2 ${colors.border}`}>
                     <div className="relative h-64 overflow-hidden">
                       <img
                         src={style.image}
                         alt={style.title}
                         className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110"
                       />
-                      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-500" style={{
-                        background: `linear-gradient(180deg, transparent 0%, ${color}60 100%)`
-                      }} />
                     </div>
                     <div className="p-6">
-                      <h4 className="text-xl font-black mb-3 uppercase" style={{
-                        color: color,
+                      <h4 className={`text-xl font-black mb-3 uppercase ${colors.text}`} style={{
                         fontFamily: 'Impact, sans-serif'
                       }}>
                         {style.title}
                       </h4>
-                      <div className="w-12 h-0.5 mb-4" style={{ background: color }}></div>
-                      <p className="text-sm font-light leading-relaxed" style={{ color: '#E0BBE4' }}>
+                      <div className={`w-12 h-0.5 mb-4 ${colors.bg}`}></div>
+                      <p className="text-sm leading-relaxed text-gray-400">
                         {style.description}
                       </p>
                     </div>
@@ -429,60 +382,39 @@ const About = () => {
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
             <div className="inline-block mb-8">
-              <div className="w-24 h-24 flex items-center justify-center" style={{
-                border: '3px solid #FF1493',
-                boxShadow: '0 0 30px rgba(255, 20, 147, 0.6)',
-                background: 'rgba(255, 20, 147, 0.1)'
-              }}>
-                <Heart size={48} style={{ color: '#FF1493' }} fill="#FF1493" />
+              <div className="w-24 h-24 flex items-center justify-center border-2 border-pink-600 bg-purple-950">
+                <Heart size={48} className="text-pink-600" fill="rgb(219 39 119)" />
               </div>
             </div>
 
-            <h2 className="text-5xl md:text-7xl font-black mb-8 uppercase" style={{
+            <h2 className="text-5xl md:text-7xl font-black mb-8 uppercase text-cyan-400" style={{
               fontFamily: 'Impact, sans-serif',
-              color: '#00FFFF',
-              textShadow: '4px 4px 0px #FF1493, 8px 8px 0px rgba(0,0,0,0.4)'
+              textShadow: '2px 2px 0px rgb(219 39 119)'
             }}>
               OUR PHILOSOPHY
             </h2>
 
-            <div className="text-3xl md:text-4xl font-black mb-8 uppercase" style={{
-              fontFamily: 'Impact, sans-serif',
-              background: 'linear-gradient(90deg, #FF1493, #00FFFF, #FF6B9D)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text'
+            <div className="text-3xl md:text-4xl font-black mb-8 uppercase bg-gradient-to-r from-pink-600 via-cyan-600 to-purple-600 bg-clip-text text-transparent" style={{
+              fontFamily: 'Impact, sans-serif'
             }}>
               BOLD ART FOR BOLD SPACES
             </div>
           </div>
 
-          <div className="p-12" style={{
-            background: 'rgba(26, 10, 46, 0.8)',
-            backdropFilter: 'blur(10px)',
-            border: '3px solid #FF1493',
-            boxShadow: '0 0 30px rgba(255, 20, 147, 0.5)'
-          }}>
-            <p className="text-xl md:text-2xl leading-relaxed font-light mb-6 text-center" style={{ color: '#E0BBE4' }}>
+          <div className="p-12 bg-purple-950 border-2 border-pink-600">
+            <p className="text-xl md:text-2xl leading-relaxed mb-6 text-center text-gray-400">
               We believe your home should be as unique as you are. Every piece we curate challenges the ordinary, celebrates individuality, and transforms spaces into personal galleries.
             </p>
             
-            <div className="w-24 h-1 mx-auto my-8" style={{
-              background: 'linear-gradient(90deg, #FF1493, #00FFFF, #FF6B9D)',
-              boxShadow: '0 0 10px rgba(255, 20, 147, 0.5)'
-            }}></div>
+            <div className="w-24 h-1 mx-auto my-8 bg-gradient-to-r from-pink-600 via-cyan-600 to-purple-600"></div>
             
-            <p className="text-lg leading-relaxed font-light text-center" style={{ color: '#FFB6C1' }}>
+            <p className="text-lg leading-relaxed text-center text-gray-500">
               From Miami-inspired aesthetics to provocative artistry, we're here to help you create environments that don't just look good — they make people stop, stare, and remember.
             </p>
             
             <div className="mt-8 text-center">
-              <div className="inline-block px-8 py-3 font-black text-lg uppercase" style={{
-                background: 'linear-gradient(135deg, #FF1493 0%, #FF6B9D 100%)',
-                border: '2px solid #FF1493',
-                color: '#000000',
-                fontFamily: 'Impact, sans-serif',
-                boxShadow: '0 0 20px rgba(255, 20, 147, 0.5)'
+              <div className="inline-block px-8 py-3 font-black text-lg uppercase bg-gradient-to-r from-pink-600 to-purple-600 border-2 border-pink-600 text-white" style={{
+                fontFamily: 'Impact, sans-serif'
               }}>
                 LIFE'S TOO SHORT FOR BORING DECOR
               </div>
@@ -491,15 +423,8 @@ const About = () => {
         </div>
       </section>
 
-      {/* Scanlines effect at bottom */}
-      <div className="h-2 relative" style={{
-        borderTop: '2px solid #FF1493',
-        boxShadow: '0 -2px 15px rgba(255, 20, 147, 0.5)'
-      }}>
-        <div className="absolute inset-0 opacity-20" style={{
-          backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, #FF1493 2px, #FF1493 4px)'
-        }}></div>
-      </div>
+      {/* Bottom border */}
+      <div className="h-2 border-t-2 border-pink-900"></div>
     </div>
   );
 };

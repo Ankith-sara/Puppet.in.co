@@ -45,7 +45,6 @@ const Login = () => {
     }
   };
 
-  // OTP Timer effect
   useEffect(() => {
     if (otpTimer > 0) {
       const timer = setTimeout(() => setOtpTimer(otpTimer - 1), 1000);
@@ -53,7 +52,6 @@ const Login = () => {
     }
   }, [otpTimer]);
 
-  // Handle redirect after login
   const handlePostLoginRedirect = () => {
     const returnUrl = sessionStorage.getItem('returnUrl');
     if (returnUrl) {
@@ -64,7 +62,6 @@ const Login = () => {
     }
   };
 
-  // Redirect if logged in
   useEffect(() => {
     if (token) {
       handlePostLoginRedirect();
@@ -72,10 +69,9 @@ const Login = () => {
   }, [token, navigate]);
 
   useEffect(() => {
-    document.title = 'Login | Aharyas';
+    document.title = 'Login | Puppet';
   }, []);
 
-  // Reset form when switching between Login/SignUp
   const resetForm = () => {
     setName('');
     setPassword('');
@@ -88,12 +84,10 @@ const Login = () => {
     setOtpDigits(Array(6).fill(''));
   };
 
-  // SEND OTP
   const handleSendOtp = async () => {
     setOtpError('');
     setErrors({});
 
-    // Basic validation before sending OTP
     const newErrors = {};
     if (!name.trim()) newErrors.name = 'Name is required';
     if (!email) newErrors.email = 'Email is required';
@@ -125,7 +119,6 @@ const Login = () => {
     setOtpLoading(false);
   };
 
-  // VERIFY OTP & CREATE ACCOUNT
   const handleVerifyOtp = async (event) => {
     event.preventDefault();
     setOtpError('');
@@ -148,7 +141,6 @@ const Login = () => {
         toast.success('Account created successfully!');
         setToken(res.data.token);
         localStorage.setItem('token', res.data.token);
-        // Redirect will be handled by useEffect when token changes
       } else {
         setOtpError(res.data.message || 'Invalid OTP');
       }
@@ -158,11 +150,9 @@ const Login = () => {
     setIsLoading(false);
   };
 
-  // LOGIN HANDLER
   const handleLogin = async (event) => {
     event.preventDefault();
     
-    // Validate login form
     const newErrors = {};
     if (!email) newErrors.email = 'Email is required';
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) newErrors.email = 'Enter a valid email';
@@ -184,7 +174,6 @@ const Login = () => {
         toast.success(`Welcome back, ${response.data.name}!`);
         setToken(response.data.token);
         localStorage.setItem('token', response.data.token);
-        // Redirect will be handled by useEffect when token changes
       } else {
         toast.error(response.data.message);
       }
@@ -200,44 +189,74 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen text-black">
+    <div className="min-h-screen bg-black text-white">
       <div className="flex flex-col lg:flex-row">
         {/* Left Panel - Image with overlay */}
         <div className="hidden lg:block lg:w-1/2 relative min-h-screen">
-          <div className="absolute inset-0 bg-black/30 z-10"></div>
+          {/* Retro grid overlay */}
+          <div className="absolute inset-0 opacity-10 z-10" style={{
+            backgroundImage: `
+              linear-gradient(rgb(219 39 119) 1px, transparent 1px),
+              linear-gradient(90deg, rgb(219 39 119) 1px, transparent 1px)
+            `,
+            backgroundSize: '40px 40px',
+            transform: 'perspective(800px) rotateX(75deg) scale(2)',
+            transformOrigin: 'center bottom'
+          }}></div>
+          
+          <div className="absolute inset-0 bg-black/40 z-10"></div>
           <div className="h-full flex items-center justify-center overflow-hidden">
             <img 
               src="https://okhai.org/cdn/shop/files/LD25330610_1_Hero_414x650.jpg?v=1745928986" 
               alt="Premium craftsmanship" 
-              className="w-full h-full object-cover filter grayscale" 
+              className="w-full h-full object-cover opacity-70" 
             />
           </div>
+          
           <div className="absolute inset-0 z-20 flex items-center justify-center p-10">
-            <div className="bg-white/95 backdrop-blur-sm p-12 shadow-2xl border-l-4 border-black max-w-md">
-              <h2 className="text-3xl font-light tracking-wider mb-4 text-black">ELEVATE YOUR</h2>
-              <h1 className="text-5xl font-light tracking-tight mb-6 text-black">EXPERIENCE</h1>
-              <div className="w-16 h-0.5 bg-black mb-6"></div>
-              <blockquote className="text-lg font-light text-gray-700 leading-relaxed">
+            <div className="bg-purple-950 backdrop-blur-sm p-12 border-2 border-pink-600 max-w-md" style={{
+              boxShadow: '0 0 30px rgba(219, 39, 119, 0.4)'
+            }}>
+              <h2 className="text-3xl font-black tracking-wider mb-4 text-cyan-400 uppercase" style={{fontFamily: 'Impact, sans-serif'}}>ELEVATE YOUR</h2>
+              <h1 className="text-5xl font-black mb-6 text-pink-600 uppercase" style={{
+                fontFamily: 'Impact, sans-serif',
+                textShadow: '2px 2px 0px rgba(0, 255, 255, 0.3)'
+              }}>EXPERIENCE</h1>
+              <div className="w-16 h-1 bg-gradient-to-r from-pink-600 to-cyan-600 mb-6"></div>
+              <blockquote className="text-lg text-gray-300 leading-relaxed">
                 "Join a community that believes fashion should honor heritage, empower artisans, and carry stories forward."
               </blockquote>
             </div>
           </div>
-          <div className="absolute top-8 left-8 w-16 h-16 border border-white/20 z-30"></div>
-          <div className="absolute bottom-8 right-8 w-16 h-16 border border-white/20 z-30"></div>
+          
+          <div className="absolute top-8 left-8 w-16 h-16 border-2 border-pink-600 z-30"></div>
+          <div className="absolute bottom-8 right-8 w-16 h-16 border-2 border-cyan-600 z-30"></div>
         </div>
 
         {/* Right Panel - Form */}
-        <div className="w-full lg:w-1/2 bg-gradient-to-b from-white to-stone-50 flex items-center">
-          <div className="w-full max-w-lg mx-auto p-8 lg:p-12">
+        <div className="w-full lg:w-1/2 bg-black flex items-center relative">
+          {/* Subtle grid on form side */}
+          <div className="absolute inset-0 opacity-5" style={{
+            backgroundImage: `
+              linear-gradient(rgb(219 39 119) 1px, transparent 1px),
+              linear-gradient(90deg, rgb(219 39 119) 1px, transparent 1px)
+            `,
+            backgroundSize: '40px 40px'
+          }}></div>
+          
+          <div className="w-full max-w-lg mx-auto p-8 lg:p-12 relative z-10">
             <div className="mb-12">
-              <h1 className="text-4xl font-light tracking-wider mb-4 text-black">
+              <h1 className="text-4xl md:text-5xl font-black mb-4 text-cyan-400 uppercase" style={{
+                fontFamily: 'Impact, sans-serif',
+                textShadow: '2px 2px 0px rgb(219 39 119)'
+              }}>
                 {currentState === 'Login' ? 'WELCOME BACK' : 'JOIN US'}
               </h1>
-              <div className="w-16 h-0.5 bg-black mb-6"></div>
-              <p className="text-gray-600 font-light text-lg leading-relaxed">
+              <div className="w-24 h-1 bg-gradient-to-r from-pink-600 to-cyan-600 mb-6"></div>
+              <p className="text-gray-400 text-lg leading-relaxed">
                 {currentState === 'Login'
-                  ? 'Sign in to access your exclusive experience with conscious luxury'
-                  : 'Create an account to begin your premium journey with handcrafted heritage'}
+                  ? 'Sign in to access your bold collection and exclusive experiences'
+                  : 'Create an account to begin your journey with provocative artistry'}
               </p>
             </div>
 
@@ -245,62 +264,61 @@ const Login = () => {
             {currentState === 'Login' && (
               <form onSubmit={handleLogin} className="space-y-8">
                 <div className="space-y-3">
-                  <label htmlFor="email" className="block text-sm font-light text-gray-700 tracking-wide uppercase">
-                    Email Address
+                  <label htmlFor="email" className="block text-sm font-black text-pink-600 uppercase" style={{fontFamily: 'Impact, sans-serif'}}>
+                    Email
                   </label>
                   <div className="relative group">
                     <div className="absolute inset-y-0 left-0 pl-4 flex items-center">
-                      <Mail size={20} className="text-gray-400 group-focus-within:text-black transition-colors duration-300" />
+                      <Mail size={20} className="text-gray-600 group-focus-within:text-cyan-400 transition-colors duration-300" />
                     </div>
                     <input
                       id="email"
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className={`w-full pl-14 pr-4 py-4 bg-white border-b-2 focus:outline-none transition-all duration-300 font-light text-lg ${
+                      className={`w-full pl-14 pr-4 py-4 bg-purple-950 border-2 focus:outline-none transition-all duration-300 text-white ${
                         errors.email 
-                          ? 'border-red-400 focus:border-red-500' 
-                          : 'border-gray-200 focus:border-black'
+                          ? 'border-red-500 focus:border-red-400' 
+                          : 'border-pink-600 focus:border-cyan-600'
                       }`}
-                      placeholder="Enter your email address"
+                      placeholder="Enter your email"
                     />
                     {errors.email && (
-                      <p className="text-red-500 text-sm mt-2 font-light">{errors.email}</p>
+                      <p className="text-red-400 text-sm mt-2">{errors.email}</p>
                     )}
                   </div>
                 </div>
 
                 <div className="space-y-3">
-                  <label htmlFor="password" className="block text-sm font-light text-gray-700 tracking-wide uppercase">
+                  <label htmlFor="password" className="block text-sm font-black text-pink-600 uppercase" style={{fontFamily: 'Impact, sans-serif'}}>
                     Password
                   </label>
                   <div className="relative group">
                     <div className="absolute inset-y-0 left-0 pl-4 flex items-center">
-                      <Lock size={20} className="text-gray-400 group-focus-within:text-black transition-colors duration-300" />
+                      <Lock size={20} className="text-gray-600 group-focus-within:text-cyan-400 transition-colors duration-300" />
                     </div>
                     <input
                       id="password"
                       type={showPassword ? 'text' : 'password'}
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className={`w-full pl-14 pr-14 py-4 bg-white border-b-2 focus:outline-none transition-all duration-300 font-light text-lg ${
+                      className={`w-full pl-14 pr-14 py-4 bg-purple-950 border-2 focus:outline-none transition-all duration-300 text-white ${
                         errors.password 
-                          ? 'border-red-400 focus:border-red-500' 
-                          : 'border-gray-200 focus:border-black'
+                          ? 'border-red-500 focus:border-red-400' 
+                          : 'border-pink-600 focus:border-cyan-600'
                       }`}
                       placeholder="Enter your password"
                       autoComplete="current-password"
                     />
                     <button
                       type="button"
-                      className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-black transition-colors duration-300"
+                      className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-600 hover:text-cyan-400 transition-colors duration-300"
                       onClick={() => setShowPassword(!showPassword)}
-                      aria-label={showPassword ? "Hide password" : "Show password"}
                     >
                       {showPassword ? <Eye size={20} /> : <EyeOff size={20} />}
                     </button>
                     {errors.password && (
-                      <p className="text-red-500 text-sm mt-2 font-light">{errors.password}</p>
+                      <p className="text-red-400 text-sm mt-2">{errors.password}</p>
                     )}
                   </div>
                 </div>
@@ -309,9 +327,13 @@ const Login = () => {
                   <button
                     type="submit"
                     disabled={isLoading}
-                    className="w-full py-4 bg-black text-white text-sm uppercase font-light tracking-widest hover:bg-gray-900 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black"
+                    className="w-full py-4 bg-gradient-to-r from-pink-600 to-purple-600 text-white font-black uppercase tracking-widest hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed border-2 border-pink-600"
+                    style={{
+                      fontFamily: 'Impact, sans-serif',
+                      boxShadow: '0 0 20px rgba(219, 39, 119, 0.6)'
+                    }}
                   >
-                    {isLoading ? 'Signing In...' : 'Sign In'}
+                    {isLoading ? 'SIGNING IN...' : 'SIGN IN'}
                   </button>
                 </div>
               </form>
@@ -321,76 +343,76 @@ const Login = () => {
             {currentState === 'Sign Up' && (
               <div className="space-y-8">
                 <div className="space-y-3">
-                  <label htmlFor="name" className="block text-sm font-light text-gray-700 tracking-wide uppercase">
+                  <label htmlFor="name" className="block text-sm font-black text-pink-600 uppercase" style={{fontFamily: 'Impact, sans-serif'}}>
                     Full Name
                   </label>
                   <div className="relative group">
                     <div className="absolute inset-y-0 left-0 pl-4 flex items-center">
-                      <User size={20} className="text-gray-400 group-focus-within:text-black transition-colors duration-300" />
+                      <User size={20} className="text-gray-600 group-focus-within:text-cyan-400 transition-colors duration-300" />
                     </div>
                     <input
                       id="name"
                       type="text"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      className={`w-full pl-14 pr-4 py-4 bg-white border-b-2 focus:outline-none transition-all duration-300 font-light text-lg ${
+                      className={`w-full pl-14 pr-4 py-4 bg-purple-950 border-2 focus:outline-none transition-all duration-300 text-white ${
                         errors.name 
-                          ? 'border-red-400 focus:border-red-500' 
-                          : 'border-gray-200 focus:border-black'
+                          ? 'border-red-500 focus:border-red-400' 
+                          : 'border-pink-600 focus:border-cyan-600'
                       }`}
                       placeholder="Enter your full name"
                       disabled={otpSent}
                     />
                     {errors.name && (
-                      <p className="text-red-500 text-sm mt-2 font-light">{errors.name}</p>
+                      <p className="text-red-400 text-sm mt-2">{errors.name}</p>
                     )}
                   </div>
                 </div>
 
                 <div className="space-y-3">
-                  <label htmlFor="email" className="block text-sm font-light text-gray-700 tracking-wide uppercase">
-                    Email Address
+                  <label htmlFor="email" className="block text-sm font-black text-pink-600 uppercase" style={{fontFamily: 'Impact, sans-serif'}}>
+                    Email
                   </label>
                   <div className="relative group">
                     <div className="absolute inset-y-0 left-0 pl-4 flex items-center">
-                      <Mail size={20} className="text-gray-400 group-focus-within:text-black transition-colors duration-300" />
+                      <Mail size={20} className="text-gray-600 group-focus-within:text-cyan-400 transition-colors duration-300" />
                     </div>
                     <input
                       id="email"
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className={`w-full pl-14 pr-4 py-4 bg-white border-b-2 focus:outline-none transition-all duration-300 font-light text-lg ${
+                      className={`w-full pl-14 pr-4 py-4 bg-purple-950 border-2 focus:outline-none transition-all duration-300 text-white ${
                         errors.email 
-                          ? 'border-red-400 focus:border-red-500' 
-                          : 'border-gray-200 focus:border-black'
+                          ? 'border-red-500 focus:border-red-400' 
+                          : 'border-pink-600 focus:border-cyan-600'
                       }`}
-                      placeholder="Enter your email address"
+                      placeholder="Enter your email"
                       disabled={otpSent}
                     />
                     {errors.email && (
-                      <p className="text-red-500 text-sm mt-2 font-light">{errors.email}</p>
+                      <p className="text-red-400 text-sm mt-2">{errors.email}</p>
                     )}
                   </div>
                 </div>
 
                 <div className="space-y-3">
-                  <label htmlFor="password" className="block text-sm font-light text-gray-700 tracking-wide uppercase">
+                  <label htmlFor="password" className="block text-sm font-black text-pink-600 uppercase" style={{fontFamily: 'Impact, sans-serif'}}>
                     Password
                   </label>
                   <div className="relative group">
                     <div className="absolute inset-y-0 left-0 pl-4 flex items-center">
-                      <Lock size={20} className="text-gray-400 group-focus-within:text-black transition-colors duration-300" />
+                      <Lock size={20} className="text-gray-600 group-focus-within:text-cyan-400 transition-colors duration-300" />
                     </div>
                     <input
                       id="password"
                       type={showPassword ? 'text' : 'password'}
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className={`w-full pl-14 pr-14 py-4 bg-white border-b-2 focus:outline-none transition-all duration-300 font-light text-lg ${
+                      className={`w-full pl-14 pr-14 py-4 bg-purple-950 border-2 focus:outline-none transition-all duration-300 text-white ${
                         errors.password 
-                          ? 'border-red-400 focus:border-red-500' 
-                          : 'border-gray-200 focus:border-black'
+                          ? 'border-red-500 focus:border-red-400' 
+                          : 'border-pink-600 focus:border-cyan-600'
                       }`}
                       placeholder="Enter your password"
                       autoComplete="new-password"
@@ -398,14 +420,13 @@ const Login = () => {
                     />
                     <button
                       type="button"
-                      className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-black transition-colors duration-300"
+                      className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-600 hover:text-cyan-400 transition-colors duration-300"
                       onClick={() => setShowPassword(!showPassword)}
-                      aria-label={showPassword ? "Hide password" : "Show password"}
                     >
                       {showPassword ? <Eye size={20} /> : <EyeOff size={20} />}
                     </button>
                     {errors.password && (
-                      <p className="text-red-500 text-sm mt-2 font-light">{errors.password}</p>
+                      <p className="text-red-400 text-sm mt-2">{errors.password}</p>
                     )}
                   </div>
                 </div>
@@ -416,9 +437,13 @@ const Login = () => {
                       type="button"
                       onClick={handleSendOtp}
                       disabled={otpLoading}
-                      className="w-full py-4 bg-black text-white text-sm uppercase font-light tracking-widest hover:bg-gray-900 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl"
+                      className="w-full py-4 bg-gradient-to-r from-pink-600 to-purple-600 text-white font-black uppercase tracking-widest hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed border-2 border-pink-600"
+                      style={{
+                        fontFamily: 'Impact, sans-serif',
+                        boxShadow: '0 0 20px rgba(219, 39, 119, 0.6)'
+                      }}
                     >
-                      {otpLoading ? 'Sending...' : 'Send Verification Code'}
+                      {otpLoading ? 'SENDING...' : 'SEND CODE'}
                     </button>
                   </div>
                 )}
@@ -426,9 +451,9 @@ const Login = () => {
                 {otpSent && (
                   <form onSubmit={handleVerifyOtp} className="space-y-6 pt-4">
                     <div className="text-center">
-                      <h3 className="text-xl font-light mb-2 text-black tracking-wide">VERIFY YOUR EMAIL</h3>
-                      <div className="w-12 h-0.5 bg-black mx-auto mb-4"></div>
-                      <p className="text-gray-600 font-light">Enter the 6-digit code sent to your email</p>
+                      <h3 className="text-2xl font-black mb-2 text-cyan-400 uppercase" style={{fontFamily: 'Impact, sans-serif'}}>VERIFY EMAIL</h3>
+                      <div className="w-16 h-1 bg-gradient-to-r from-pink-600 to-cyan-600 mx-auto mb-4"></div>
+                      <p className="text-gray-400">Enter the 6-digit code sent to your email</p>
                     </div>
                     
                     <div className="flex gap-3 justify-center">
@@ -444,21 +469,25 @@ const Login = () => {
                             value={otpDigits[i] || ''}
                             onChange={(e) => handleOtpChange(i, e.target.value)}
                             onKeyDown={(e) => handleOtpKeyDown(i, e)}
-                            className="w-12 h-12 text-center text-lg font-light border-2 border-gray-200 focus:border-black focus:outline-none transition-all duration-300 bg-white"
+                            className="w-12 h-12 text-center text-lg font-black border-2 border-pink-600 focus:border-cyan-600 focus:outline-none transition-all duration-300 bg-purple-950 text-white"
                           />
                         ))}
                     </div>
                     
                     {otpError && (
-                      <p className="text-red-500 text-sm text-center font-light">{otpError}</p>
+                      <p className="text-red-400 text-sm text-center">{otpError}</p>
                     )}
                     
                     <button
                       type="submit"
                       disabled={isLoading}
-                      className="w-full py-4 bg-black text-white text-sm uppercase font-light tracking-widest hover:bg-gray-900 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl"
+                      className="w-full py-4 bg-gradient-to-r from-pink-600 to-purple-600 text-white font-black uppercase tracking-widest hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed border-2 border-pink-600"
+                      style={{
+                        fontFamily: 'Impact, sans-serif',
+                        boxShadow: '0 0 20px rgba(219, 39, 119, 0.6)'
+                      }}
                     >
-                      {isLoading ? 'Verifying...' : 'Verify & Create Account'}
+                      {isLoading ? 'VERIFYING...' : 'VERIFY & CREATE'}
                     </button>
 
                     <div className="text-center">
@@ -466,9 +495,9 @@ const Login = () => {
                         type="button"
                         onClick={handleSendOtp}
                         disabled={otpLoading || otpTimer > 0}
-                        className="text-sm text-gray-600 hover:text-black transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed font-light"
+                        className="text-sm text-gray-400 hover:text-cyan-400 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                       >
-                        {otpTimer > 0 ? `Resend in ${otpTimer}s` : 'Resend Code'}
+                        {otpTimer > 0 ? `RESEND IN ${otpTimer}S` : 'RESEND CODE'}
                       </button>
                     </div>
                   </form>
@@ -477,34 +506,36 @@ const Login = () => {
             )}
 
             {/* Switch between Login and Sign Up */}
-            <div className="pt-8 border-t border-gray-200 mt-8">
+            <div className="pt-8 border-t border-pink-600/30 mt-8">
               <div className="text-center">
                 {currentState === 'Login' ? (
-                  <p className="text-gray-600 font-light">
-                    New to Aharyas?{' '}
+                  <p className="text-gray-400">
+                    New to Puppet?{' '}
                     <button
                       type="button"
                       onClick={() => {
                         setCurrentState('Sign Up');
                         resetForm();
                       }}
-                      className="text-black font-light hover:font-normal transition-all duration-300 border-b border-transparent hover:border-black pb-0.5 tracking-wide"
+                      className="text-cyan-400 font-black hover:text-pink-600 transition-all duration-300 uppercase"
+                      style={{fontFamily: 'Impact, sans-serif'}}
                     >
-                      Create an account
+                      CREATE ACCOUNT
                     </button>
                   </p>
                 ) : (
-                  <p className="text-gray-600 font-light">
-                    Already part of our community?{' '}
+                  <p className="text-gray-400">
+                    Already a member?{' '}
                     <button
                       type="button"
                       onClick={() => {
                         setCurrentState('Login');
                         resetForm();
                       }}
-                      className="text-black font-light hover:font-normal transition-all duration-300 border-b border-transparent hover:border-black pb-0.5 tracking-wide"
+                      className="text-cyan-400 font-black hover:text-pink-600 transition-all duration-300 uppercase"
+                      style={{fontFamily: 'Impact, sans-serif'}}
                     >
-                      Sign In
+                      SIGN IN
                     </button>
                   </p>
                 )}

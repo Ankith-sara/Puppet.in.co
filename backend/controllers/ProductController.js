@@ -24,7 +24,6 @@ const addProduct = async (req, res) => {
             })
         );
 
-        const parsedSizes = sizes ? JSON.parse(sizes) : [];
         const isBestseller = bestseller === "true" || bestseller === true;
 
         // Prepare the product data
@@ -35,9 +34,7 @@ const addProduct = async (req, res) => {
             category,
             subCategory,
             bestseller: isBestseller,
-            sizes: parsedSizes,
             images: imagesUrl,
-            company: company || "Aharyas",
             adminId,
             date: Date.now(),
         };
@@ -57,7 +54,7 @@ const editProduct = async (req, res) => {
     try {
         const { id } = req.params;
         const adminId = req.user.id;
-        const { name, description, price, category, subCategory, bestseller, sizes, company } = req.body;
+        const { name, description, price, category, subCategory, bestseller, company } = req.body;
 
         const existingProduct = await productModel.findById(id);
         if (!existingProduct) {
@@ -89,7 +86,6 @@ const editProduct = async (req, res) => {
 
         const updatedImages = newImageUrls.length > 0 ? newImageUrls : existingProduct.images;
 
-        const parsedSizes = sizes ? JSON.parse(sizes) : [];
         const isBestseller = bestseller === "true" || bestseller === true;
 
         const updatedProduct = await productModel.findByIdAndUpdate(
@@ -101,9 +97,7 @@ const editProduct = async (req, res) => {
                 category,
                 subCategory,
                 bestseller: isBestseller,
-                sizes: parsedSizes,
                 images: updatedImages,
-                company: company || existingProduct.company || "Aharyas"
             },
             { new: true }
         );
@@ -132,32 +126,6 @@ const listAllProductsPublic = async (req, res) => {
     try {
         const products = await productModel.find({});
         res.json({ success: true, products });
-    } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
-    }
-};
-
-// Get all unique companies
-const getCompanies = async (req, res) => {
-    try {
-        const companies = await productModel.distinct("company");
-        const sortedCompanies = companies.sort((a, b) => {
-            if (a === "Independent") return 1;
-            if (b === "Independent") return -1;
-            return a.localeCompare(b);
-        });
-        res.json({ success: true, companies: sortedCompanies });
-    } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
-    }
-};
-
-// Get products by company
-const getProductsByCompany = async (req, res) => {
-    try {
-        const { company } = req.params;
-        const products = await productModel.find({ company }).sort({ date: -1 });
-        res.json({ success: true, products, company });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
     }
@@ -198,4 +166,4 @@ const singleProduct = async (req, res) => {
     }
 };
 
-export { listProducts, addProduct, editProduct, listAllProductsPublic, removeProduct, singleProduct, getCompanies, getProductsByCompany };
+export { listProducts, addProduct, editProduct, listAllProductsPublic, removeProduct, singleProduct };

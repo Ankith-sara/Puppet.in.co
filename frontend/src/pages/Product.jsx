@@ -1,70 +1,29 @@
 import React, { useContext, useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { ShopContext } from '../context/ShopContext';
-import { Camera, ChevronDown, ChevronUp, Minus, Plus, Heart, Share2 } from 'lucide-react';
+import { ChevronDown, ChevronUp, Heart, Share2, Zap, ShoppingCart } from 'lucide-react';
 import RelatedProducts from '../components/RelatedProducts';
 import RecentlyViewed from '../components/RecentlyViewed';
-import Title from '../components/Title';
 
 const Product = () => {
   const { productId } = useParams();
-  const { 
-    products, 
-    currency, 
-    addToCart, 
-    navigate, 
-    addProductToRecentlyViewed,
-    toggleWishlist,
-    isInWishlist,
-    token
-  } = useContext(ShopContext) || {};
-
+  const { products, currency, addToCart, navigate, addProductToRecentlyViewed, toggleWishlist, isInWishlist, token } = useContext(ShopContext) || {};
   const [productData, setProductData] = useState(null);
-  const [size, setSize] = useState('');
   const [quantity, setQuantity] = useState(1);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isModalOpen, setModalOpen] = useState(false);
   const [modalImage, setModalImage] = useState('');
   const [zoomLevel, setZoomLevel] = useState(1);
   const modalRef = useRef(null);
-  const [isDragging, setIsDragging] = useState(false);
-  const [startY, setStartY] = useState(0);
-  const [scrollTop, setScrollTop] = useState(0);
-
-  // Wishlist state - check if current product is in wishlist
   const [isWishlisted, setIsWishlisted] = useState(false);
-
-  // Dropdown state management
+  const [isAddedToCart, setIsAddedToCart] = useState(false);
   const [expandedSection, setExpandedSection] = useState('description');
+  const [isAddingToCart, setIsAddingToCart] = useState(false);
 
   const toggleSection = (section) => {
-    if (expandedSection === section) {
-      setExpandedSection(null);
-    } else {
-      setExpandedSection(section);
-    }
+    setExpandedSection(expandedSection === section ? null : section);
   };
 
-  // Modal drag handling
-  const handleMouseDown = (e) => {
-    setIsDragging(true);
-    setStartY(e.pageY - scrollTop);
-  };
-
-  const handleMouseMove = (e) => {
-    if (!isDragging) return;
-    const y = e.pageY - startY;
-    if (modalRef.current) {
-      modalRef.current.scrollTop = y;
-      setScrollTop(y);
-    }
-  };
-
-  const handleMouseUp = () => {
-    setIsDragging(false);
-  };
-
-  // Quantity handlers
   const handleQuantityChange = (action) => {
     if (action === 'increase') {
       setQuantity(quantity + 1);
@@ -73,30 +32,55 @@ const Product = () => {
     }
   };
 
-  // Wishlist handler
+  const handleAddToCart = async () => {
+    if (isAddingToCart) return; // Prevent double clicks
+    
+    setIsAddingToCart(true);
+    console.log('Adding to cart:', productData._id, 'quantity:', quantity);
+    
+    try {
+      const success = await addToCart(productData._id, quantity);
+      console.log('Add to cart result:', success);
+      
+      if (success) {
+        setIsAddedToCart(true);
+        setQuantity(1);
+        
+        // Reset the "added to cart" state after 3 seconds
+        setTimeout(() => {
+          setIsAddedToCart(false);
+        }, 3000);
+      }
+    } catch (error) {
+      console.error('Error adding to cart:', error);
+    } finally {
+      setIsAddingToCart(false);
+    }
+  };
+
+  const handleViewCart = () => {
+    navigate('/cart');
+  };
+
   const handleWishlistToggle = async () => {
     if (!token) {
-      // If not logged in, show a message and redirect to login
       navigate('/login');
       return;
     }
-    
     const wasAdded = await toggleWishlist(productId);
     if (wasAdded !== undefined) {
       setIsWishlisted(wasAdded);
     }
   };
 
-  // Share product function
   const handleShare = () => {
     const shareData = {
       title: productData.name,
       text: `Check out this product: ${productData.name}`,
       url: window.location.href,
     };
-
     if (navigator.share) {
-      navigator.share(shareData).catch((err));
+      navigator.share(shareData).catch((err) => console.log(err));
     } else {
       navigator.clipboard.writeText(shareData.url).then(() => {
         alert("Product link copied to clipboard!");
@@ -104,7 +88,6 @@ const Product = () => {
     }
   };
 
-  // Image navigation
   const zoomIn = () => {
     if (zoomLevel < 1.5) setZoomLevel(zoomLevel + 0.1);
   };
@@ -129,12 +112,10 @@ const Product = () => {
     }
   };
 
-  // Fixed modal functions
   const openModal = (img) => {
     setModalImage(img);
     setModalOpen(true);
     setZoomLevel(1);
-    setScrollTop(0);
     if (modalRef.current) {
       modalRef.current.scrollTop = 0;
     }
@@ -150,38 +131,30 @@ const Product = () => {
     document.body.style.overflow = 'unset';
   };
 
-  // Handle image click with proper event handling
   const handleImageClick = (e) => {
     e.preventDefault();
     e.stopPropagation();
     openModal(productData.images[currentIndex]);
   };
 
-  // Handle thumbnail click
   const handleThumbnailClick = (index) => {
     setCurrentIndex(index);
   };
 
-  // Keyboard navigation for modal
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (!isModalOpen) return;
-
       switch (e.key) {
-        case 'Escape':
-          closeModal();
-          break;
         case 'ArrowLeft':
-          handlePrev();
+          if (isModalOpen) handlePrev();
           break;
         case 'ArrowRight':
-          handleNext();
+          if (isModalOpen) handleNext();
           break;
         default:
           break;
       }
     };
-
     document.addEventListener('keydown', handleKeyDown);
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
@@ -194,7 +167,6 @@ const Product = () => {
     if (product) {
       setProductData(product);
       addProductToRecentlyViewed(product);
-      // Check if product is in wishlist
       setIsWishlisted(isInWishlist(productId));
     }
   }, [productId, products, addProductToRecentlyViewed, isInWishlist]);
@@ -205,81 +177,84 @@ const Product = () => {
     }
   }, [productData?.name]);
 
-  // Update wishlist state when wishlist changes
   useEffect(() => {
     if (productId) {
       setIsWishlisted(isInWishlist(productId));
     }
   }, [productId, isInWishlist]);
 
+  useEffect(() => {
+    setIsAddedToCart(false);
+  }, [productId]);
+
   if (!productData) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-black mx-auto mb-4"></div>
-          <span className="text-gray-600">Loading product...</span>
+          <div className="animate-spin rounded-full h-16 w-16 border-4 border-pink-600 border-t-cyan-600 mx-auto mb-4"></div>
+          <span className="text-cyan-400 font-black uppercase tracking-wider" style={{fontFamily: 'Impact, sans-serif'}}>LOADING PRODUCT...</span>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen mt-20">
+    <div className="min-h-screen bg-black text-white pt-24 pb-12 relative overflow-hidden">
+      {/* Grid overlay background */}
+      <div className="fixed inset-0 opacity-5 pointer-events-none" style={{
+        backgroundImage: `
+          linear-gradient(rgb(219 39 119) 1px, transparent 1px),
+          linear-gradient(90deg, rgb(219 39 119) 1px, transparent 1px)
+        `,
+        backgroundSize: '40px 40px',
+        transform: 'perspective(800px) rotateX(75deg) scale(2)',
+        transformOrigin: 'center bottom'
+      }}></div>
+
       {/* Product Section */}
-      <section className="py-12 px-4 sm:px-8 md:px-10 lg:px-20">
+      <section className="py-12 px-4 sm:px-8 md:px-10 lg:px-20 relative z-10">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.2fr] gap-6 items-start">
             {/* Image Gallery */}
             <div className="space-y-4">
-              <div className="relative group">
-                <div className="relative overflow-hidden">
+              <div className="relative group bg-purple-950 border-4 border-pink-600 p-4">
+                <div className="relative overflow-hidden bg-black">
                   <img
                     src={productData.images[currentIndex]}
                     alt={productData.name}
                     onClick={handleImageClick}
-                    className="w-full h-[80vh] object-contain transition-all duration-500 hover:scale-105"
+                    className="w-full h-[70vh] object-contain transition-all duration-500 hover:scale-105 cursor-pointer"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/5 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300"></div>
-
+                  
                   <div
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      openModal(productData.images[currentIndex]);
-                    }}
-                    className="absolute top-4 right-4 bg-black/70 text-white px-2 py-1 text-xs rounded cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity">
-                    Click to zoom
+                    onClick={(e) => { e.stopPropagation(); openModal(productData.images[currentIndex]); }}
+                    className="absolute top-4 right-4 bg-cyan-600 text-white px-4 py-2 text-xs font-black cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity uppercase tracking-wider border-2 border-cyan-400"
+                    style={{fontFamily: 'Impact, sans-serif'}}
+                  >
+                    CLICK TO ZOOM
                   </div>
 
                   <button
-                    className="absolute top-1/2 left-4 transform -translate-y-1/2 w-10 h-10 flex items-center justify-center bg-white/90 text-black rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-all duration-300"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handlePrev();
-                    }}
+                    className="absolute top-1/2 left-4 transform -translate-y-1/2 w-12 h-12 flex items-center justify-center bg-pink-600 text-white border-2 border-pink-400 opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-pink-700 font-black text-xl"
+                    onClick={(e) => { e.stopPropagation(); handlePrev(); }}
                   >
                     ◀
                   </button>
                   <button
-                    className="absolute top-1/2 right-4 transform -translate-y-1/2 w-10 h-10 flex items-center justify-center bg-white/90 text-black rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-all duration-300"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleNext();
-                    }}
+                    className="absolute top-1/2 right-4 transform -translate-y-1/2 w-12 h-12 flex items-center justify-center bg-pink-600 text-white border-2 border-pink-400 opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-pink-700 font-black text-xl"
+                    onClick={(e) => { e.stopPropagation(); handleNext(); }}
                   >
                     ▶
                   </button>
                 </div>
               </div>
 
-              <div className="flex gap-3 overflow-x-auto p-2 bg-gray-100">
+              <div className="flex gap-3 overflow-x-auto p-3 bg-purple-950 border-2 border-pink-600">
                 {productData.images.map((img, index) => (
                   <div
                     key={index}
                     onClick={() => handleThumbnailClick(index)}
-                    className={`flex-shrink-0 w-20 overflow-hidden cursor-pointer transition-all duration-300 ${currentIndex === index
-                      ? 'shadow-lg border-2 border-black'
-                      : 'shadow-md border border-gray-200 hover:border-gray-400'
-                      }`}
+                    className={`flex-shrink-0 w-20 h-20 overflow-hidden cursor-pointer transition-all duration-300 border-2 ${currentIndex === index ? 'border-cyan-600 shadow-lg shadow-cyan-600/50' : 'border-pink-600 hover:border-cyan-600'}`}
                   >
                     <img
                       src={img}
@@ -292,76 +267,60 @@ const Product = () => {
             </div>
 
             {/* Product Details */}
-            <div className="bg-white border border-gray-200 shadow-lg">
-              <div className="p-6 border-b border-gray-200">
-                <div className="flex items-center justify-between mb-4">
-                  <h1 className="text-2xl tracking-wide text-black">{productData.name}</h1>
-                  <div className="flex items-center gap-2">
+            <div className="bg-purple-950 border-4 border-pink-600 shadow-2xl relative">
+              <div className="p-6 border-b-2 border-pink-600 bg-black">
+                <div className="flex items-start justify-between mb-4 gap-4">
+                  <h1 className="text-2xl md:text-3xl tracking-wide text-cyan-400 font-black uppercase flex-1" style={{fontFamily: 'Impact, sans-serif'}}>
+                    {productData.name}
+                  </h1>
+                  <div className="flex items-center gap-2 flex-shrink-0">
                     <button
                       onClick={handleWishlistToggle}
-                      className={`p-2 border transition-all duration-300 ${isWishlisted
-                        ? 'bg-black text-white border-black'
-                        : 'bg-white text-black border-gray-300 hover:border-black'
-                        }`}
+                      className={`p-3 border-2 transition-all duration-300 ${isWishlisted ? 'bg-pink-600 text-white border-pink-600' : 'bg-black text-pink-600 border-pink-600 hover:bg-pink-600 hover:text-white'}`}
                       title={isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
                     >
-                      <Heart
-    size={16}
-    className={isWishlisted ? 'text-white' : 'text-black'}
-    fill={isWishlisted ? 'currentColor' : 'none'}   // <- key fix
-    stroke="currentColor"
-  />
+                      <Heart size={18} fill={isWishlisted ? 'currentColor' : 'none'} stroke="currentColor" />
                     </button>
-                    <button 
-                      onClick={handleShare} 
-                      className="p-2 border border-gray-300 bg-white text-black hover:border-black transition-all duration-300"
+                    <button
+                      onClick={handleShare}
+                      className="p-3 border-2 border-cyan-600 bg-black text-cyan-600 hover:bg-cyan-600 hover:text-white transition-all duration-300"
                       title="Share product"
                     >
-                      <Share2 size={16} />
+                      <Share2 size={18} />
                     </button>
                   </div>
                 </div>
 
                 <div className="flex items-baseline justify-between mb-6">
-                  <div className="text-xl font-medium text-black">{currency}{productData.price}</div>
-                  <div className="text-sm text-gray-500 font-light">Prices include GST</div>
-                </div>
-
-                <div className="mb-6">
-                  <label className="block text-xs uppercase tracking-wider text-gray-500 font-light mb-3">
-                    Select Size
-                  </label>
-                  <div className="flex flex-wrap gap-2">
-                    {productData.sizes.map((s, index) => (
-                      <button
-                        key={index}
-                        onClick={() => setSize(s)}
-                        className={`py-2 px-3 border transition-all duration-300 ${size === s
-                          ? 'bg-black text-white border-black'
-                          : 'bg-white text-black border-gray-300 hover:border-black'
-                          }`}
-                      >
-                        <span className="font-light">{s}</span>
-                      </button>
-                    ))}
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-xs font-black text-purple-600 uppercase" style={{fontFamily: 'Impact, sans-serif'}}>
+                      {currency}
+                    </span>
+                    <span className="text-3xl font-black text-white" style={{fontFamily: 'Impact, sans-serif'}}>
+                      {productData.price}
+                    </span>
+                  </div>
+                  <div className="text-xs text-gray-400 font-bold uppercase tracking-wider" style={{fontFamily: 'Impact, sans-serif'}}>
+                    INCLUDES GST
                   </div>
                 </div>
 
                 <div className="mb-6">
-                  <label className="block text-xs uppercase tracking-wider text-gray-500 font-light mb-3">
-                    Quantity
+                  <label className="block text-xs uppercase tracking-wider text-purple-600 font-black mb-3" style={{fontFamily: 'Impact, sans-serif'}}>
+                    QUANTITY
                   </label>
-                  <div className="flex items-center border border-gray-300 w-fit">
+                  <div className="flex items-center border-2 border-cyan-600 w-fit bg-black">
                     <button
                       onClick={() => handleQuantityChange('decrease')}
-                      className="w-8 h-8 flex items-center justify-center hover:bg-gray-50 transition-colors border-r border-gray-300"
+                      className="w-12 h-12 flex items-center justify-center hover:bg-cyan-600 hover:text-white transition-colors border-r-2 border-cyan-600 font-black text-cyan-400 disabled:opacity-50 disabled:cursor-not-allowed"
                       disabled={quantity <= 1}
+                      style={{fontFamily: 'Impact, sans-serif'}}
                     >
-                      <Minus size={14} className={quantity <= 1 ? "text-gray-300" : "text-black"} />
+                      -
                     </button>
                     <input
                       type="number"
-                      className="w-12 h-8 text-center focus:outline-none bg-white font-light text-sm"
+                      className="w-20 h-12 text-center focus:outline-none bg-black text-white font-black"
                       value={quantity}
                       min="1"
                       onChange={(e) => {
@@ -370,233 +329,160 @@ const Product = () => {
                           setQuantity(Number(value));
                         }
                       }}
+                      style={{fontFamily: 'Impact, sans-serif'}}
                     />
                     <button
                       onClick={() => handleQuantityChange('increase')}
-                      className="w-8 h-8 flex items-center justify-center hover:bg-gray-50 transition-colors border-l border-gray-300"
+                      className="w-12 h-12 flex items-center justify-center hover:bg-cyan-600 hover:text-white transition-colors border-l-2 border-cyan-600 font-black text-cyan-400"
+                      style={{fontFamily: 'Impact, sans-serif'}}
                     >
-                      <Plus size={14} />
+                      +
                     </button>
                   </div>
                 </div>
 
                 <div className="space-y-3">
-                  <button
-                    onClick={() => addToCart(productData._id, size, quantity)}
-                    className="w-full py-3 bg-black text-white font-light tracking-wide hover:bg-gray-800 transition-all duration-300"
-                  >
-                    ADD TO CART
-                  </button>
-                  <button
-                    onClick={() => navigate('/try-on', { state: { image: productData.images[currentIndex] } })}
-                    className="w-full py-3 flex justify-center items-center gap-2 border border-black bg-white text-black font-light hover:bg-gray-50 transition-all duration-300"
-                  >
-                    <Camera size={16} />
-                    <span className="text-sm">TRY-ON</span>
-                  </button>
+                  {!isAddedToCart ? (
+                    <button
+                      onClick={handleAddToCart}
+                      disabled={isAddingToCart}
+                      className="w-full py-4 bg-pink-600 text-white font-black tracking-wide hover:bg-pink-700 transition-all duration-300 border-2 border-pink-600 hover:border-cyan-600 uppercase flex items-center justify-center gap-2 text-lg shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                      style={{fontFamily: 'Impact, sans-serif'}}
+                    >
+                      <ShoppingCart size={20} />
+                      {isAddingToCart ? 'ADDING...' : 'ADD TO CART'}
+                    </button>
+                  ) : (
+                    <button
+                      onClick={handleViewCart}
+                      className="w-full py-4 bg-cyan-600 text-white font-black tracking-wide hover:bg-cyan-700 transition-all duration-300 border-2 border-cyan-600 uppercase flex items-center justify-center gap-2 text-lg shadow-lg"
+                      style={{fontFamily: 'Impact, sans-serif'}}
+                    >
+                      <Zap size={20} />
+                      VIEW CART
+                    </button>
+                  )}
                 </div>
               </div>
 
               {/* Product Information Dropdowns */}
               <div>
-                <div className="border-b border-gray-200">
-                  <button onClick={() => toggleSection('description')} className="w-full py-4 px-6 flex justify-between items-center text-left font-medium transition-colors hover:bg-gray-50">
-                    DESCRIPTION
-                    {expandedSection === 'description' ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
-                  </button>
-                  {expandedSection === 'description' && (
-                    <div className="p-6 pt-0 text-gray-600 font-light leading-relaxed">
-                      <div className="w-8 h-0.5 bg-black mb-4"></div>
+                {[
+                  { key: 'description', title: 'DESCRIPTION', content: (
+                    <div className="p-6 pt-0 text-gray-300 leading-relaxed">
+                      <div className="w-12 h-1 bg-cyan-600 mb-4"></div>
                       <p>{productData.description}</p>
                     </div>
-                  )}
-                </div>
-
-                <div className="border-b border-gray-200">
-                  <button onClick={() => toggleSection('artisan')} className="w-full py-4 px-6 flex justify-between items-center text-left font-medium transition-colors hover:bg-gray-50">
-                    ARTISAN STORY
-                    {expandedSection === 'artisan' ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
-                  </button>
-                  {expandedSection === 'artisan' && (
-                    <div className="p-6 pt-0 text-gray-600 font-light">
-                      <div className="w-8 h-0.5 bg-black mb-4"></div>
-                      <div className="space-y-4">
-                        <div className="border-l-2 border-gray-200 pl-4">
-                          <h4 className="font-medium text-black mb-2">Master Craftsman: Rajesh Kumar</h4>
-                          <p className="text-sm leading-relaxed">With over 25 years of experience, Rajesh Kumar leads a team of skilled artisans in the historic textile region of Varanasi. His workshop has been creating exquisite handwoven pieces for three generations.</p>
-                        </div>
-
-                        <div className="border-l-2 border-gray-200 pl-4">
-                          <h4 className="font-medium text-black mb-2">Origin & Technique</h4>
-                          <p className="text-sm leading-relaxed">This piece originates from the vibrant looms of Uttar Pradesh, where time-honored weaving traditions meet contemporary design.</p>
-                        </div>
-
-                        <div className="border-l-2 border-gray-200 pl-4">
-                          <h4 className="font-medium text-black mb-2">Community Impact</h4>
-                          <p className="text-sm leading-relaxed italic">By choosing this piece, you're directly supporting a community of 12 artisan families.</p>
-                        </div>
-                      </div>
+                  )},
+                  { key: 'delivery', title: 'DELIVERY TIMELINE', content: (
+                    <div className="p-6 pt-0 text-gray-300">
+                      <div className="w-12 h-1 bg-cyan-600 mb-4"></div>
+                      <p className="mb-2 text-sm">Standard delivery: 3-5 business days</p>
+                      <p className="text-sm">Express delivery: 1-2 business days (additional charges apply)</p>
+                    </div>
+                  )},
+                  { key: 'manufacturing', title: 'MANUFACTURING DETAILS', content: (
+                    <div className="p-6 pt-0 text-gray-300">
+                      <div className="w-12 h-1 bg-cyan-600 mb-4"></div>
+                      <p className="mb-2 text-sm">Handcrafted by skilled artisans</p>
+                      <p className="mb-2 text-sm">Made in certified workshops</p>
+                      <p className="mb-2 text-sm">Ethically sourced materials</p>
+                      <p className="text-sm">Quality checked at multiple stages</p>
+                    </div>
+                  )},
+                  { key: 'returns', title: 'RETURNS & EXCHANGES', content: (
+                    <div className="p-6 pt-0 text-gray-300">
+                      <div className="w-12 h-1 bg-cyan-600 mb-4"></div>
+                      <p className="mb-2 text-sm">Easy return and exchange policy within 7 days of delivery</p>
+                      <p className="mb-2 text-sm">Items must be unused, unwashed and in original packaging</p>
+                      <p className="text-sm">Refunds will be processed within 5-7 business days</p>
                     </div>
                   )}
-                </div>
-
-                <div className="border-b border-gray-200">
-                  <button onClick={() => toggleSection('washcare')} className="w-full py-4 px-6 flex justify-between items-center text-left font-medium transition-colors hover:bg-gray-50">
-                    WASH CARE
-                    {expandedSection === 'washcare' ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
-                  </button>
-                  {expandedSection === 'washcare' && (
-                    <div className="p-6 pt-0 text-gray-600 font-light">
-                      <div className="w-8 h-0.5 bg-black mb-4"></div>
-                      <ul className="space-y-2">
-                        <li>• Hand wash with mild detergent</li>
-                        <li>• Do not bleach</li>
-                        <li>• Dry in shade</li>
-                        <li>• Warm iron</li>
-                        <li>• Do not dry clean</li>
-                      </ul>
-                    </div>
-                  )}
-                </div>
-
-                <div className="border-b border-gray-200">
-                  <button onClick={() => toggleSection('delivery')} className="w-full py-4 px-6 flex justify-between items-center text-left font-medium transition-colors hover:bg-gray-50">
-                    DELIVERY TIMELINE
-                    {expandedSection === 'delivery' ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
-                  </button>
-                  {expandedSection === 'delivery' && (
-                    <div className="p-6 pt-0 text-gray-600 font-light">
-                      <div className="w-8 h-0.5 bg-black mb-4"></div>
-                      <p className="mb-2">Standard delivery: 3-5 business days</p>
-                      <p>Express delivery: 1-2 business days (additional charges apply)</p>
-                    </div>
-                  )}
-                </div>
-
-                <div className="border-b border-gray-200">
-                  <button onClick={() => toggleSection('manufacturing')} className="w-full py-4 px-6 flex justify-between items-center text-left font-medium transition-colors hover:bg-gray-50">
-                    MANUFACTURING DETAILS
-                    {expandedSection === 'manufacturing' ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
-                  </button>
-                  {expandedSection === 'manufacturing' && (
-                    <div className="p-6 pt-0 text-gray-600 font-light">
-                      <div className="w-8 h-0.5 bg-black mb-4"></div>
-                      <p className="mb-2">Handcrafted by skilled artisans</p>
-                      <p className="mb-2">Made in certified workshops</p>
-                      <p className="mb-2">Ethically sourced materials</p>
-                      <p>Quality checked at multiple stages</p>
-                    </div>
-                  )}
-                </div>
-
-                <div>
-                  <button onClick={() => toggleSection('returns')} className="w-full py-4 px-6 flex justify-between items-center text-left font-medium transition-colors hover:bg-gray-50">
-                    RETURNS & EXCHANGES
-                    {expandedSection === 'returns' ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
-                  </button>
-                  {expandedSection === 'returns' && (
-                    <div className="p-6 pt-0 text-gray-600 font-light">
-                      <div className="w-8 h-0.5 bg-black mb-4"></div>
-                      <p className="mb-2">Easy return and exchange policy within 7 days of delivery</p>
-                      <p className="mb-2">Items must be unused, unwashed and in original packaging</p>
-                      <p>Refunds will be processed within 5-7 business days after receiving the returned item</p>
-                    </div>
-                  )}
-                </div>
+                ].map((section, idx, arr) => (
+                  <div key={section.key} className={idx < arr.length - 1 ? 'border-b-2 border-pink-900' : ''}>
+                    <button 
+                      onClick={() => toggleSection(section.key)} 
+                      className="w-full py-4 px-6 flex justify-between items-center text-left font-black transition-colors hover:bg-black/30 uppercase tracking-wider text-cyan-400"
+                      style={{fontFamily: 'Impact, sans-serif'}}
+                    >
+                      {section.title}
+                      {expandedSection === section.key ? <ChevronUp size={20} className="text-pink-600" /> : <ChevronDown size={20} className="text-pink-600" />}
+                    </button>
+                    {expandedSection === section.key && section.content}
+                  </div>
+                ))}
               </div>
+
+              {/* Bottom accent bar */}
+              <div className="h-2 bg-gradient-to-r from-pink-600 via-cyan-600 to-purple-600"></div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Modal */}
+      {/* Image Modal */}
       {isModalOpen && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-90 backdrop-blur-sm flex items-center justify-center z-50"
-          onClick={closeModal}
-        >
-          <div
-            className="relative max-w-[90vw] max-h-[90vh] flex items-center justify-center"
-            onClick={(e) => e.stopPropagation()}
-          >
+        <div className="fixed inset-0 bg-black bg-opacity-95 backdrop-blur-sm flex items-center justify-center z-50" onClick={closeModal}>
+          <div className="relative max-w-[90vw] max-h-[90vh] flex items-center justify-center border-4 border-pink-600" onClick={(e) => e.stopPropagation()}>
             <img
               src={modalImage}
               alt="Product Detail View"
-              className="max-w-full max-h-[95vh] object-contain transition-transform duration-200 shadow-2xl"
+              className="max-w-full max-h-[85vh] object-contain transition-transform duration-200"
               style={{ transform: `scale(${zoomLevel})` }}
             />
           </div>
 
-          {/* Modal Controls */}
           <button
-            className="absolute top-4 right-4 text-white z-10"
+            className="absolute top-4 right-4 text-white bg-pink-600 w-12 h-12 flex items-center justify-center hover:bg-pink-700 transition-colors border-2 border-pink-400 font-black text-xl"
             onClick={closeModal}
             aria-label="Close modal"
           >
             ✖
           </button>
           <button
-            className="absolute top-1/2 left-4 -translate-y-1/2 bg-white text-black p-3 rounded-full shadow-md hover:bg-gray-100 transition-colors z-10"
-            onClick={(e) => {
-              e.stopPropagation();
-              handlePrev();
-            }}
+            className="absolute top-1/2 left-4 -translate-y-1/2 bg-cyan-600 text-white p-3 w-12 h-12 flex items-center justify-center border-2 border-cyan-400 hover:bg-cyan-700 transition-colors font-black text-xl"
+            onClick={(e) => { e.stopPropagation(); handlePrev(); }}
             aria-label="Previous image"
           >
             ◀
           </button>
           <button
-            className="absolute top-1/2 right-4 -translate-y-1/2 bg-white text-black p-3 rounded-full shadow-md hover:bg-gray-100 transition-colors z-10"
-            onClick={(e) => {
-              e.stopPropagation();
-              handleNext();
-            }}
+            className="absolute top-1/2 right-4 -translate-y-1/2 bg-cyan-600 text-white p-3 w-12 h-12 flex items-center justify-center border-2 border-cyan-400 hover:bg-cyan-700 transition-colors font-black text-xl"
+            onClick={(e) => { e.stopPropagation(); handleNext(); }}
             aria-label="Next image"
           >
             ▶
           </button>
 
-          {/* Zoom Controls */}
-          <div className="absolute bottom-10 right-10 flex gap-2 z-10">
+          <div className="absolute bottom-10 right-10 flex gap-2">
             <button
-              className="bg-white text-black p-2 rounded-full w-10 h-10 flex items-center justify-center shadow-md hover:bg-gray-100 transition-colors"
-              onClick={(e) => {
-                e.stopPropagation();
-                zoomIn();
-              }}
+              className="bg-purple-600 text-white p-2 w-12 h-12 flex items-center justify-center border-2 border-purple-400 hover:bg-purple-700 transition-colors font-black text-2xl"
+              onClick={(e) => { e.stopPropagation(); zoomIn(); }}
               aria-label="Zoom in"
             >
               +
             </button>
             <button
-              className="bg-white text-black p-2 rounded-full w-10 h-10 flex items-center justify-center shadow-md hover:bg-gray-100 transition-colors"
-              onClick={(e) => {
-                e.stopPropagation();
-                zoomOut();
-              }}
+              className="bg-purple-600 text-white p-2 w-12 h-12 flex items-center justify-center border-2 border-purple-400 hover:bg-purple-700 transition-colors font-black text-2xl"
+              onClick={(e) => { e.stopPropagation(); zoomOut(); }}
               aria-label="Zoom out"
             >
               -
             </button>
           </div>
 
-          {/* Image Counter */}
-          <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-50 text-white px-3 py-1 rounded-full text-sm">
+          <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black/80 text-cyan-400 px-6 py-2 font-black border-2 border-cyan-600 uppercase tracking-wider" style={{fontFamily: 'Impact, sans-serif'}}>
             {currentIndex + 1} / {productData.images.length}
           </div>
         </div>
       )}
 
-      {/* Related Products Section */}
+      {/* Related Products */}
       <section className="px-4 sm:px-8 md:px-10 lg:px-20">
-        <RelatedProducts
-          category={productData.category}
-          subCategory={productData.subCategory}
-          currentProductId={productId}
-        />
+        <RelatedProducts category={productData.category} subCategory={productData.subCategory} currentProductId={productId} />
       </section>
 
-      {/* Recently Viewed Section */}
+      {/* Recently Viewed */}
       <section className="px-4 sm:px-8 md:px-10 lg:px-20 mb-20">
         <RecentlyViewed />
       </section>
