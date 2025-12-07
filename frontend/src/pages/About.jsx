@@ -90,32 +90,32 @@ const About = () => {
 
   const colorClasses = {
     pink: {
-      border: "border-pink-600",
-      text: "text-pink-600",
-      hover: "hover:border-pink-500",
-      bg: "bg-pink-600"
+      border: "border-stone-700",
+      text: "text-stone-700",
+      hover: "hover:border-stone-800",
+      bg: "bg-stone-700"
     },
     cyan: {
-      border: "border-cyan-600",
-      text: "text-cyan-600",
-      hover: "hover:border-cyan-500",
-      bg: "bg-cyan-600"
+      border: "border-lime-800",
+      text: "text-lime-800",
+      hover: "hover:border-lime-900",
+      bg: "bg-lime-800"
     },
     purple: {
-      border: "border-purple-600",
-      text: "text-purple-600",
-      hover: "hover:border-purple-500",
-      bg: "bg-purple-600"
+      border: "border-emerald-700",
+      text: "text-emerald-700",
+      hover: "hover:border-emerald-800",
+      bg: "bg-emerald-700"
     }
   };
 
   return (
-    <div className="min-h-screen bg-black text-white pt-24 pb-12">
+    <div className="min-h-screen bg-stone-200 text-stone-900 pt-24 pb-12">
       {/* Grid overlay */}
-      <div className="fixed inset-0 opacity-10 pointer-events-none" style={{
+      <div className="fixed inset-0 opacity-5 pointer-events-none" style={{
         backgroundImage: `
-          linear-gradient(rgb(219 39 119) 1px, transparent 1px),
-          linear-gradient(90deg, rgb(219 39 119) 1px, transparent 1px)
+          linear-gradient(rgb(120 113 108) 1px, transparent 1px),
+          linear-gradient(90deg, rgb(120 113 108) 1px, transparent 1px)
         `,
         backgroundSize: '40px 40px',
         transform: 'perspective(800px) rotateX(75deg) scale(2)',
@@ -125,17 +125,17 @@ const About = () => {
       {/* Hero Section */}
       <section className="relative py-20 px-4 sm:px-8 md:px-10 lg:px-20">
         <div className="max-w-7xl mx-auto text-center">
-          <h1 className="text-6xl md:text-8xl font-black mb-8 uppercase text-cyan-400" style={{
+          <h1 className="text-6xl md:text-8xl font-black mb-8 uppercase text-stone-800" style={{
             fontFamily: 'Impact, "Arial Black", sans-serif',
-            textShadow: '2px 2px 0px rgb(219 39 119)',
+            textShadow: '3px 3px 0px rgb(168 162 158)',
             transform: 'skewY(-2deg)'
           }}>
             OUR STORY
           </h1>
           
-          <div className="w-48 h-1 mx-auto mb-8 bg-gradient-to-r from-pink-600 via-cyan-600 to-purple-600"></div>
+          <div className="w-48 h-1 mx-auto mb-8 bg-gradient-to-r from-stone-700 via-lime-800 to-emerald-700"></div>
 
-          <p className="text-2xl md:text-3xl text-gray-400 max-w-3xl mx-auto">
+          <p className="text-2xl md:text-3xl text-stone-700 max-w-3xl mx-auto">
             Curating boldness for fearless spaces since 2025
           </p>
         </div>
@@ -146,7 +146,7 @@ const About = () => {
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
             <div className="relative order-2 lg:order-1">
-              <div className="relative overflow-hidden rounded-full w-80 h-80 mx-auto border-2 border-yellow-700">
+              <div className="relative overflow-hidden rounded-full w-80 h-80 mx-auto border-2 border-stone-700">
                 <img
                   className="w-full h-full object-cover"
                   src="https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&h=800&fit=crop"
@@ -157,22 +157,22 @@ const About = () => {
 
             {/* Content */}
             <div className="order-1 lg:order-2">
-              <h2 className="text-4xl md:text-5xl font-black mb-6 uppercase text-pink-600" style={{
+              <h2 className="text-4xl md:text-5xl font-black mb-6 uppercase text-stone-700" style={{
                 fontFamily: 'Impact, sans-serif'
               }}>
                 BORN FROM BOLD SPIRIT
               </h2>
 
               <div className="space-y-6 text-lg leading-loose">
-                <p className="text-gray-400 first-letter:text-3xl first-letter:font-black first-letter:float-left first-letter:leading-none first-letter:text-pink-600">
+                <p className="text-stone-700">
                   Puppet.co.in started in a small studio where art met audacity. Our founder noticed a gap in the market: beautiful homes filled with safe, boring art. She set out to change that.
                 </p>
 
-                <p className="text-gray-500">
+                <p className="text-stone-600">
                   We believe your space should be as fearless as you are. Every piece we curate is selected to spark conversation, challenge norms, and celebrate the beauty of being unapologetically yourself.
                 </p>
 
-                <p className="text-gray-400">
+                <p className="text-stone-700">
                   Today, we work with over 50 boundary-pushing artists from around the world, bringing provocative, premium pieces to bold individuals who refuse to blend in.
                 </p>
               </div>
@@ -184,14 +184,14 @@ const About = () => {
       {/* Mission Quote */}
       <section className="relative py-20 px-4 sm:px-8 md:px-10 lg:px-20">
         <div className="max-w-5xl mx-auto">
-          <div className="p-12 bg-purple-950 border-2 border-pink-600">
+          <div className="p-12 bg-stone-100 border-2 border-stone-700">
             <blockquote className="text-center">
-              <p className="text-3xl md:text-4xl font-black mb-6 leading-relaxed uppercase text-cyan-600" style={{
+              <p className="text-3xl md:text-4xl font-black mb-6 leading-relaxed uppercase text-stone-800" style={{
                 fontFamily: 'Impact, sans-serif'
               }}>
                 "ART SHOULD MAKE YOU FEEL SOMETHING. YOUR HOME SHOULD TELL YOUR STORY. WE'RE HERE TO HELP YOU LIVE BOLDLY."
               </p>
-              <footer className="text-lg text-gray-400">
+              <footer className="text-lg text-stone-600">
                 — Sumit Mishra, Founder
               </footer>
             </blockquote>
@@ -202,7 +202,7 @@ const About = () => {
       {/* Values Section */}
       <section className="relative py-16 px-4 sm:px-8 md:px-10 lg:px-20">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl md:text-5xl font-black text-center mb-12 uppercase text-pink-600" style={{
+          <h2 className="text-4xl md:text-5xl font-black text-center mb-12 uppercase text-lime-800" style={{
             fontFamily: 'Impact, sans-serif'
           }}>
             OUR VALUES
@@ -214,7 +214,7 @@ const About = () => {
               return (
                 <div
                   key={value.title}
-                  className={`group transition-all duration-300 hover:scale-105 bg-purple-950 border-2 ${colors.border}`}
+                  className={`group transition-all duration-300 hover:scale-105 bg-stone-100 border-2 ${colors.border}`}
                 >
                   <div className="p-8 text-center h-full">
                     <div className={`w-16 h-16 mx-auto mb-6 flex items-center justify-center border-2 ${colors.border}`}>
@@ -226,7 +226,7 @@ const About = () => {
                       {value.title}
                     </h3>
                     <div className={`w-12 h-0.5 mx-auto mb-4 ${colors.bg}`}></div>
-                    <p className="text-base leading-relaxed text-gray-400">
+                    <p className="text-base leading-relaxed text-stone-600">
                       {value.description}
                     </p>
                   </div>
@@ -240,12 +240,12 @@ const About = () => {
       {/* Team Section */}
       <section className="relative py-16 px-4 sm:px-8 md:px-10 lg:px-20">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl md:text-5xl font-black text-center mb-6 uppercase text-cyan-600" style={{
+          <h2 className="text-4xl md:text-5xl font-black text-center mb-6 uppercase text-stone-800" style={{
             fontFamily: 'Impact, sans-serif'
           }}>
             MEET THE TEAM
           </h2>
-          <p className="text-center text-lg mb-12 max-w-2xl mx-auto text-gray-400">
+          <p className="text-center text-lg mb-12 max-w-2xl mx-auto text-stone-700">
             The passionate individuals behind Puppet.co.in's bold curation
           </p>
 
@@ -258,7 +258,7 @@ const About = () => {
               return (
                 <div
                   key={member.name}
-                  className={`group transition-all duration-300 hover:scale-105 bg-purple-950 border-2 ${colors.border}`}
+                  className={`group transition-all duration-300 hover:scale-105 bg-stone-100 border-2 ${colors.border}`}
                 >
                   <div className="p-8 text-center">
                     <div className="relative w-32 h-32 mx-auto mb-4">
@@ -273,11 +273,11 @@ const About = () => {
                     }}>
                       {member.name}
                     </h3>
-                    <div className="text-sm font-medium mb-4 text-gray-500">
+                    <div className="text-sm font-medium mb-4 text-stone-600">
                       {member.title}
                     </div>
                     <div className={`w-12 h-0.5 mx-auto mb-4 ${colors.bg}`}></div>
-                    <p className="text-sm leading-relaxed text-gray-400">
+                    <p className="text-sm leading-relaxed text-stone-600">
                       {member.bio}
                     </p>
                   </div>
@@ -291,7 +291,7 @@ const About = () => {
       {/* Testimonials */}
       <section className="relative py-16 px-4 sm:px-8 md:px-10 lg:px-20">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl md:text-5xl font-black text-center mb-12 uppercase text-pink-600" style={{
+          <h2 className="text-4xl md:text-5xl font-black text-center mb-12 uppercase text-stone-700" style={{
             fontFamily: 'Impact, sans-serif'
           }}>
             WHAT OUR CUSTOMERS SAY
@@ -301,25 +301,25 @@ const About = () => {
             {testimonials.map((testimonial, index) => (
               <div
                 key={index}
-                className="transition-all duration-300 hover:scale-105 bg-purple-950 border-2 border-cyan-600"
+                className="transition-all duration-300 hover:scale-105 bg-stone-100 border-2 border-emerald-700"
               >
                 <div className="p-6">
                   <div className="flex gap-1 mb-4">
                     {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star key={i} size={20} className="fill-yellow-600 text-yellow-600" />
+                      <Star key={i} size={20} className="fill-amber-600 text-amber-600" />
                     ))}
                   </div>
-                  <p className="mb-4 leading-relaxed italic text-gray-400">
+                  <p className="mb-4 leading-relaxed italic text-stone-700">
                     "{testimonial.text}"
                   </p>
-                  <div className="w-12 h-0.5 mb-3 bg-cyan-600"></div>
+                  <div className="w-12 h-0.5 mb-3 bg-emerald-700"></div>
                   <div>
-                    <div className="font-black text-sm uppercase text-cyan-600" style={{ 
+                    <div className="font-black text-sm uppercase text-emerald-700" style={{ 
                       fontFamily: 'Impact, sans-serif'
                     }}>
                       {testimonial.author}
                     </div>
-                    <div className="text-xs text-gray-500">
+                    <div className="text-xs text-stone-600">
                       {testimonial.location}
                     </div>
                   </div>
@@ -333,12 +333,12 @@ const About = () => {
       {/* The Styles We Curate */}
       <section className="relative py-16 px-4 sm:px-8 md:px-10 lg:px-20">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl md:text-5xl font-black text-center mb-6 uppercase text-cyan-600" style={{
+          <h2 className="text-4xl md:text-5xl font-black text-center mb-6 uppercase text-lime-800" style={{
             fontFamily: 'Impact, sans-serif'
           }}>
             THE STYLES WE CURATE
           </h2>
-          <p className="text-center text-lg mb-12 max-w-2xl mx-auto text-gray-400">
+          <p className="text-center text-lg mb-12 max-w-2xl mx-auto text-stone-700">
             Provocative pieces with unapologetic presence
           </p>
 
@@ -350,7 +350,7 @@ const About = () => {
               
               return (
                 <div key={index} className="group transition-all duration-300 hover:scale-105">
-                  <div className={`overflow-hidden bg-purple-950 border-2 ${colors.border}`}>
+                  <div className={`overflow-hidden bg-stone-100 border-2 ${colors.border}`}>
                     <div className="relative h-64 overflow-hidden">
                       <img
                         src={style.image}
@@ -365,7 +365,7 @@ const About = () => {
                         {style.title}
                       </h4>
                       <div className={`w-12 h-0.5 mb-4 ${colors.bg}`}></div>
-                      <p className="text-sm leading-relaxed text-gray-400">
+                      <p className="text-sm leading-relaxed text-stone-600">
                         {style.description}
                       </p>
                     </div>
@@ -382,38 +382,38 @@ const About = () => {
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
             <div className="inline-block mb-8">
-              <div className="w-24 h-24 flex items-center justify-center border-2 border-pink-600 bg-purple-950">
-                <Heart size={48} className="text-pink-600" fill="rgb(219 39 119)" />
+              <div className="w-24 h-24 flex items-center justify-center border-2 border-stone-700 bg-stone-100">
+                <Heart size={48} className="text-stone-700" fill="rgb(68 64 60)" />
               </div>
             </div>
 
-            <h2 className="text-5xl md:text-7xl font-black mb-8 uppercase text-cyan-400" style={{
+            <h2 className="text-5xl md:text-7xl font-black mb-8 uppercase text-stone-800" style={{
               fontFamily: 'Impact, sans-serif',
-              textShadow: '2px 2px 0px rgb(219 39 119)'
+              textShadow: '3px 3px 0px rgb(168 162 158)'
             }}>
               OUR PHILOSOPHY
             </h2>
 
-            <div className="text-3xl md:text-4xl font-black mb-8 uppercase bg-gradient-to-r from-pink-600 via-cyan-600 to-purple-600 bg-clip-text text-transparent" style={{
+            <div className="text-3xl md:text-4xl font-black mb-8 uppercase bg-gradient-to-r from-stone-700 via-lime-800 to-emerald-700 bg-clip-text text-transparent" style={{
               fontFamily: 'Impact, sans-serif'
             }}>
               BOLD ART FOR BOLD SPACES
             </div>
           </div>
 
-          <div className="p-12 bg-purple-950 border-2 border-pink-600">
-            <p className="text-xl md:text-2xl leading-relaxed mb-6 text-center text-gray-400">
+          <div className="p-12 bg-stone-100 border-2 border-stone-700">
+            <p className="text-xl md:text-2xl leading-relaxed mb-6 text-center text-stone-700">
               We believe your home should be as unique as you are. Every piece we curate challenges the ordinary, celebrates individuality, and transforms spaces into personal galleries.
             </p>
             
-            <div className="w-24 h-1 mx-auto my-8 bg-gradient-to-r from-pink-600 via-cyan-600 to-purple-600"></div>
+            <div className="w-24 h-1 mx-auto my-8 bg-gradient-to-r from-stone-700 via-lime-800 to-emerald-700"></div>
             
-            <p className="text-lg leading-relaxed text-center text-gray-500">
+            <p className="text-lg leading-relaxed text-center text-stone-600">
               From Miami-inspired aesthetics to provocative artistry, we're here to help you create environments that don't just look good — they make people stop, stare, and remember.
             </p>
             
             <div className="mt-8 text-center">
-              <div className="inline-block px-8 py-3 font-black text-lg uppercase bg-gradient-to-r from-pink-600 to-purple-600 border-2 border-pink-600 text-white" style={{
+              <div className="inline-block px-8 py-3 font-black text-lg uppercase bg-gradient-to-r from-stone-700 to-lime-900 border-2 border-stone-700 text-white" style={{
                 fontFamily: 'Impact, sans-serif'
               }}>
                 LIFE'S TOO SHORT FOR BORING DECOR
@@ -424,7 +424,7 @@ const About = () => {
       </section>
 
       {/* Bottom border */}
-      <div className="h-2 border-t-2 border-pink-900"></div>
+      <div className="h-2 border-t-2 border-stone-400"></div>
     </div>
   );
 };

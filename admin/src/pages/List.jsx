@@ -87,13 +87,6 @@ const ProductCard = ({ item, index, onEdit, onRemove, currency }) => (
         )}
       </div>
 
-      {item.company && item.company !== 'Aharyas' && (
-        <div className="flex items-center gap-2 mb-3">
-          <Building2 size={14} className="text-blue-500" />
-          <span className="text-sm text-blue-600 font-semibold">{item.company}</span>
-        </div>
-      )}
-
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-1">
           <IndianRupee size={18} className="text-green-600" />
@@ -150,7 +143,7 @@ const List = ({ token }) => {
     }
   };
 
-  const currentCategoryData = editedProduct ? (categoryData[editedProduct.category] || { subCategories: [] }) : { subCategories: []};
+  const currentCategoryData = editedProduct ? (categoryData[editedProduct.category] || { subCategories: [] }) : { subCategories: [] };
 
   const fetchList = async () => {
     setLoading(true);
@@ -162,14 +155,6 @@ const List = ({ token }) => {
         const products = response.data.products || [];
         setList(products);
         setFilteredList(products);
-
-        // Extract unique companies from products to update the companies list
-        const productCompanies = [...new Set(products
-          .filter(product => product.company && product.company !== 'Aharyas')
-          .map(product => product.company))];
-
-        const allCompanies = [...new Set([...companies, ...productCompanies])].sort();
-        setCompanies(allCompanies);
       } else {
         toast.error(`Error: ${response.data.message}`);
       }
@@ -256,8 +241,6 @@ const List = ({ token }) => {
     setIsEditing(false);
     setEditedProduct(null);
     setImages([null, null, null, null, null, null]);
-    setShowAddCompany(false);
-    setNewCompanyName('');
   };
 
   const openEditModal = (product) => {
@@ -280,7 +263,6 @@ const List = ({ token }) => {
         product.name?.toLowerCase().includes(searchLower) ||
         product.category?.toLowerCase().includes(searchLower) ||
         product.subCategory?.toLowerCase().includes(searchLower) ||
-        product.company?.toLowerCase().includes(searchLower) ||
         product.description?.toLowerCase().includes(searchLower)
       );
     }
@@ -331,7 +313,7 @@ const List = ({ token }) => {
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
                   <input
                     type="text"
-                    placeholder="Search by name, category, company, or description..."
+                    placeholder="Search by name, category, or description..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-black transition-colors"
@@ -451,7 +433,6 @@ const List = ({ token }) => {
                             <th className="px-6 py-4 text-left text-sm font-semibold">Image</th>
                             <th className="px-6 py-4 text-left text-sm font-semibold">Product Details</th>
                             <th className="px-6 py-4 text-left text-sm font-semibold">Category</th>
-                            <th className="px-6 py-4 text-left text-sm font-semibold">Company</th>
                             <th className="px-6 py-4 text-left text-sm font-semibold">Price</th>
                             <th className="px-6 py-4 text-center text-sm font-semibold">Actions</th>
                           </tr>
@@ -484,14 +465,6 @@ const List = ({ token }) => {
                                 {item.subCategory && (
                                   <div className="text-sm text-gray-600">{item.subCategory}</div>
                                 )}
-                              </td>
-                              <td className="px-6 py-4">
-                                <div className="flex items-center gap-1">
-                                  <Building2 size={14} className="text-blue-500" />
-                                  <span className="text-sm text-blue-600 font-semibold">
-                                    {item.company || 'Aharyas'}
-                                  </span>
-                                </div>
                               </td>
                               <td className="px-6 py-4">
                                 <div className="flex items-center gap-1 font-bold text-green-600">
@@ -601,74 +574,6 @@ const List = ({ token }) => {
                           required
                         />
                       </div>
-                    </div>
-                  </div>
-
-                  {/* Company/Brand Section */}
-                  <div className="bg-gray-50 rounded-xl p-6">
-                    <div className="flex items-center gap-3 mb-4">
-                      <Building2 size={20} className="text-gray-600" />
-                      <div>
-                        <h3 className="text-lg font-semibold text-gray-900">Brand/Company</h3>
-                        <p className="text-sm text-gray-600">Select or add the brand for this product</p>
-                      </div>
-                    </div>
-
-                    <div className="space-y-4">
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Company/Brand</label>
-                        <div className="flex gap-3">
-                          <select
-                            onChange={(e) => setEditedProduct(prev => ({ ...prev, company: e.target.value }))}
-                            value={editedProduct.company}
-                            className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-black transition-colors"
-                          >
-                            <option value="">Aharyas</option>
-                            {companies.map((comp) => (
-                              <option key={comp} value={comp}>{comp}</option>
-                            ))}
-                          </select>
-                          <button
-                            type="button"
-                            onClick={() => setShowAddCompany(true)}
-                            className="px-4 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors flex items-center gap-2 font-medium"
-                          >
-                            <Plus size={16} />
-                            Add New
-                          </button>
-                        </div>
-                      </div>
-
-                      {/* Add New Company Form */}
-                      {showAddCompany && (
-                        <div className="bg-white border border-gray-200 rounded-lg p-4">
-                          <h4 className="font-medium text-gray-900 mb-3">Add New Company</h4>
-                          <div className="flex gap-3">
-                            <input
-                              type="text"
-                              value={newCompanyName}
-                              onChange={(e) => setNewCompanyName(e.target.value)}
-                              placeholder="Enter company/brand name"
-                              className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-black transition-colors"
-                              onKeyPress={(e) => e.key === 'Enter' && handleAddNewCompany()}
-                            />
-                            <button
-                              type="button"
-                              onClick={handleAddNewCompany}
-                              className="px-4 py-2 bg-black hover:bg-gray-800 text-white rounded-lg transition-colors font-medium"
-                            >
-                              Add
-                            </button>
-                            <button
-                              type="button"
-                              onClick={() => { setShowAddCompany(false); setNewCompanyName(''); }}
-                              className="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-700 rounded-lg transition-colors font-medium"
-                            >
-                              Cancel
-                            </button>
-                          </div>
-                        </div>
-                      )}
                     </div>
                   </div>
 

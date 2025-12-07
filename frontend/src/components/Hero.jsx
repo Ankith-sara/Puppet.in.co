@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Volume2, VolumeX } from 'lucide-react';
-import { Link } from 'react-router-dom';
 
 const Hero = () => {
   const videoRef = useRef(null);
@@ -24,7 +23,7 @@ const Hero = () => {
   };
 
   return (
-    <div className="relative w-full h-screen overflow-hidden m-0 p-0 bg-black">
+    <div className="relative w-full h-screen overflow-hidden m-0 p-0 bg-stone-900">
       {/* Video Background */}
       <div className="absolute inset-0">
         <video
@@ -34,19 +33,19 @@ const Hero = () => {
           muted={isMuted}
           playsInline
           preload="auto"
-          className="absolute top-0 left-0 w-full h-full object-cover opacity-70"
+          className="absolute top-0 left-0 w-full h-full object-cover opacity-60"
         >
           <source src="https://www.shutterstock.com/shutterstock/videos/3766911865/preview/stock-footage-young-elegant-woman-wearing-sunglasses-lighting-and-smoking-cigarette-as-driving-vintage-car-at.webm" type="video/mp4" />
         </video>
 
         {/* Dark gradient overlay for better text contrast */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/80"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-stone-900/70 via-stone-800/50 to-stone-900/90"></div>
 
         {/* Retro grid overlay */}
         <div className="absolute inset-0 opacity-5" style={{
           backgroundImage: `
-            linear-gradient(rgb(219 39 119) 1px, transparent 1px),
-            linear-gradient(90deg, rgb(219 39 119) 1px, transparent 1px)
+            linear-gradient(rgb(120 113 108) 1px, transparent 1px),
+            linear-gradient(90deg, rgb(120 113 108) 1px, transparent 1px)
           `,
           backgroundSize: '40px 40px',
           transform: 'perspective(800px) rotateX(75deg) scale(2)',
@@ -59,7 +58,7 @@ const Hero = () => {
         <div className="max-w-5xl">
           {/* Small intro badge */}
           <div className="mb-6 opacity-0 intro-fade">
-            <span className="inline-block px-6 py-2 text-xs sm:text-sm font-black tracking-widest uppercase border-2 border-pink-600 text-pink-600 bg-black/50 backdrop-blur-sm" style={{
+            <span className="inline-block px-6 py-2 text-xs sm:text-sm font-black tracking-widest uppercase border-4 border-lime-800 text-lime-800 bg-stone-900/80 backdrop-blur-sm shadow-xl" style={{
               fontFamily: 'Impact, sans-serif'
             }}>
               EST. 2025
@@ -67,43 +66,41 @@ const Hero = () => {
           </div>
 
           {/* Main Title */}
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-6 leading-none opacity-0 title-fade uppercase text-cyan-400"
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-6 leading-none opacity-0 title-fade uppercase text-stone-100"
             style={{
-              textShadow: '3px 3px 0px rgb(219 39 119), 6px 6px 20px rgba(0,0,0,0.8)',
-              fontFamily: 'Impact, "Arial Black", sans-serif',
-              transform: 'skewY(-2deg)'
+              textShadow: '4px 4px 0px rgb(120 113 108), 8px 8px 25px rgba(0,0,0,0.9)',
+              fontFamily: 'Impact, sans-serif'
             }}>
             WHERE ART<br />MEETS AUDACITY
           </h1>
 
           {/* Gradient divider */}
-          <div className="w-64 h-1 mb-6 bg-gradient-to-r from-pink-600 via-cyan-600 to-purple-600 opacity-0 desc-fade"></div>
+          <div className="w-64 h-1 mb-6 bg-gradient-to-r from-stone-700 via-lime-800 to-emerald-700 opacity-0 desc-fade shadow-lg"></div>
 
           {/* Description */}
-          <p className="text-lg sm:text-xl md:text-2xl font-light mb-10 max-w-3xl leading-relaxed text-gray-300 opacity-0 desc-fade">
+          <p className="text-lg sm:text-xl md:text-2xl font-medium mb-10 max-w-3xl leading-relaxed text-stone-300 opacity-0 desc-fade">
             We curate provocative, premium pieces for individuals who refuse to blend in.
             Your space should be as fearless as you are.
           </p>
 
           {/* CTA Buttons */}
           <div className="flex flex-wrap gap-4 opacity-0 cta-fade">
-            <Link to='/shop/collection'
-              className="group px-5 py-3 bg-gradient-to-r from-pink-600 to-purple-600 text-white font-black text-base sm:text-lg uppercase tracking-widest hover:scale-105 transition-all duration-300 border-2 border-pink-600"
+            <a href='/shop/collection'
+              className="group px-8 py-4 bg-lime-800 text-stone-900 font-black text-base sm:text-lg uppercase tracking-widest hover:bg-emerald-700 hover:scale-105 transition-all duration-300 border-4 border-lime-800 hover:border-emerald-700 shadow-2xl"
               style={{
                 fontFamily: 'Impact, sans-serif',
-                boxShadow: '0 0 20px rgba(219, 39, 119, 0.6)'
               }}>
               <span className="relative">
                 EXPLORE COLLECTION
               </span>
-            </Link>
-            <Link to='/about'
-              className="px-5 py-3 bg-black/50 backdrop-blur-sm border-2 border-cyan-600 text-cyan-400 font-black text-base sm:text-lg uppercase tracking-widest hover:bg-cyan-600 hover:text-black transition-all duration-300 hover:scale-105"
+            </a>
+            <a href='/about'
+              className="px-8 py-4 bg-stone-900/80 backdrop-blur-sm border-4 border-stone-100 text-stone-100 font-black text-base sm:text-lg uppercase tracking-widest hover:bg-stone-100 hover:text-stone-900 transition-all duration-300 hover:scale-105 shadow-xl"
               style={{
                 fontFamily: 'Impact, sans-serif'
               }}>
               OUR STORY
-            </Link>
+            </a>
           </div>
         </div>
       </div>
@@ -111,14 +108,17 @@ const Hero = () => {
       {/* Sound Toggle */}
       <button
         onClick={toggleMute}
-        className="absolute top-24 right-6 sm:right-10 z-20 w-14 h-14 bg-purple-950 backdrop-blur-sm border-2 border-pink-600 flex items-center justify-center text-pink-600 hover:bg-pink-600 hover:text-white transition-all duration-300 opacity-0 sound-fade group"
+        className="absolute top-24 right-6 sm:right-10 z-20 w-14 h-14 bg-stone-900/80 backdrop-blur-sm border-4 border-lime-800 flex items-center justify-center text-lime-800 hover:bg-lime-800 hover:text-stone-900 transition-all duration-300 opacity-0 sound-fade group shadow-2xl"
       >
         {isMuted ? <VolumeX size={24} /> : <Volume2 size={24} />}
       </button>
 
       {/* Side Tagline */}
       <div className="hidden lg:block absolute right-8 top-1/2 transform -translate-y-1/2 -rotate-90 origin-center">
-        <p className="text-sm uppercase tracking-[0.4em] text-pink-600 font-black" style={{fontFamily: 'Impact, sans-serif'}}>
+        <p className="text-sm uppercase tracking-[0.4em] text-lime-800 font-black" style={{
+          fontFamily: 'Impact, sans-serif',
+          textShadow: '2px 2px 4px rgba(0,0,0,0.8)'
+        }}>
           BOLD ART • FEARLESS SPACES • SINCE 2025
         </p>
       </div>

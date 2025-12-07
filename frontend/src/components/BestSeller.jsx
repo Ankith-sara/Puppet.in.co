@@ -118,12 +118,12 @@ const BestSeller = () => {
   }, [products, selectedCategory]);
 
   return (
-    <section className="bg-black py-16 px-4 sm:px-6 md:px-10 lg:px-20 relative overflow-hidden">
+    <section className="bg-stone-200 py-16 px-4 sm:px-6 md:px-10 lg:px-20 relative overflow-hidden">
       {/* Retro grid background */}
       <div className="absolute inset-0 opacity-5 pointer-events-none" style={{
         backgroundImage: `
-          linear-gradient(rgb(219 39 119) 1px, transparent 1px),
-          linear-gradient(90deg, rgb(219 39 119) 1px, transparent 1px)
+          linear-gradient(rgb(120 113 108) 1px, transparent 1px),
+          linear-gradient(90deg, rgb(120 113 108) 1px, transparent 1px)
         `,
         backgroundSize: '40px 40px',
         transform: 'perspective(800px) rotateX(75deg) scale(2)',
@@ -134,19 +134,18 @@ const BestSeller = () => {
         {/* Header */}
         <div className="flex flex-col md:flex-row justify-between items-center mb-16 gap-6">
           <div className="text-center md:text-left">
-            <h2 className="text-5xl md:text-7xl font-black uppercase text-pink-600 mb-4" style={{
-              fontFamily: 'Impact, "Arial Black", sans-serif',
-              textShadow: '2px 2px 0px rgb(0 255 255)',
-              transform: 'skewY(-2deg)'
+            <h2 className="text-5xl md:text-7xl font-black uppercase text-stone-800 mb-4 tracking-wider" style={{
+              fontFamily: 'Impact, sans-serif',
+              textShadow: '3px 3px 0px rgb(168 162 158)'
             }}>
               BEST<br className="md:hidden" /> SELLERS
             </h2>
-            <div className="w-48 h-1 mx-auto md:mx-0 bg-gradient-to-r from-pink-600 via-cyan-600 to-purple-600"></div>
+            <div className="w-48 h-1 mx-auto md:mx-0 bg-gradient-to-r from-stone-700 via-lime-800 to-emerald-700"></div>
           </div>
           
           <a 
             href="/shop/collection" 
-            className="group flex items-center gap-2 px-8 py-4 bg-purple-950 border-2 border-cyan-600 text-cyan-600 font-black text-sm uppercase tracking-widest hover:bg-cyan-600 hover:text-black transition-all duration-300"
+            className="group flex items-center gap-2 px-8 py-4 bg-stone-100 border-4 border-emerald-700 text-emerald-700 font-black text-sm uppercase tracking-widest hover:bg-emerald-700 hover:text-stone-900 transition-all duration-300 shadow-xl hover:shadow-2xl"
             style={{fontFamily: 'Impact, sans-serif'}}
           >
             VIEW ALL
@@ -167,9 +166,8 @@ const BestSeller = () => {
                     company={item.company}
                   />
                   {index < 1 && (
-                    <div className="absolute top-3 right-3 bg-gradient-to-r from-cyan-600 to-purple-600 text-white text-xs px-4 py-2 font-black uppercase z-10 border border-cyan-600 flex items-center gap-1" style={{
-                      fontFamily: 'Impact, sans-serif',
-                      boxShadow: '0 0 15px rgba(0, 255, 255, 0.6)'
+                    <div className="absolute top-3 right-3 bg-emerald-700 text-stone-100 text-xs px-4 py-2 font-black uppercase z-10 border-2 border-emerald-700 flex items-center gap-1 shadow-lg" style={{
+                      fontFamily: 'Impact, sans-serif'
                     }}>
                       <Award size={14} />
                       BESTSELLER
@@ -180,18 +178,23 @@ const BestSeller = () => {
             ))}
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center py-20 text-center">
-            <div className="w-24 h-24 border-2 border-cyan-600 bg-purple-950 flex items-center justify-center mb-6">
-              <Award size={48} className="text-cyan-600" />
+          <div className="flex flex-col items-center justify-center py-20 text-center bg-stone-100 border-4 border-stone-700 shadow-2xl">
+            <div className="w-24 h-24 border-2 border-emerald-700 bg-stone-50 flex items-center justify-center mb-6">
+              <Award size={48} className="text-emerald-700" />
             </div>
-            <h3 className="text-3xl font-black uppercase text-pink-600 mb-3" style={{
+            <h3 className="text-3xl font-black uppercase text-stone-800 mb-3 tracking-wider" style={{
               fontFamily: 'Impact, sans-serif'
             }}>
               NO BESTSELLERS AVAILABLE
             </h3>
-            <p className="text-gray-400 text-lg">Check back soon for our bestselling items</p>
-            <div className="w-32 h-1 mt-4 bg-gradient-to-r from-pink-600 via-cyan-600 to-purple-600"></div>
+            <p className="text-stone-600 text-lg font-medium">Check back soon for our bestselling items</p>
+            <div className="w-32 h-1 mt-4 bg-gradient-to-r from-stone-700 via-lime-800 to-emerald-700"></div>
           </div>
+        )}
+
+        {/* Bottom decorative line */}
+        {bestSeller.length > 0 && (
+          <div className="mt-16 h-2 bg-gradient-to-r from-stone-700 via-lime-800 to-emerald-700"></div>
         )}
       </div>
     </section>
