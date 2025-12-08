@@ -99,7 +99,7 @@ const TermsConditions = () => {
       <section className="relative py-12 px-4 sm:px-8 md:px-10 lg:px-20 z-10">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-8">
-            <div className="inline-block mb-6 w-16 h-16 flex items-center justify-center border-2 border-lime-800 bg-stone-100">
+            <div className="mb-6 w-16 h-16 flex items-center justify-center border-2 border-lime-800 bg-stone-100">
               <Scale size={32} className="text-lime-800" />
             </div>
             <h2 className="text-3xl md:text-4xl font-black uppercase text-stone-800 tracking-wider" style={{
@@ -152,7 +152,7 @@ const TermsConditions = () => {
       <section className="relative py-12 px-4 sm:px-8 md:px-10 lg:px-20 z-10">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-8">
-            <div className="inline-block mb-6 w-16 h-16 flex items-center justify-center border-2 border-lime-800 bg-stone-100">
+            <div className="mb-6 w-16 h-16 flex items-center justify-center border-2 border-lime-800 bg-stone-100">
               <ShoppingCart size={32} className="text-lime-800" />
             </div>
             <h2 className="text-3xl md:text-4xl font-black uppercase text-stone-800 tracking-wider" style={{
